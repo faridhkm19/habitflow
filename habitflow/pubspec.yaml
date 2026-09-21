@@ -1,0 +1,62 @@
+name: habitflow
+description: "HabitFlow — Daily Habit & Wellness Tracker. Build better days, one habit at a time."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # ── Core ───────────────────────────────────────────────────────────────────
+  # State management (Riverpod 2.x - AsyncNotifier, StateNotifier, Provider)
+  flutter_riverpod: ^2.6.1
+
+  # Navigation & routing (URL-based, web + deep linking support)
+  go_router: ^14.6.3
+
+  # Supabase backend (auth, database, storage)
+  supabase_flutter: ^2.8.4
+
+  # ── UI ─────────────────────────────────────────────────────────────────────
+  # Charts: heatmap, bar chart, progress ring
+  fl_chart: ^0.69.0
+
+  # Google Fonts (Poppins as primary typeface, Inter as fallback — per Design System)
+  google_fonts: ^6.2.1
+
+  # ── Features ───────────────────────────────────────────────────────────────
+  # Local notifications for habit reminders
+  flutter_local_notifications: ^18.0.1
+
+  # Photo/avatar upload (image_picker)
+  image_picker: ^1.1.2
+
+  # PDF export & print
+  pdf: ^3.11.3
+  printing: ^5.14.2
+
+  # ── Utilities ──────────────────────────────────────────────────────────────
+  # Date formatting & localization
+  intl: ^0.20.2
+
+  # Value equality for domain entities
+  equatable: ^2.0.7
+  flutter_dotenv: ^6.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - .env
