@@ -25,7 +25,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
   String _selectedIcon = 'fitness_center';
   Color _selectedColor = AppColors.habitMint;
   String _selectedCategory = 'health';
-  
+
   String _frequencyType = 'daily';
   List<String> _selectedDays = [];
   int _timesPerWeek = 3;
@@ -49,7 +49,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
 
   void _saveHabit() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     if (_frequencyType == 'specific_days' && _selectedDays.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Pilih setidaknya satu hari.')),
@@ -66,8 +66,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
       freqValue = {'times': _timesPerWeek};
     }
 
-    // Call provider
-    final success = await ref.read(habitsProvider.notifier).createHabit(
+    final errorMessage = await ref.read(habitsProvider.notifier).createHabit(
       name: _nameController.text.trim(),
       iconName: _selectedIcon,
       colorHex: _selectedColor.toHex(),
@@ -78,11 +77,11 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
 
     setState(() => _isLoading = false);
 
-    if (success && mounted) {
+    if (errorMessage == null && mounted) {
       context.pop();
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Gagal menyimpan habit.')),
+        SnackBar(content: Text(errorMessage ?? 'Gagal menyimpan habit.')),
       );
     }
   }
@@ -101,7 +100,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Form(
           key: _formKey,
           child: Column(
@@ -113,7 +112,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                 validator: (val) => val == null || val.trim().isEmpty ? 'Nama wajib diisi' : null,
               ),
               const SizedBox(height: 24),
-              
+
               Text('Kategori', style: AppTextStyles.h3),
               const SizedBox(height: 12),
               Wrap(
@@ -133,7 +132,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                 }).toList(),
               ),
               const SizedBox(height: 24),
-              
+
               const Divider(color: AppColors.border),
               const SizedBox(height: 24),
 
@@ -143,7 +142,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                 onIconChanged: (icon) => setState(() => _selectedIcon = icon),
                 onColorChanged: (color) => setState(() => _selectedColor = color),
               ),
-              
+
               const SizedBox(height: 24),
               const Divider(color: AppColors.border),
               const SizedBox(height: 24),
@@ -159,7 +158,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                 onTimesPerWeekChanged: (times) => setState(() => _timesPerWeek = times),
               ),
 
-              const SizedBox(height: 48),
+              const SizedBox(height: 24),
               AppButton(
                 label: 'Simpan Habit',
                 isLoading: _isLoading,

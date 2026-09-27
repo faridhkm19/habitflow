@@ -15,101 +15,174 @@ class HeatmapChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // We want to show 52 weeks.
-    const int cols = 52;
-    const int rows = 7;
-    final today = DateTime.now();
-    final todayWeekday = today.weekday; // 1 = Mon, 7 = Sun
-    
-    // We want the last column to end on today.
-    // So the grid is essentially built backwards from today.
-    // Date of a cell at (col, row):
-    // Let daysAgo = ((cols - 1 - col) * 7) + (todayWeekday - (row + 1));
-    // If daysAgo < 0, it means it's a future day in the current week (should be invisible).
+    const int rows = 7; // Mon–Sun
+    const double cellSize = 14.0;
+    const double cellGap = 4.0;
+    const double colWidth = cellSize + cellGap; // 18px per column
+
+    final today = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+
+    // ── Grid boundaries ────────────────────────────────────────────────────
+    // Start: Monday on or before Jan 1 of current year.
+    // This column may have invisible cells above Jan 1 (like GitHub).
+    final jan1 = DateTime(today.year, 1, 1);
+    final gridStart = jan1.subtract(Duration(days: jan1.weekday - 1));
+
+    // End: Monday of the week containing today.
+    // Only show up to today — no future cells rendered.
+    final thisWeekMonday = today.subtract(Duration(days: today.weekday - 1));
+
+    // Total columns = weeks from gridStart to (and including) current week
+    final cols = thisWeekMonday.difference(gridStart).inDays ~/ 7 + 1;
+
+    // ── Month labels ───────────────────────────────────────────────────────
+    // Place label at the first column whose Monday falls in a new month.
+    // We skip the very first label if it's before Jan 1 (won't happen here
+    // since gridStart's Monday can at most be Dec 28 of prev year for Jan 1
+    // falling on a Sunday — in that case col 0 contains Dec 28–Jan 3, so the
+    // month label for Jan goes on col 1 when Jan 1 falls on it).
+    const monthNames = [
+      '', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+    ];
+
+    final List<({String label, double offset})> monthLabels = [];
+    int? lastLabeledMonth;
+
+    for (int c = 0; c < cols; c++) {
+      final colMonday = gridStart.add(Duration(days: c * 7));
+      // Find which month this column "belongs to":
+      // use the first visible day in this column (max of colMonday and Jan 1).
+      final firstVisible = colMonday.isBefore(jan1) ? jan1 : colMonday;
+
+      if (lastLabeledMonth == null || firstVisible.month != lastLabeledMonth) {
+        // Only label months within the current year
+        if (firstVisible.year == today.year) {
+          lastLabeledMonth = firstVisible.month;
+          monthLabels.add((
+            label: monthNames[firstVisible.month],
+            offset: c * colWidth,
+          ));
+        }
+      }
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          reverse: true, // Start scrolled to the right (most recent)
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Y-axis labels (Semua hari agar user tidak bingung)
+              // ── Y-axis day labels ─────────────────────────────────────────
               Padding(
-                padding: const EdgeInsets.only(right: 8.0, top: 16),
+                padding: const EdgeInsets.only(right: 8.0, top: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    for (var day in ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'])
-                      Container(
-                        height: 18, // 14px box + 4px padding
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          day,
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textSecondary,
-                            fontSize: 10,
-                            height: 1.0,
+                    for (final day in [
+                      'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'
+                    ])
+                      SizedBox(
+                        height: colWidth,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            day,
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.textSecondary,
+                              fontSize: 10,
+                              height: 1.0,
+                            ),
                           ),
                         ),
                       ),
                   ],
                 ),
               ),
-              
-              // The Grid
+
+              // ── Month labels + Grid ───────────────────────────────────────
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Month labels could go here, but for simplicity we'll just put some space
-                  const SizedBox(height: 16),
+                  // Month label row — GitHub style
+                  SizedBox(
+                    height: 20,
+                    width: cols * colWidth,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        for (final m in monthLabels)
+                          Positioned(
+                            left: m.offset,
+                            top: 4,
+                            child: Text(
+                              m.label,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.textSecondary,
+                                fontSize: 10,
+                                height: 1.0,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+
+                  // Heatmap grid
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(cols, (colIndex) {
                       return Padding(
-                        padding: const EdgeInsets.only(right: 4.0),
+                        padding: const EdgeInsets.only(right: cellGap),
                         child: Column(
                           children: List.generate(rows, (rowIndex) {
-                            int daysAgo = ((cols - 1 - colIndex) * 7) + (todayWeekday - (rowIndex + 1));
-                            
-                            if (daysAgo < 0) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 4.0),
-                                child: SizedBox(width: 14, height: 14),
+                            final date = gridStart.add(
+                              Duration(days: colIndex * 7 + rowIndex),
+                            );
+
+                            // Invisible: before Jan 1 (alignment padding) or after today
+                            final beforeYear = date.isBefore(jan1);
+                            final afterToday = date.isAfter(today);
+
+                            if (beforeYear || afterToday) {
+                              return const Padding(
+                                padding: EdgeInsets.only(bottom: cellGap),
+                                child: SizedBox(width: cellSize, height: cellSize),
                               );
                             }
-                            
-                            final dateRaw = today.subtract(Duration(days: daysAgo));
-                            final date = DateTime(dateRaw.year, dateRaw.month, dateRaw.day);
-                            
-                            // Find status in heatmapData
+
+                            // Look up completion status
                             bool? status;
-                            for (var key in heatmapData.keys) {
+                            for (final key in heatmapData.keys) {
                               if (app_date_utils.isSameDate(key, date)) {
                                 status = heatmapData[key];
                                 break;
                               }
                             }
-                            
-                            Color cellColor;
+
+                            final Color cellColor;
                             if (status == true) {
                               cellColor = activeColor;
                             } else if (status == false) {
-                              cellColor = const Color(0xFFD8D5CE); // Neutral Missed
+                              cellColor = const Color(0xFFD8D5CE); // neutralMissed
                             } else {
-                              cellColor = AppColors.border; // Not scheduled
+                              cellColor = AppColors.border; // not scheduled / no data
                             }
-                            
+
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 4.0),
+                              padding: const EdgeInsets.only(bottom: cellGap),
                               child: Container(
-                                width: 14,
-                                height: 14,
+                                width: cellSize,
+                                height: cellSize,
                                 decoration: BoxDecoration(
                                   color: cellColor,
-                                  borderRadius: BorderRadius.circular(4), // radius.sm
+                                  borderRadius: BorderRadius.circular(3),
                                 ),
                               ),
                             );

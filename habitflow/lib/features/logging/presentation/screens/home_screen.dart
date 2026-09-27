@@ -160,7 +160,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             onRefresh: () => ref.read(homeProvider.notifier).refresh(),
             color: AppColors.primary,
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 24, 16, 100),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
               children: [
                 // ── Progress Ring ────────────────────────────────────────────────
                 Center(

@@ -27,6 +27,7 @@ class CheckinBottomSheet extends StatefulWidget {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useRootNavigator: true,
       backgroundColor: Colors.transparent,
       builder: (_) => CheckinBottomSheet(habitName: habitName, onSave: onSave),
     );

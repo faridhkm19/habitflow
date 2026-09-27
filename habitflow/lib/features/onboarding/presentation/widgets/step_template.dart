@@ -120,6 +120,9 @@ class StepTemplate extends ConsumerWidget {
       case 'healthy_lifestyle': return Icons.favorite;
       case 'study_focus': return Icons.school;
       case 'mindfulness': return Icons.spa;
+      case 'fitness': return Icons.sports_gymnastics;
+      case 'self_development': return Icons.trending_up;
+      case 'rest_relaxation': return Icons.weekend;
       default: return Icons.list;
     }
   }

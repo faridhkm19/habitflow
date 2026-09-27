@@ -46,23 +46,69 @@ class HabitRepositoryImpl implements HabitRepository {
   }
 
   @override
-  Future<Result<void>> archiveHabit(String id) {
-    throw UnimplementedError(); // Untuk Task 3.2
+  Future<Result<HabitEntity>> updateHabit(HabitEntity habit) async {
+    try {
+      final model = HabitModel.fromEntity(habit);
+      final result = await remoteDataSource.updateHabit(model);
+      return Ok(result);
+    } on AuthException {
+      return const Err(AuthFailure('Sesi telah berakhir, silakan login kembali.'));
+    } on PostgrestException catch (e) {
+      return Err(ServerFailure(e.message));
+    } on SocketException {
+      return const Err(NetworkFailure('Tidak ada koneksi internet.'));
+    } catch (e) {
+      return const Err(ServerFailure('Terjadi kesalahan saat memperbarui data.'));
+    }
   }
 
   @override
-  Future<Result<HabitEntity>> createHabit(HabitEntity habit) {
-    throw UnimplementedError(); // Untuk Task 3.2
+  Future<Result<void>> archiveHabit(String id) async {
+    try {
+      await remoteDataSource.archiveHabit(id);
+      return const Ok(null);
+    } on AuthException {
+      return const Err(AuthFailure('Sesi telah berakhir, silakan login kembali.'));
+    } on PostgrestException catch (e) {
+      return Err(ServerFailure(e.message));
+    } on SocketException {
+      return const Err(NetworkFailure('Tidak ada koneksi internet.'));
+    } catch (e) {
+      return const Err(ServerFailure('Terjadi kesalahan saat mengarsipkan habit.'));
+    }
   }
 
   @override
-  Future<Result<void>> deleteHabit(String id) {
-    throw UnimplementedError(); // Untuk Task 3.2
+  Future<Result<void>> deleteHabit(String id) async {
+    try {
+      await remoteDataSource.deleteHabit(id);
+      return const Ok(null);
+    } on AuthException {
+      return const Err(AuthFailure('Sesi telah berakhir, silakan login kembali.'));
+    } on PostgrestException catch (e) {
+      return Err(ServerFailure(e.message));
+    } on SocketException {
+      return const Err(NetworkFailure('Tidak ada koneksi internet.'));
+    } catch (e) {
+      return const Err(ServerFailure('Terjadi kesalahan saat menghapus habit.'));
+    }
   }
 
   @override
-  Future<Result<HabitEntity>> updateHabit(HabitEntity habit) {
-    throw UnimplementedError(); // Untuk Task 3.2
+  Future<Result<HabitEntity>> createHabit(HabitEntity habit) async {
+    try {
+      final model = HabitModel.fromEntity(habit);
+      final results = await remoteDataSource.createBatchHabits([model]);
+      return Ok(results.first);
+    } on AuthException {
+      return const Err(AuthFailure('Sesi telah berakhir, silakan login kembali.'));
+    } on PostgrestException catch (e) {
+      return Err(ServerFailure(e.message));
+    } on SocketException {
+      return const Err(NetworkFailure('Tidak ada koneksi internet.'));
+    } catch (e) {
+      return const Err(ServerFailure('Terjadi kesalahan saat menyimpan habit.'));
+    }
   }
 
   @override

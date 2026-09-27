@@ -16,11 +16,22 @@ import '../widgets/weekly_radial_chart.dart';
 class StatisticsScreen extends ConsumerWidget {
   const StatisticsScreen({super.key});
 
+  static const List<Map<String, String>> _categories = [
+    {'id': 'all', 'label': 'Semua'},
+    {'id': 'health', 'label': 'Kesehatan'},
+    {'id': 'learning', 'label': 'Belajar'},
+    {'id': 'mindfulness', 'label': 'Mindful'},
+    {'id': 'productivity', 'label': 'Produktivitas'},
+    {'id': 'social', 'label': 'Sosial'},
+    {'id': 'custom', 'label': 'Lainnya'},
+  ];
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final habitsAsync = ref.watch(habitsProvider);
     final selectedHabitId = ref.watch(selectedStatisticsHabitIdProvider);
     final statsAsync = ref.watch(statisticsDataProvider);
+    final selectedCategory = ref.watch(selectedStatisticsCategoryProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -34,29 +45,95 @@ class StatisticsScreen extends ConsumerWidget {
         loading: () => const Center(child: LoadingIndicator()),
         error: (err, stack) => Center(child: Text('Error loading habits: $err')),
         data: (habits) {
-          if (habits.isEmpty) {
-            return const Center(child: Text("Belum ada habit."));
+          final activeHabits = habits.where((h) => !h.isArchived).toList();
+          
+          if (activeHabits.isEmpty) {
+            return const Center(child: Text("Belum ada habit aktif."));
           }
           
-          final selectedHabit = habits.firstWhere((h) => h.id == (selectedHabitId ?? habits.first.id));
-          final habitColor = ColorExtension.fromHex(selectedHabit.colorHex);
-          final habitBgColor = getLighterColor(habitColor, 0.15);
-          
-          return RefreshIndicator(
-            onRefresh: () async {
-              ref.invalidate(statisticsDataProvider);
-            },
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Dropdown Selector (Button that opens bottom sheet)
-                  InkWell(
-                    onTap: () {
-                      _showHabitSelector(context, habits, selectedHabitId ?? habits.first.id, ref);
-                    },
+          final filteredHabits = activeHabits.where((habit) {
+            return selectedCategory == 'all' || habit.category == selectedCategory;
+          }).toList();
+
+          String? currentId = selectedHabitId;
+          if (filteredHabits.isNotEmpty) {
+            final isCurrentInFiltered = filteredHabits.any((h) => h.id == currentId);
+            if (!isCurrentInFiltered) {
+              currentId = filteredHabits.first.id;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ref.read(selectedStatisticsHabitIdProvider.notifier).state = currentId;
+              });
+            }
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Category Filter Chips
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  children: _categories.map((category) {
+                    final isSelected = selectedCategory == category['id'];
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: FilterChip(
+                        label: Text(
+                          category['label']!,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
+                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                          ),
+                        ),
+                        selected: isSelected,
+                        showCheckmark: false,
+                        onSelected: (_) {
+                          ref.read(selectedStatisticsCategoryProvider.notifier).state = category['id']!;
+                        },
+                        backgroundColor: AppColors.surface,
+                        selectedColor: AppColors.primary,
+                        side: BorderSide(
+                          color: isSelected ? AppColors.primary : AppColors.border,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+
+              // Main Content
+              Expanded(
+                child: filteredHabits.isEmpty
+                    ? Center(
+                        child: Text(
+                          "Tidak ada habit di kategori ini.",
+                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                        ),
+                      )
+                    : Builder(builder: (context) {
+                        final selectedHabit = filteredHabits.firstWhere((h) => h.id == currentId);
+                        final habitColor = ColorExtension.fromHex(selectedHabit.colorHex);
+                        final habitBgColor = getLighterColor(habitColor, 0.15);
+                        
+                        return RefreshIndicator(
+                          onRefresh: () async {
+                            ref.invalidate(statisticsDataProvider);
+                          },
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Dropdown Selector
+                                InkWell(
+                                  onTap: () {
+                                    _showHabitSelector(context, filteredHabits, currentId!, ref);
+                                  },
                     borderRadius: BorderRadius.circular(16),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -183,9 +260,13 @@ class StatisticsScreen extends ConsumerWidget {
                       );
                     },
                   ),
-                ],
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
               ),
-            ),
+            ],
           );
         },
       ),
@@ -202,7 +283,10 @@ class StatisticsScreen extends ConsumerWidget {
             color: AppColors.background,
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 24),
+          padding: EdgeInsets.only(
+            top: 24,
+            bottom: MediaQuery.of(context).padding.bottom + 24,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,

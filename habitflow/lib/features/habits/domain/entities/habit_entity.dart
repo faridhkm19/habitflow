@@ -9,6 +9,8 @@ class HabitEntity extends Equatable {
   final String category;
   final String frequencyType;
   final Map<String, dynamic> frequencyValue;
+  final String? reminderTime;
+  final String? reminderMessage;
   final bool isArchived;
   final int longestStreak;
   final DateTime createdAt;
@@ -23,6 +25,8 @@ class HabitEntity extends Equatable {
     required this.category,
     required this.frequencyType,
     this.frequencyValue = const {},
+    this.reminderTime,
+    this.reminderMessage,
     this.isArchived = false,
     this.longestStreak = 0,
     required this.createdAt,
@@ -39,6 +43,8 @@ class HabitEntity extends Equatable {
         category,
         frequencyType,
         frequencyValue,
+        reminderTime,
+        reminderMessage,
         isArchived,
         longestStreak,
         createdAt,

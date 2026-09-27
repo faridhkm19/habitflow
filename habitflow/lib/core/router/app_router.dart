@@ -9,13 +9,13 @@ import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/onboarding/presentation/screens/guided_setup_screen.dart';
 import '../../features/logging/presentation/screens/home_screen.dart';
-import '../../features/habits/presentation/providers/habit_provider.dart';
 import '../../features/habits/presentation/screens/habits_list_screen.dart';
 import '../../features/habits/presentation/screens/add_habit_screen.dart';
 import '../../features/habits/presentation/screens/edit_habit_screen.dart';
 import '../../features/habits/presentation/screens/habit_detail_screen.dart';
 import '../../features/habits/domain/entities/habit_entity.dart';
 import '../../features/statistics/presentation/screens/statistics_screen.dart';
+import '../../features/profile/presentation/providers/profile_provider.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../shared/layout/adaptive_scaffold.dart';
 
@@ -63,22 +63,24 @@ GoRouter createAppRouter(Ref ref) {
       }
 
       // --- Sudah Login ---
-      
-      // Ambil status apakah user punya habit (untuk route guard onboarding)
-      final hasHabitsAsync = ref.read(userHasHabitsProvider);
-      
-      // Data habit masih ditarik → tampilkan splash (buffer)
-      if (hasHabitsAsync.isLoading) return AppRoutes.splash;
 
-      final hasHabits = hasHabitsAsync.value ?? false;
+      // Baca flag is_onboarded dari tabel profiles.
+      // Ini menggantikan logika lama yang mengecek jumlah habit (userHasHabitsProvider),
+      // yang rawan bug jika user lama menghapus semua habitnya.
+      final isOnboardedAsync = ref.read(isOnboardedProvider);
 
-      // 1. User belum punya habit, tapi mencoba masuk selain ke halaman onboarding
-      if (!hasHabits && location != AppRoutes.guidedSetup) {
+      // Data profil masih ditarik → tampilkan splash (buffer)
+      if (isOnboardedAsync.isLoading) return AppRoutes.splash;
+
+      final isOnboarded = isOnboardedAsync.value ?? false;
+
+      // 1. User belum onboarding (baru sign up) → paksa ke guided setup
+      if (!isOnboarded && location != AppRoutes.guidedSetup) {
         return AppRoutes.guidedSetup;
       }
 
-      // 2. User sudah punya habit, tapi malah buka public route atau onboarding lagi
-      if (hasHabits && (isPublicRoute || location == AppRoutes.guidedSetup || location == AppRoutes.splash)) {
+      // 2. User sudah onboarding → jangan biarkan kembali ke halaman auth/onboarding
+      if (isOnboarded && (isPublicRoute || location == AppRoutes.guidedSetup || location == AppRoutes.splash)) {
         return AppRoutes.home;
       }
 
@@ -105,13 +107,15 @@ GoRouter createAppRouter(Ref ref) {
                   final habit = state.extra as HabitEntity;
                   return HabitDetailScreen(habit: habit);
                 },
-              ),
-              GoRoute(
-                path: ':id/edit',
-                builder: (context, state) {
-                  final habit = state.extra as HabitEntity;
-                  return EditHabitScreen(habit: habit);
-                },
+                routes: [
+                  GoRoute(
+                    path: 'edit',
+                    builder: (context, state) {
+                      final habit = state.extra as HabitEntity;
+                      return EditHabitScreen(habit: habit);
+                    },
+                  ),
+                ],
               ),
             ],
           ),
@@ -129,10 +133,10 @@ GoRouter createAppRouter(Ref ref) {
   );
 }
 
-// ChangeNotifier yang mendengarkan authStateProvider & userHasHabitsProvider
+// ChangeNotifier yang mendengarkan authStateProvider & isOnboardedProvider
 class _RouterNotifier extends ChangeNotifier {
   _RouterNotifier(Ref ref) {
     ref.listen(authStateProvider, (prev, next) => notifyListeners());
-    ref.listen(userHasHabitsProvider, (prev, next) => notifyListeners());
+    ref.listen(isOnboardedProvider, (prev, next) => notifyListeners());
   }
 }

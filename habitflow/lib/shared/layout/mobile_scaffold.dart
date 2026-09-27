@@ -42,6 +42,7 @@ class MobileScaffold extends StatelessWidget {
     final currentIndex = _calculateSelectedIndex(context);
 
     return Scaffold(
+      extendBody: true,
       backgroundColor: AppColors.background,
       body: child,
       bottomNavigationBar: SafeArea(

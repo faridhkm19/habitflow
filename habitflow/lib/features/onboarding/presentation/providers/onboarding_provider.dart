@@ -4,6 +4,7 @@ import '../../../../core/errors/failures.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../habits/domain/entities/habit_entity.dart';
 import '../../../habits/presentation/providers/habit_provider.dart';
+import '../../../profile/presentation/providers/profile_provider.dart';
 import '../../domain/habit_templates.dart';
 
 class OnboardingState {
@@ -115,8 +116,9 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
 
       if (result.isOk) {
         state = state.copyWith(isLoading: false);
-        // Refresh cache keberadaan habit agar route guard tahu user sudah onboarding
-        _ref.invalidate(userHasHabitsProvider);
+        // Tandai user sebagai sudah onboarding agar route guard tidak
+        // pernah mengarahkan ke guided setup lagi di masa mendatang.
+        await markUserAsOnboarded(_ref);
         return true;
       } else {
         state = state.copyWith(

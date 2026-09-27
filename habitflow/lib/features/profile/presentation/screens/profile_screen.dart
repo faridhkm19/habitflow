@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../providers/notification_provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -32,15 +34,25 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            Text(
-              'Profil Pengguna',
-              style: AppTextStyles.h2,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Coming soon — Tahap 5.3',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: SwitchListTile(
+                title: Text('Notifikasi Pengingat', style: AppTextStyles.bodyLarge),
+                subtitle: Text('Master on/off untuk semua notifikasi', style: AppTextStyles.bodySmall),
+                value: ref.watch(notificationProvider),
+                onChanged: (val) {
+                  ref.read(notificationProvider.notifier).toggle(val);
+                },
+                activeThumbColor: AppColors.textOnPrimary,
+                activeTrackColor: AppColors.primary,
+                inactiveThumbColor: AppColors.textSecondary,
+                inactiveTrackColor: AppColors.background,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
             ),
           ],

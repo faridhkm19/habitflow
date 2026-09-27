@@ -48,6 +48,9 @@ dependencies:
   # Value equality for domain entities
   equatable: ^2.0.7
   flutter_dotenv: ^6.0.1
+  shared_preferences: ^2.5.5
+  timezone: ^0.10.1
+  flutter_timezone: ^5.1.0
 
 dev_dependencies:
   flutter_test:

@@ -23,14 +23,40 @@ IconData getHabitIcon(String iconName) {
     case 'favorite': return Icons.favorite;
     case 'do_not_disturb': return Icons.do_not_disturb;
     case 'air': return Icons.air;
+    // Olahraga & Kebugaran
+    case 'directions_run': return Icons.directions_run;
+    case 'accessibility_new': return Icons.accessibility_new;
+    case 'pool': return Icons.pool;
+    case 'sports_gymnastics': return Icons.sports_gymnastics;
+    // Pengembangan Diri
+    case 'headphones': return Icons.headphones;
+    case 'lightbulb': return Icons.lightbulb;
+    case 'people': return Icons.people;
+    case 'track_changes': return Icons.track_changes;
+    case 'trending_up': return Icons.trending_up;
+    // Istirahat & Relaksasi
+    case 'nature_people': return Icons.nature_people;
+    case 'phonelink_off': return Icons.phonelink_off;
+    case 'auto_stories': return Icons.auto_stories;
+    case 'weekend': return Icons.weekend;
     default: return Icons.check_circle_outline;
   }
 }
 
 /// A preset list of all available icons for the color & icon picker
 final List<String> presetHabitIcons = [
+  // Rutinitas & Kesehatan
   'alarm_on', 'fitness_center', 'restaurant', 'edit_note',
   'local_drink', 'bedtime', 'directions_walk', 'no_food',
-  'menu_book', 'notes', 'no_cell', 'app_blocking', 'quiz',
-  'self_improvement', 'favorite', 'do_not_disturb', 'air'
+  // Belajar & Produktivitas
+  'menu_book', 'notes', 'app_blocking', 'quiz',
+  'no_cell', 'lightbulb', 'track_changes', 'trending_up',
+  // Mindfulness
+  'self_improvement', 'favorite', 'do_not_disturb', 'air',
+  // Olahraga
+  'directions_run', 'accessibility_new', 'pool', 'sports_gymnastics',
+  // Pengembangan Diri & Sosial
+  'headphones', 'people',
+  // Istirahat & Relaksasi
+  'nature_people', 'phonelink_off', 'auto_stories', 'weekend',
 ];

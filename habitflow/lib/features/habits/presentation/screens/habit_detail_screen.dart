@@ -9,9 +9,12 @@ import '../../../../core/utils/icon_utils.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../statistics/presentation/widgets/calendar_section.dart';
 import '../../domain/entities/habit_entity.dart';
 import '../providers/habit_provider.dart';
 import '../../../statistics/presentation/providers/streak_provider.dart';
+import '../../../logging/presentation/providers/recent_habit_logs_provider.dart';
+import '../widgets/recent_logs_section.dart';
 
 class HabitDetailScreen extends ConsumerStatefulWidget {
   final HabitEntity habit;
@@ -42,9 +45,13 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
     );
     if (!confirm) return;
 
-    final success = await ref.read(habitsProvider.notifier).archiveHabit(widget.habit.id);
-    if (success && mounted) {
+    final errorMessage = await ref.read(habitsProvider.notifier).archiveHabit(widget.habit.id);
+    if (errorMessage == null && mounted) {
       context.pop();
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage ?? 'Gagal mengarsipkan habit.')),
+      );
     }
   }
 
@@ -56,9 +63,13 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
     );
     if (!confirm) return;
 
-    final success = await ref.read(habitsProvider.notifier).deleteHabit(widget.habit.id);
-    if (success && mounted) {
+    final errorMessage = await ref.read(habitsProvider.notifier).deleteHabit(widget.habit.id);
+    if (errorMessage == null && mounted) {
       context.pop();
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage ?? 'Gagal menghapus habit secara permanen.')),
+      );
     }
   }
 
@@ -93,6 +104,7 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
     final habitColor = ColorExtension.fromHex(widget.habit.colorHex);
     final streakAsync = ref.watch(currentStreakProvider(widget.habit.id));
     final consistencyAsync = ref.watch(consistencyScoreProvider(widget.habit.id));
+    final recentLogsAsync = ref.watch(recentHabitLogsProvider(widget.habit.id));
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -114,7 +126,7 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 100),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -208,7 +220,28 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                 ),
               ],
             ),
+            const SizedBox(height: 24),
+
+            // Kalender Bulanan terintegrasi
+            CalendarSection(habit: widget.habit),
             const SizedBox(height: 32),
+            
+            recentLogsAsync.when(
+              data: (logs) {
+                if (logs.isEmpty) return const SizedBox.shrink();
+                return Column(
+                  children: [
+                    RecentLogsSection(logs: logs),
+                    const SizedBox(height: 32),
+                  ],
+                );
+              },
+              loading: () => const Padding(
+                padding: EdgeInsets.only(bottom: 32),
+                child: Center(child: CircularProgressIndicator(color: AppColors.primary)),
+              ),
+              error: (e, st) => const SizedBox.shrink(),
+            ),
             
             // Actions
             AppButton(

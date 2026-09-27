@@ -43,6 +43,7 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
       orElse: () => false,
     );
 
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -149,7 +150,7 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
                   builder: (context, constraints) {
                     if (constraints.maxWidth >= 600) {
                       return GridView.builder(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           crossAxisSpacing: 16,
@@ -170,7 +171,7 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
                       );
                     }
                     return ListView.separated(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
                       itemCount: filteredHabits.length,
                       separatorBuilder: (context, index) => const SizedBox(height: 12),
                       itemBuilder: (context, index) {
@@ -196,12 +197,15 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
         ],
       ),
       floatingActionButton: showFab
-          ? FloatingActionButton(
-              onPressed: () {
-                context.push(AppRoutes.addHabit);
-              },
-              backgroundColor: AppColors.primary,
-              child: const Icon(Icons.add, color: AppColors.textOnPrimary),
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 60.0),
+              child: FloatingActionButton(
+                onPressed: () {
+                  context.push(AppRoutes.addHabit);
+                },
+                backgroundColor: AppColors.primary,
+                child: const Icon(Icons.add, color: AppColors.textOnPrimary),
+              ),
             )
           : null,
     );

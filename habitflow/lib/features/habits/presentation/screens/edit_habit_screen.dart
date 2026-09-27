@@ -14,7 +14,7 @@ import '../widgets/icon_color_picker.dart';
 
 class EditHabitScreen extends ConsumerStatefulWidget {
   final HabitEntity habit;
-  
+
   const EditHabitScreen({super.key, required this.habit});
 
   @override
@@ -28,7 +28,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
   late String _selectedIcon;
   late Color _selectedColor;
   late String _selectedCategory;
-  
+
   late String _frequencyType;
   late List<String> _selectedDays;
   late int _timesPerWeek;
@@ -48,14 +48,15 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.habit.name);
+
     _selectedIcon = widget.habit.iconName;
     _selectedColor = ColorExtension.fromHex(widget.habit.colorHex);
     _selectedCategory = widget.habit.category;
-    
+
     _frequencyType = widget.habit.frequencyType;
     _selectedDays = [];
     _timesPerWeek = 3;
-    
+
     if (_frequencyType == 'specific_days' && widget.habit.frequencyValue['days'] != null) {
       _selectedDays = List<String>.from(widget.habit.frequencyValue['days']);
     } else if (_frequencyType == 'x_per_week' && widget.habit.frequencyValue['times'] != null) {
@@ -71,7 +72,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
 
   void _updateHabit() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     if (_frequencyType == 'specific_days' && _selectedDays.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Pilih setidaknya satu hari.')),
@@ -88,8 +89,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
       freqValue = {'times': _timesPerWeek};
     }
 
-    // Call provider
-    final success = await ref.read(habitsProvider.notifier).updateHabit(
+    final errorMessage = await ref.read(habitsProvider.notifier).updateHabit(
       id: widget.habit.id,
       name: _nameController.text.trim(),
       iconName: _selectedIcon,
@@ -101,11 +101,11 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
 
     setState(() => _isLoading = false);
 
-    if (success && mounted) {
+    if (errorMessage == null && mounted) {
       context.pop();
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Gagal menyimpan habit.')),
+        SnackBar(content: Text(errorMessage ?? 'Gagal menyimpan habit.')),
       );
     }
   }
@@ -124,7 +124,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Form(
           key: _formKey,
           child: Column(
@@ -136,7 +136,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
                 validator: (val) => val == null || val.trim().isEmpty ? 'Nama wajib diisi' : null,
               ),
               const SizedBox(height: 24),
-              
+
               Text('Kategori', style: AppTextStyles.h3),
               const SizedBox(height: 12),
               Wrap(
@@ -156,7 +156,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
                 }).toList(),
               ),
               const SizedBox(height: 24),
-              
+
               const Divider(color: AppColors.border),
               const SizedBox(height: 24),
 
@@ -166,7 +166,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
                 onIconChanged: (icon) => setState(() => _selectedIcon = icon),
                 onColorChanged: (color) => setState(() => _selectedColor = color),
               ),
-              
+
               const SizedBox(height: 24),
               const Divider(color: AppColors.border),
               const SizedBox(height: 24),
@@ -181,8 +181,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
                 timesPerWeek: _timesPerWeek,
                 onTimesPerWeekChanged: (times) => setState(() => _timesPerWeek = times),
               ),
-
-              const SizedBox(height: 48),
+              const SizedBox(height: 24),
               AppButton(
                 label: 'Simpan Perubahan',
                 isLoading: _isLoading,
