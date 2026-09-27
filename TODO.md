@@ -102,22 +102,24 @@ Referensi utama yang wajib dibaca sebelum mengerjakan task apapun di bawah ini t
 ## Bagian 4 — Fitur Pelengkap (Enhancement)
 
 ### 4.1 Kategori dan Filter
-- [ ] Tambahkan filter kategori di halaman Habits List
-- [ ] Tambahkan filter kategori di halaman Statistics
+- [✔] Tambahkan filter kategori di halaman Habits List
+- [✔] Tambahkan filter kategori di halaman Statistics
 
 ### 4.2 Smart Reminder
 - [ ] Implementasikan reminder lokal per habit menggunakan flutter_local_notifications
 - [ ] Implementasikan notifikasi pengingat kembali setelah pengguna lama tidak membuka aplikasi
 
+> **Catatan:** Fitur ini ditunda ke tahap akhir pengembangan. Seluruh logika dan UI terkait notifikasi telah dibersihkan dari codebase untuk menghindari tumpukan kode percobaan. Akan diimplementasikan ulang secara bersih setelah seluruh fitur inti dan penyempurnaan selesai.
+
 ### 4.3 Mood Tracking
-- [ ] Tampilkan riwayat mood pada halaman Habit Detail
-- [ ] Buat visualisasi sederhana korelasi mood dengan completion rate
+- [✔] Tampilkan riwayat mood pada halaman Habit Detail
 
 ### 4.4 Calendar View
-- [ ] Buat halaman kalender bulanan dengan penanda warna berdasarkan status penyelesaian
+- [✔] Buat section baru di halaman Detail Habit: kalender bulanan dengan penanda warna berdasarkan status penyelesaian
 
 ### 4.5 Habit Templates
-- [ ] Perluas jumlah template yang tersedia di alur onboarding maupun saat menambah habit baru
+- [✔] Perbaiki logika onboarding: tambahkan kolom `is_onboarded` ke tabel `profiles`, route guard kini membaca flag ini (bukan jumlah habit) sehingga user lama tidak pernah diarahkan ke onboarding lagi
+- [✔] Perluas jumlah template yang tersedia: tambahkan 3 template baru (Olahraga & Kebugaran, Pengembangan Diri, Istirahat & Relaksasi) dengan variasi frekuensi daily / x_per_week / specific_days
 
 ---
 
