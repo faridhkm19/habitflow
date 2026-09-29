@@ -138,6 +138,7 @@ Referensi utama yang wajib dibaca sebelum mengerjakan task apapun di bawah ini t
 - [✔] Buat halaman Profile dengan ringkasan statistik pengguna
 - [✔] Buat beberapa pengaturan di halaman Profile, seperti Keamanan Akun, Tampilan, Notifikasi, Catatan Check-in, Riwayat Pencapaian
 - [✔] Implementasikan unggah foto profil ke Supabase Storage
+- [✔] Implementasikan fitur ubah email dan ubah password dengan verifikasi sesi aktif
 
 ### 5.4 Habit Journal
 - [✔] Buat halaman yang menampilkan seluruh catatan check-in secara terpusat
