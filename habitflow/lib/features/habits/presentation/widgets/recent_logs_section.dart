@@ -59,7 +59,7 @@ class RecentLogsSection extends StatelessWidget {
                           child: Text(
                             DateFormat('dd MMM').format(log.logDate),
                             style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.textPrimary,
+                              color: Theme.of(context).colorScheme.onSurface,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -92,7 +92,7 @@ class RecentLogsSection extends StatelessWidget {
                           child: Text(
                             log.note ?? '-',
                             style: AppTextStyles.bodyMedium.copyWith(
-                              color: log.note != null ? AppColors.textPrimary : AppColors.textSecondary,
+                              color: log.note != null ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

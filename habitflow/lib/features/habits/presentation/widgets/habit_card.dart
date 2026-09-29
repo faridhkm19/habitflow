@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/icon_utils.dart';
@@ -51,7 +50,7 @@ class HabitCard extends ConsumerWidget {
               children: [
                 Text(
                   habit.name,
-                  style: AppTextStyles.h3,
+                  style: AppTextStyles.h3.copyWith(color: Theme.of(context).colorScheme.onSurface),
                 ),
                 const SizedBox(height: 4),
                 Row(
@@ -59,13 +58,13 @@ class HabitCard extends ConsumerWidget {
                     Icon(
                       Icons.local_fire_department_rounded,
                       size: 16,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       '$currentStreak Hari Streak',
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.primary,
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -79,14 +78,14 @@ class HabitCard extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.surface,
-                border: Border.all(color: AppColors.border),
+                color: Theme.of(context).colorScheme.surface,
+                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
                 _getCategoryDisplayName(habit.category),
                 style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w500,
                 ),
               ),

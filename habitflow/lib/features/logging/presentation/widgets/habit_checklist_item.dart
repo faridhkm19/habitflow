@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/icon_utils.dart';
@@ -62,7 +61,7 @@ class _HabitChecklistItemState extends State<HabitChecklistItem>
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
@@ -101,7 +100,7 @@ class _HabitChecklistItemState extends State<HabitChecklistItem>
                   Text(
                     widget.habit.name,
                     style: AppTextStyles.h3.copyWith(
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   if (widget.streak > 0) ...[
@@ -109,12 +108,12 @@ class _HabitChecklistItemState extends State<HabitChecklistItem>
                     Row(
                       children: [
                         Icon(Icons.local_fire_department_rounded,
-                            size: 13, color: isCompleted ? AppColors.primary : AppColors.textSecondary),
+                            size: 13, color: isCompleted ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant),
                         const SizedBox(width: 3),
                         Text(
                           '${widget.streak} hari',
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: isCompleted ? AppColors.primary : AppColors.textSecondary,
+                            color: isCompleted ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.w500,
                           ),
                         ),

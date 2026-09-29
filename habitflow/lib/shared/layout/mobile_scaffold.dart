@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 
 class MobileScaffold extends StatelessWidget {
@@ -43,17 +42,19 @@ class MobileScaffold extends StatelessWidget {
 
     return Scaffold(
       extendBody: true,
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: child,
       bottomNavigationBar: SafeArea(
         child: Container(
           margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(100),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withAlpha(15),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black.withAlpha(80)
+                    : Colors.black.withAlpha(15),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -120,7 +121,7 @@ class MobileScaffold extends StatelessWidget {
           vertical: 8,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryLight : Colors.transparent,
+          color: isSelected ? Theme.of(context).colorScheme.primaryContainer : Colors.transparent,
           borderRadius: BorderRadius.circular(100),
         ),
         child: Row(
@@ -128,7 +129,7 @@ class MobileScaffold extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: isSelected ? AppColors.primary : AppColors.textSecondary,
+              color: isSelected ? Theme.of(context).colorScheme.onPrimaryContainer : Theme.of(context).colorScheme.onSurfaceVariant,
               size: 24,
             ),
             // Gunakan AnimatedSize atau manual control untuk menyembunyikan label saat tidak aktif jika mau
@@ -138,7 +139,7 @@ class MobileScaffold extends StatelessWidget {
               Text(
                 label,
                 style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                   fontWeight: FontWeight.w600,
                 ),
               ),

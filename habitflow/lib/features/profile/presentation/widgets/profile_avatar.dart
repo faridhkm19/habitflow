@@ -80,10 +80,10 @@ class ProfileAvatar extends StatelessWidget {
                 ),
                 child: const Center(
                   child: SizedBox(
-                    width: 28,
-                    height: 28,
+                    width: 16,
+                    height: 16,
                     child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
+                      strokeWidth: 2,
                       color: Colors.white,
                     ),
                   ),

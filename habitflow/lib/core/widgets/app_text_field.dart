@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/app_colors.dart';
 import '../constants/app_radius.dart';
 import '../constants/app_text_styles.dart';
 
@@ -100,7 +99,7 @@ class _AppTextFieldState extends State<AppTextField> {
       maxLength: widget.maxLength,
       autofocus: widget.autofocus,
       initialValue: widget.initialValue,
-      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+      style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurface),
       decoration: InputDecoration(
         labelText: widget.label,
         hintText: widget.hint,
@@ -109,7 +108,7 @@ class _AppTextFieldState extends State<AppTextField> {
             ? Icon(
                 widget.prefixIcon,
                 size: 20,
-                color: AppColors.textSecondary,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               )
             : null,
 
@@ -119,7 +118,7 @@ class _AppTextFieldState extends State<AppTextField> {
                 icon: Icon(
                   _isObscured ? Icons.visibility_off_rounded : Icons.visibility_rounded,
                   size: 20,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 onPressed: () => setState(() => _isObscured = !_isObscured),
               )
@@ -127,49 +126,49 @@ class _AppTextFieldState extends State<AppTextField> {
 
         // Counter styling for fields with maxLength
         counterStyle:
-            AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+            AppTextStyles.bodySmall.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
 
         // All border and fill specs come from AppTheme.light inputDecorationTheme
         // but we set them here too for standalone usage outside MaterialApp
         filled: true,
-        fillColor: widget.enabled ? AppColors.surface : AppColors.background,
+        fillColor: widget.enabled ? Theme.of(context).colorScheme.surface : Theme.of(context).scaffoldBackgroundColor,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
 
         border: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide: const BorderSide(color: AppColors.border, width: 1),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant, width: 1),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide: const BorderSide(color: AppColors.border, width: 1),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide: const BorderSide(color: AppColors.error, width: 1),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.error, width: 1),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.error, width: 1.5),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: AppRadius.sm,
           borderSide:
-              BorderSide(color: AppColors.border.withValues(alpha: 0.5), width: 1),
+              BorderSide(color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5), width: 1),
         ),
 
         labelStyle:
-            AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+            AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         floatingLabelStyle:
-            AppTextStyles.bodySmall.copyWith(color: AppColors.primary),
+            AppTextStyles.bodySmall.copyWith(color: Theme.of(context).colorScheme.primary),
         hintStyle:
-            AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
-        errorStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
+            AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+        errorStyle: AppTextStyles.bodySmall.copyWith(color: Theme.of(context).colorScheme.error),
       ),
     );
   }

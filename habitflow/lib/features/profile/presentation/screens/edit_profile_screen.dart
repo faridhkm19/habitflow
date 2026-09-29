@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/widgets/app_button.dart';
 import '../providers/profile_provider.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -69,15 +70,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               enabled: !isLoading,
             ),
             const SizedBox(height: 32),
-            ElevatedButton(
+            // Kategori 2: tombol Simpan dengan loading inline (AppButton dengan isLoading)
+            AppButton(
+              label: 'Simpan',
               onPressed: isLoading ? null : _save,
-              child: isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                    )
-                  : const Text('Simpan'),
+              isLoading: isLoading,
             ),
           ],
         ),

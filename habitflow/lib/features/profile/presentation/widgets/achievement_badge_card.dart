@@ -13,18 +13,22 @@ class AchievementBadgeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     // Styling untuk state locked vs unlocked
     final Color bgColor = achievement.isUnlocked
-        ? achievement.backgroundColor
-        : AppColors.neutralMissed.withValues(alpha: 0.2);
+        ? (isDark ? achievement.color.withValues(alpha: 0.15) : achievement.backgroundColor)
+        : (isDark ? Colors.white10 : AppColors.neutralMissed.withValues(alpha: 0.2));
 
     final Color iconColor = achievement.isUnlocked
         ? achievement.color
         : AppColors.textSecondary.withValues(alpha: 0.5);
 
     final Color textColor = achievement.isUnlocked
-        ? AppColors.textPrimary
-        : AppColors.textSecondary;
+        ? (isDark ? Colors.white : AppColors.textPrimary)
+        : (isDark ? Colors.white54 : AppColors.textSecondary);
+
+    final Color descColor = isDark ? Colors.white70 : AppColors.textSecondary;
 
     final IconData displayIcon = achievement.isUnlocked
         ? achievement.icon
@@ -32,18 +36,19 @@ class AchievementBadgeCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.border,
+          color: Theme.of(context).colorScheme.outlineVariant,
           width: 1,
         ),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
+          if (!isDark)
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.03),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
         ],
       ),
       padding: const EdgeInsets.all(12),
@@ -82,7 +87,7 @@ class AchievementBadgeCard extends StatelessWidget {
             achievement.description,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: descColor,
                   fontSize: 11,
                 ),
             maxLines: 2,

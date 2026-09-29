@@ -58,7 +58,7 @@ class WeeklyRadialChart extends StatelessWidget {
                 CircularProgressIndicator(
                   value: percentage,
                   strokeWidth: 12,
-                  backgroundColor: AppColors.border.withValues(alpha: 0.4),
+                  backgroundColor: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.4),
                   valueColor: AlwaysStoppedAnimation<Color>(activeColor),
                   strokeCap: StrokeCap.round,
                 ),
@@ -88,6 +88,7 @@ class WeeklyRadialChart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildStatRow(
+                  context,
                   Icons.check_circle_rounded,
                   activeColor,
                   'Selesai',
@@ -95,13 +96,15 @@ class WeeklyRadialChart extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 _buildStatRow(
+                  context,
                   Icons.cancel_rounded,
-                  AppColors.textSecondary.withValues(alpha: 0.5),
+                  Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
                   'Tidak Selesai',
                   '$missedDays Hari',
                 ),
                 const SizedBox(height: 16),
                 _buildStatRow(
+                  context,
                   Icons.local_fire_department_rounded,
                   AppColors.warning,
                   'Streak',
@@ -116,6 +119,7 @@ class WeeklyRadialChart extends StatelessWidget {
   }
 
   Widget _buildStatRow(
+    BuildContext context,
     IconData icon,
     Color iconColor,
     String label,
@@ -136,7 +140,7 @@ class WeeklyRadialChart extends StatelessWidget {
           child: Text(
             label,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -145,7 +149,7 @@ class WeeklyRadialChart extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           value,
-          style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+          style: AppTextStyles.h3.copyWith(color: Theme.of(context).colorScheme.onSurface),
         ),
       ],
     );

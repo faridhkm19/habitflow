@@ -7,6 +7,7 @@ class PreferencesService {
   late SharedPreferences _prefs;
 
   static const String _keyNotificationsEnabled = 'notifications_enabled';
+  static const String _keyThemePreference = 'theme_preference';
 
   Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
@@ -16,5 +17,11 @@ class PreferencesService {
 
   Future<void> setNotificationsEnabled(bool value) async {
     await _prefs.setBool(_keyNotificationsEnabled, value);
+  }
+
+  String get themePreference => _prefs.getString(_keyThemePreference) ?? 'system';
+
+  Future<void> setThemePreference(String value) async {
+    await _prefs.setString(_keyThemePreference, value);
   }
 }

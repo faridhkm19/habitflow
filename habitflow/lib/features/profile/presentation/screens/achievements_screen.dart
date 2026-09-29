@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/widgets/loading_indicator.dart';
+import '../../../../core/widgets/skeleton_loader.dart';
 import '../providers/achievement_provider.dart';
 import '../widgets/achievement_badge_card.dart';
 
@@ -14,23 +14,24 @@ class AchievementsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final achievementsAsync = ref.watch(achievementsProvider);
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Riwayat Pencapaian'),
-        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
           onPressed: () => context.pop(),
         ),
       ),
       body: achievementsAsync.when(
-        loading: () => const Center(child: LoadingIndicator()),
+        // Kategori 1: skeleton grid badge (lingkaran + 2 baris teks)
+        loading: () => const AchievementsSkeleton(),
         error: (error, stackTrace) => Center(
           child: Text(
             'Gagal memuat pencapaian',
-            style: TextStyle(color: AppColors.error),
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
         ),
         data: (achievements) {
@@ -51,9 +52,9 @@ class AchievementsScreen extends ConsumerWidget {
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.border),
+                      border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +65,7 @@ class AchievementsScreen extends ConsumerWidget {
                             Text(
                               'Pencapaian Terbuka',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.textSecondary,
+                                    color: isDark ? Colors.white70 : AppColors.textSecondary,
                                     fontWeight: FontWeight.w500,
                                   ),
                             ),
@@ -83,7 +84,7 @@ class AchievementsScreen extends ConsumerWidget {
                           child: LinearProgressIndicator(
                             value: progressRatio,
                             minHeight: 8,
-                            backgroundColor: AppColors.primaryLight,
+                            backgroundColor: isDark ? AppColors.primary.withValues(alpha: 0.15) : AppColors.primaryLight,
                             valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
                           ),
                         ),
@@ -114,7 +115,7 @@ class AchievementsScreen extends ConsumerWidget {
               ),
               
               const SliverToBoxAdapter(
-                child: SizedBox(height: 40),
+                child: SizedBox(height: 100),
               ),
             ],
           );

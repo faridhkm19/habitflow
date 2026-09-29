@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/widgets/loading_indicator.dart';
 
 // Splash screen — ditampilkan saat app pertama dibuka sambil menunggu cek auth state
 class SplashScreen extends StatelessWidget {
@@ -34,10 +35,8 @@ class SplashScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.xl),
-            const CircularProgressIndicator(
-              color: AppColors.primary,
-              strokeWidth: 2.5,
-            ),
+            // Branded spinner — Kategori 3: color.primary, 40px, strokeWidth 3px
+            const LoadingIndicator(),
           ],
         ),
       ),

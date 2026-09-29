@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/widgets/skeleton_loader.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/profile_provider.dart';
 import '../providers/theme_provider.dart';
@@ -220,7 +221,6 @@ class ProfileScreen extends ConsumerWidget {
     
     // Toggles state
     final themeMode = ref.watch(themeProvider);
-    final isDarkMode = themeMode == ThemeMode.dark;
     final isNotifEnabled = ref.watch(notificationProvider);
 
     return Scaffold(
@@ -232,6 +232,7 @@ class ProfileScreen extends ConsumerWidget {
         title: Text('Profil', style: AppTextStyles.h1),
       ),
       body: profileAsync.when(
+        skipLoadingOnReload: true,
         data: (profile) {
           if (profile == null || user == null) {
             return const Center(child: Text('Data tidak ditemukan'));
@@ -374,14 +375,9 @@ class ProfileScreen extends ConsumerWidget {
                     const SizedBox(height: 8),
                     _MenuCard(
                       children: [
-                        _ToggleRow(
-                          icon: Icons.dark_mode_rounded,
-                          iconBg: const Color(0xFF2B2B2B).withValues(alpha: 0.08),
-                          iconColor: AppColors.textPrimary,
-                          title: 'Tampilan',
-                          subtitle: isDarkMode ? 'Mode gelap aktif' : 'Mode terang aktif',
-                          value: isDarkMode,
-                          onChanged: (val) => ref.read(themeProvider.notifier).toggleTheme(val),
+                        _ThemeDropdownRow(
+                          currentMode: themeMode,
+                          onChanged: (val) => ref.read(themeProvider.notifier).setTheme(val),
                         ),
                         const _RowDivider(),
                         _ToggleRow(
@@ -472,7 +468,8 @@ class ProfileScreen extends ConsumerWidget {
             ],
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        // Kategori 1: skeleton header avatar + teks + baris menu
+        loading: () => const ProfileSkeleton(),
         error: (err, stack) => Center(child: Text('Terjadi kesalahan: $err')),
       ),
     );
@@ -540,6 +537,11 @@ class _MenuTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final effectiveIconBg = isDark
+        ? iconColor.withValues(alpha: 0.15)
+        : iconBg;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -553,7 +555,7 @@ class _MenuTile extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: iconBg,
+                  color: effectiveIconBg,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(icon, color: iconColor, size: 18),
@@ -584,7 +586,7 @@ class _RowDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 66),
-      child: Divider(height: 1, color: AppColors.border),
+      child: const Divider(height: 1),
     );
   }
 }
@@ -631,6 +633,11 @@ class _ToggleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final effectiveIconBg = isDark
+        ? iconColor.withValues(alpha: 0.15)
+        : iconBg;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
@@ -639,7 +646,7 @@ class _ToggleRow extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: iconBg,
+              color: effectiveIconBg,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: iconColor, size: 18),
@@ -666,6 +673,112 @@ class _ToggleRow extends StatelessWidget {
             ),
           ),
           HabitFlowToggle(value: value, onChanged: onChanged),
+        ],
+      ),
+    );
+  }
+}
+
+class _ThemeDropdownRow extends StatelessWidget {
+  final ThemeMode currentMode;
+  final ValueChanged<String> onChanged;
+
+  const _ThemeDropdownRow({
+    required this.currentMode,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = AppColors.textPrimary;
+    final effectiveIconBg = isDark
+        ? iconColor.withValues(alpha: 0.15)
+        : const Color(0xFF2B2B2B).withValues(alpha: 0.08);
+
+    IconData getIcon() {
+      if (currentMode == ThemeMode.dark) return Icons.dark_mode_rounded;
+      if (currentMode == ThemeMode.light) return Icons.light_mode_rounded;
+      return Icons.brightness_auto_rounded;
+    }
+
+    String getSubtitle() {
+      if (currentMode == ThemeMode.dark) return 'Mode gelap aktif';
+      if (currentMode == ThemeMode.light) return 'Mode terang aktif';
+      return 'Mengikuti sistem';
+    }
+
+    String getValue() {
+      if (currentMode == ThemeMode.dark) return 'dark';
+      if (currentMode == ThemeMode.light) return 'light';
+      return 'system';
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      child: Row(
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: effectiveIconBg,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(getIcon(), color: iconColor, size: 18),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Tampilan',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  getSubtitle(),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          DropdownButton<String>(
+            value: getValue(),
+            icon: const Icon(Icons.arrow_drop_down_rounded),
+            elevation: 16,
+            borderRadius: BorderRadius.circular(12),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w600,
+                ),
+            underline: const SizedBox(),
+            alignment: Alignment.centerRight,
+            onChanged: (String? newValue) {
+              if (newValue != null) {
+                onChanged(newValue);
+              }
+            },
+            items: const [
+              DropdownMenuItem(
+                value: 'light',
+                child: Text('Terang'),
+              ),
+              DropdownMenuItem(
+                value: 'dark',
+                child: Text('Gelap'),
+              ),
+              DropdownMenuItem(
+                value: 'system',
+                child: Text('Default'),
+              ),
+            ],
+          ),
         ],
       ),
     );

@@ -24,6 +24,8 @@ class HabitFlowApp extends ConsumerWidget {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
+      themeAnimationDuration: const Duration(milliseconds: 200),
+      themeAnimationCurve: Curves.easeInOut,
       routerConfig: ref.watch(routerProvider),
     );
   }

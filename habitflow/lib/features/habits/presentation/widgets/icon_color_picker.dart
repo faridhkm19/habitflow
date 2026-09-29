@@ -57,7 +57,7 @@ class IconColorPicker extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: color,
                     shape: BoxShape.circle,
-                    border: isSelected ? Border.all(color: AppColors.primary, width: 3) : null,
+                    border: isSelected ? Border.all(color: Theme.of(context).colorScheme.primary, width: 3) : null,
                   ),
                 ),
               );
@@ -87,13 +87,13 @@ class IconColorPicker extends StatelessWidget {
               onTap: () => onIconChanged(iconName),
               child: Container(
                 decoration: BoxDecoration(
-                  color: isSelected ? getLighterColor(selectedColor, 0.15) : AppColors.surface,
+                  color: isSelected ? getLighterColor(selectedColor, 0.15) : Theme.of(context).colorScheme.surface,
                   shape: BoxShape.circle,
-                  border: isSelected ? Border.all(color: selectedColor, width: 2) : Border.all(color: AppColors.border),
+                  border: isSelected ? Border.all(color: selectedColor, width: 2) : Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                 ),
                 child: Icon(
                   getHabitIcon(iconName),
-                  color: isSelected ? selectedColor : AppColors.textSecondary,
+                  color: isSelected ? selectedColor : Theme.of(context).colorScheme.onSurfaceVariant,
                   size: 24,
                 ),
               ),

@@ -3,11 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_radius.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/icon_utils.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/loading_indicator.dart';
+import '../../../../core/widgets/skeleton_loader.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../statistics/presentation/widgets/calendar_section.dart';
 import '../../domain/entities/habit_entity.dart';
@@ -107,18 +110,18 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
     final recentLogsAsync = ref.watch(recentHabitLogsProvider(widget.habit.id));
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text('Detail Habit'),
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
           onPressed: () => context.pop(),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit, color: AppColors.textPrimary),
+            icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.onSurface),
             onPressed: () {
               context.push('${AppRoutes.habits}/${widget.habit.id}/edit', extra: widget.habit);
             },
@@ -156,14 +159,14 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      border: Border.all(color: AppColors.border),
+                      color: Theme.of(context).colorScheme.surface,
+                      border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
                       _getCategoryDisplayName(widget.habit.category),
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -183,9 +186,11 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                       children: [
                         streakAsync.when(
                           data: (streak) => Text('$streak', style: AppTextStyles.numberLarge.copyWith(color: habitColor)),
-                          loading: () => SizedBox(
-                            width: 24, height: 24, 
-                            child: CircularProgressIndicator(color: habitColor, strokeWidth: 2)
+                          // Kategori 1: skeleton placeholder angka streak
+                          loading: () => SkeletonBox(
+                            width: 48,
+                            height: 28,
+                            borderRadius: AppRadius.sm,
                           ),
                           error: (e, st) => Text('-', style: AppTextStyles.numberLarge.copyWith(color: habitColor)),
                         ),
@@ -206,9 +211,11 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                             score % 1 == 0 ? '${score.toInt()}%' : '$score%', 
                             style: AppTextStyles.numberLarge.copyWith(color: habitColor)
                           ),
-                          loading: () => SizedBox(
-                            width: 24, height: 24, 
-                            child: CircularProgressIndicator(color: habitColor, strokeWidth: 2)
+                          // Kategori 1: skeleton placeholder angka konsistensi
+                          loading: () => SkeletonBox(
+                            width: 48,
+                            height: 28,
+                            borderRadius: AppRadius.sm,
                           ),
                           error: (e, st) => Text('-', style: AppTextStyles.numberLarge.copyWith(color: habitColor)),
                         ),
@@ -236,9 +243,10 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                   ],
                 );
               },
+              // Kategori 1: branded spinner untuk recent logs (parsial, bukan full-page)
               loading: () => const Padding(
                 padding: EdgeInsets.only(bottom: 32),
-                child: Center(child: CircularProgressIndicator(color: AppColors.primary)),
+                child: Center(child: LoadingIndicator(size: 32)),
               ),
               error: (e, st) => const SizedBox.shrink(),
             ),

@@ -102,6 +102,10 @@ abstract final class AppTheme {
       // ── Page & Scaffold ───────────────────────────────────────────────────
       scaffoldBackgroundColor: AppColors.background,
 
+      // ── Global Ripple/Splash ───────────────────────────────────────────────
+      splashColor: AppColors.primary.withValues(alpha: 0.12),
+      highlightColor: AppColors.primary.withValues(alpha: 0.08),
+
       // ── AppBar ────────────────────────────────────────────────────────────
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.background,
@@ -274,6 +278,16 @@ abstract final class AppTheme {
         ),
         side: const BorderSide(color: AppColors.border),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        surfaceTintColor: Colors.transparent,
+        color: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.primary;
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return AppColors.primaryLight;
+          }
+          return AppColors.surface;
+        }),
       ),
 
       // ── SnackBar ──────────────────────────────────────────────────────────
@@ -308,14 +322,14 @@ abstract final class AppTheme {
       onPrimaryContainer: Colors.white,
 
       secondary: AppColors.secondary,
-      onSecondary: Colors.black,
+      onSecondary: Colors.white,
       secondaryContainer: AppColors.secondaryDark,
-      onSecondaryContainer: Colors.black,
+      onSecondaryContainer: Colors.white,
 
       tertiary: AppColors.accent1,
-      onTertiary: Colors.black,
+      onTertiary: Colors.white,
       tertiaryContainer: AppColors.accent1Light,
-      onTertiaryContainer: Colors.black,
+      onTertiaryContainer: Colors.white,
 
       error: AppColors.error,
       onError: Colors.white,
@@ -326,7 +340,7 @@ abstract final class AppTheme {
       surface: const Color(0xFF1E1E1E),
       onSurface: Colors.white,
       surfaceContainerHighest: const Color(0xFF333333),
-      onSurfaceVariant: const Color(0xFFAAAAAA),
+      onSurfaceVariant: Colors.white,
 
       outline: const Color(0xFF555555),
       outlineVariant: const Color(0xFF444444),
@@ -344,10 +358,10 @@ abstract final class AppTheme {
       titleSmall: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.w500, color: Colors.white),
       bodyLarge: AppTextStyles.bodyLarge.copyWith(color: Colors.white),
       bodyMedium: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
-      bodySmall: AppTextStyles.bodySmall.copyWith(color: const Color(0xFFAAAAAA)),
+      bodySmall: AppTextStyles.bodySmall.copyWith(color: Colors.white),
       labelLarge: AppTextStyles.button.copyWith(color: Colors.white),
-      labelMedium: AppTextStyles.bodySmall.copyWith(color: const Color(0xFFAAAAAA)),
-      labelSmall: AppTextStyles.bodySmall.copyWith(color: const Color(0xFFAAAAAA)),
+      labelMedium: AppTextStyles.bodySmall.copyWith(color: Colors.white),
+      labelSmall: AppTextStyles.bodySmall.copyWith(color: Colors.white),
     );
 
     return ThemeData(
@@ -356,6 +370,11 @@ abstract final class AppTheme {
       fontFamily: GoogleFonts.poppins().fontFamily,
       textTheme: textTheme,
       scaffoldBackgroundColor: const Color(0xFF121212),
+
+      // ── Global Ripple/Splash ───────────────────────────────────────────────
+      splashColor: AppColors.primary.withValues(alpha: 0.18),
+      highlightColor: AppColors.primary.withValues(alpha: 0.12),
+
       appBarTheme: AppBarTheme(
         backgroundColor: const Color(0xFF121212),
         foregroundColor: Colors.white,
@@ -439,15 +458,15 @@ abstract final class AppTheme {
             width: 1,
           ),
         ),
-        labelStyle: AppTextStyles.bodyMedium.copyWith(color: const Color(0xFFAAAAAA)),
+        labelStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
         floatingLabelStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.primary),
-        hintStyle: AppTextStyles.bodyMedium.copyWith(color: const Color(0xFFAAAAAA)),
+        hintStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
         errorStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: const Color(0xFF1E1E1E),
         selectedItemColor: AppColors.primary,
-        unselectedItemColor: const Color(0xFFAAAAAA),
+        unselectedItemColor: Colors.white,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
@@ -467,13 +486,13 @@ abstract final class AppTheme {
               fontWeight: FontWeight.w600,
             );
           }
-          return AppTextStyles.bodySmall.copyWith(color: const Color(0xFFAAAAAA));
+          return AppTextStyles.bodySmall.copyWith(color: Colors.white);
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return const IconThemeData(color: AppColors.primary, size: 24);
           }
-          return const IconThemeData(color: Color(0xFFAAAAAA), size: 24);
+          return const IconThemeData(color: Colors.white, size: 24);
         }),
         elevation: 8,
       ),
@@ -493,6 +512,16 @@ abstract final class AppTheme {
         ),
         side: const BorderSide(color: Color(0xFF555555)),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        surfaceTintColor: Colors.transparent,
+        color: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.primary;
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return AppColors.primaryDark;
+          }
+          return const Color(0xFF1E1E1E);
+        }),
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: Colors.white,
@@ -507,7 +536,7 @@ abstract final class AppTheme {
         shape: AppRadius.lgShape,
         titleTextStyle: AppTextStyles.h2.copyWith(color: Colors.white),
         contentTextStyle:
-            AppTextStyles.bodyMedium.copyWith(color: const Color(0xFFAAAAAA)),
+            AppTextStyles.bodyMedium.copyWith(color: Colors.white),
       ),
     );
   }

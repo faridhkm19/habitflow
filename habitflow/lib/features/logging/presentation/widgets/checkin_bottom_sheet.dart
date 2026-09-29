@@ -67,9 +67,9 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
 
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: EdgeInsets.fromLTRB(24, 12, 24, 24 + bottomPadding),
       child: Column(
@@ -82,7 +82,7 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: AppColors.border,
+                color: Theme.of(context).colorScheme.outlineVariant,
                 borderRadius: BorderRadius.circular(999),
               ),
             ),
@@ -92,12 +92,12 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
           // ── Header ─────────────────────────────────────────────────────────
           Text(
             widget.habitName,
-            style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.h2.copyWith(color: Theme.of(context).colorScheme.onSurface),
           ),
           const SizedBox(height: 4),
           Text(
             'Bagaimana perasaanmu setelah ini?',
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
           const SizedBox(height: 24),
 
@@ -147,26 +147,26 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
             maxLength: 100,
             maxLines: 2,
             inputFormatters: [LengthLimitingTextInputFormatter(100)],
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurface),
             decoration: InputDecoration(
               hintText: 'Tambahkan catatan...',
-              hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+              hintStyle: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
               filled: true,
-              fillColor: AppColors.background,
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: AppColors.border),
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: AppColors.border),
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
               ),
-              counterStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+              counterStyle: AppTextStyles.bodySmall.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
           ),
           const SizedBox(height: 20),
@@ -179,7 +179,7 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
                   onPressed: _isSaving ? null : _handleSkip,
                   child: Text(
                     'Lewati',
-                    style: AppTextStyles.button.copyWith(color: AppColors.textSecondary),
+                    style: AppTextStyles.button.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                   ),
                 ),
               ),
@@ -189,25 +189,26 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
                 child: FilledButton(
                   onPressed: _isSaving ? null : _handleSave,
                   style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
+                  // Kategori 2: spinner inline 16px putih saat aksi simpan berlangsung
                   child: _isSaving
                       ? const SizedBox(
-                          width: 20,
-                          height: 20,
+                          width: 16,
+                          height: 16,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: AppColors.textOnPrimary,
+                            color: Colors.white,
                           ),
                         )
                       : Text(
                           'Simpan',
                           style: AppTextStyles.button.copyWith(
-                            color: AppColors.textOnPrimary,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
                 ),
@@ -245,10 +246,10 @@ class _MoodOption extends StatelessWidget {
         curve: Curves.easeOut,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: selected ? AppColors.primaryLight : Colors.transparent,
+          color: selected ? Theme.of(context).colorScheme.primaryContainer : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: selected ? AppColors.primary : AppColors.border,
+            color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outlineVariant,
             width: selected ? 2.0 : 1.5,
           ),
         ),
@@ -259,7 +260,7 @@ class _MoodOption extends StatelessWidget {
             Text(
               label,
               style: AppTextStyles.bodySmall.copyWith(
-                color: selected ? AppColors.primary : AppColors.textSecondary,
+                color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant,
                 fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
               ),
             ),

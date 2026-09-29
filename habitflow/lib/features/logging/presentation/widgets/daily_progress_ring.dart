@@ -6,14 +6,14 @@ import '../../../../core/constants/app_text_styles.dart';
 /// Progress ring harian — CustomPainter dengan animasi easeInOutCubic
 class DailyProgressRing extends StatefulWidget {
   final double progress; // 0.0 – 1.0
-  final int completedCount;
-  final int totalCount;
+  final double size;
+  final double strokeWidth;
 
   const DailyProgressRing({
     super.key,
     required this.progress,
-    required this.completedCount,
-    required this.totalCount,
+    this.size = 140.0,
+    this.strokeWidth = 14.0,
   });
 
   @override
@@ -62,45 +62,35 @@ class _DailyProgressRingState extends State<DailyProgressRing>
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, _) {
-        final isComplete = widget.progress >= 1.0 && widget.totalCount > 0;
-        return Column(
-          children: [
-            SizedBox(
-              width: 140,
-              height: 140,
-              child: CustomPaint(
-                painter: _RingPainter(
-                  progress: _animation.value,
-                  ringColor: isComplete ? AppColors.secondaryDark : AppColors.primary,
-                  trackColor: AppColors.neutralMissed,
-                  strokeWidth: 14.0,
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '${(_animation.value * 100).round()}%',
-                        style: AppTextStyles.numberLarge.copyWith(
-                          color: isComplete ? AppColors.secondaryDark : AppColors.primary,
-                        ),
-                      ),
-                    ],
-                  ),
+        final isComplete = widget.progress >= 1.0;
+        
+        // Sesuaikan ukuran font persentase berdasarkan ukuran ring
+        final textStyle = widget.size >= 100 
+            ? AppTextStyles.numberLarge 
+            : Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Outfit',
+              );
+
+        return SizedBox(
+          width: widget.size,
+          height: widget.size,
+          child: CustomPaint(
+            painter: _RingPainter(
+              progress: _animation.value,
+              ringColor: isComplete ? AppColors.secondaryDark : AppColors.primary,
+              trackColor: AppColors.neutralMissed.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.3 : 1.0),
+              strokeWidth: widget.strokeWidth,
+            ),
+            child: Center(
+              child: Text(
+                '${(_animation.value * 100).round()}%',
+                style: textStyle?.copyWith(
+                  color: isComplete ? AppColors.secondaryDark : AppColors.primary,
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-            Text(
-              isComplete 
-                  ? 'Semua ${widget.totalCount} habit selesai!' 
-                  : '${widget.completedCount} dari ${widget.totalCount} habit selesai',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: isComplete ? AppColors.secondaryDark : AppColors.textSecondary,
-                fontWeight: isComplete ? FontWeight.w600 : FontWeight.normal,
-              ),
-            ),
-          ],
+          ),
         );
       },
     );
@@ -155,5 +145,5 @@ class _RingPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _RingPainter old) =>
-      old.progress != progress || old.ringColor != ringColor;
+      old.progress != progress || old.ringColor != ringColor || old.trackColor != trackColor;
 }

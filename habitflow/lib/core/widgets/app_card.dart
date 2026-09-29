@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/app_colors.dart';
 import '../constants/app_elevation.dart';
 import '../constants/app_radius.dart';
 import '../constants/app_spacing.dart';
@@ -64,7 +63,7 @@ class AppCard extends StatelessWidget {
     return Container(
       margin: margin,
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppColors.surface,
+        color: backgroundColor ?? Theme.of(context).colorScheme.surface,
         borderRadius: effectiveRadius,
         // elevation.low shadow per Design System
         boxShadow: AppElevation.low,
@@ -76,8 +75,8 @@ class AppCard extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: onTap,
-                  splashColor: AppColors.primaryLight,
-                  highlightColor: AppColors.primaryLight.withValues(alpha: 0.5),
+                  splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
+                  highlightColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
                   child: Padding(
                     padding: effectivePadding,
                     child: child,

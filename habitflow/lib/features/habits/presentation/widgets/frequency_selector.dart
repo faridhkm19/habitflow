@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 
 class FrequencySelector extends StatelessWidget {
@@ -31,15 +30,15 @@ class FrequencySelector extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
           ),
           child: Row(
             children: [
-              _buildSegment('daily', 'Tiap Hari'),
-              _buildSegment('specific_days', 'Pilih Hari'),
-              _buildSegment('x_per_week', 'X Seminggu'),
+              _buildSegment('daily', 'Tiap Hari', context),
+              _buildSegment('specific_days', 'Pilih Hari', context),
+              _buildSegment('x_per_week', 'X Seminggu', context),
             ],
           ),
         ),
@@ -51,13 +50,13 @@ class FrequencySelector extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildDayButton('mon', 'SEN'),
-              _buildDayButton('tue', 'SEL'),
-              _buildDayButton('wed', 'RAB'),
-              _buildDayButton('thu', 'KAM'),
-              _buildDayButton('fri', 'JUM'),
-              _buildDayButton('sat', 'SAB'),
-              _buildDayButton('sun', 'MIN'),
+              _buildDayButton('mon', 'SEN', context),
+              _buildDayButton('tue', 'SEL', context),
+              _buildDayButton('wed', 'RAB', context),
+              _buildDayButton('thu', 'KAM', context),
+              _buildDayButton('fri', 'JUM', context),
+              _buildDayButton('sat', 'SAB', context),
+              _buildDayButton('sun', 'MIN', context),
             ],
           ),
 
@@ -69,6 +68,7 @@ class FrequencySelector extends StatelessWidget {
               _buildStepperButton(
                 icon: Icons.remove,
                 onPressed: timesPerWeek > 1 ? () => onTimesPerWeekChanged(timesPerWeek - 1) : null,
+                context: context,
               ),
               const SizedBox(width: 24),
               Text(
@@ -79,6 +79,7 @@ class FrequencySelector extends StatelessWidget {
               _buildStepperButton(
                 icon: Icons.add,
                 onPressed: timesPerWeek < 6 ? () => onTimesPerWeekChanged(timesPerWeek + 1) : null,
+                context: context,
               ),
             ],
           ),
@@ -86,7 +87,7 @@ class FrequencySelector extends StatelessWidget {
     );
   }
 
-  Widget _buildDayButton(String dayKey, String label) {
+  Widget _buildDayButton(String dayKey, String label, BuildContext context) {
     final isSelected = selectedDays.contains(dayKey);
     return Expanded(
       child: GestureDetector(
@@ -103,9 +104,9 @@ class FrequencySelector extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 1),
           height: 40,
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.primary : AppColors.surface,
+            color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
             shape: BoxShape.circle,
-            border: isSelected ? null : Border.all(color: AppColors.border),
+            border: isSelected ? null : Border.all(color: Theme.of(context).colorScheme.outlineVariant),
           ),
           alignment: Alignment.center,
           child: FittedBox(
@@ -115,7 +116,7 @@ class FrequencySelector extends StatelessWidget {
               child: Text(
                 label,
                 style: AppTextStyles.bodySmall.copyWith(
-                  color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
+                  color: isSelected ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurface,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
                   fontSize: 11,
                 ),
@@ -127,26 +128,28 @@ class FrequencySelector extends StatelessWidget {
     );
   }
 
-  Widget _buildStepperButton({required IconData icon, VoidCallback? onPressed}) {
+  Widget _buildStepperButton({required IconData icon, VoidCallback? onPressed, required BuildContext context}) {
     return InkWell(
       onTap: onPressed,
       borderRadius: BorderRadius.circular(24),
+      splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
+      highlightColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: onPressed != null ? AppColors.primaryLight : AppColors.surface,
+          color: onPressed != null ? Theme.of(context).colorScheme.primaryContainer : Theme.of(context).colorScheme.surface,
           shape: BoxShape.circle,
-          border: Border.all(color: onPressed != null ? AppColors.primary : AppColors.border),
+          border: Border.all(color: onPressed != null ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outlineVariant),
         ),
         child: Icon(
           icon,
-          color: onPressed != null ? AppColors.primary : AppColors.border,
+          color: onPressed != null ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outlineVariant,
         ),
       ),
     );
   }
 
-  Widget _buildSegment(String value, String label) {
+  Widget _buildSegment(String value, String label, BuildContext context) {
     final isSelected = frequencyType == value;
     return Expanded(
       child: GestureDetector(
@@ -154,7 +157,7 @@ class FrequencySelector extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.primary : Colors.transparent,
+            color: isSelected ? Theme.of(context).colorScheme.primary : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
           alignment: Alignment.center,
@@ -163,7 +166,7 @@ class FrequencySelector extends StatelessWidget {
             child: Text(
               label,
               style: AppTextStyles.bodySmall.copyWith(
-                color: isSelected ? AppColors.textOnPrimary : AppColors.textSecondary,
+                color: isSelected ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurfaceVariant,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
               ),
             ),

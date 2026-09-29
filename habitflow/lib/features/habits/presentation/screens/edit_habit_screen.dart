@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/color_utils.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -113,13 +112,11 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text('Edit Habit', style: AppTextStyles.h2),
-        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
           onPressed: () => context.pop(),
         ),
       ),
@@ -145,19 +142,23 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
                 children: _categories.map((cat) {
                   final isSelected = _selectedCategory == cat['id'];
                   return ChoiceChip(
-                    label: Text(cat['label']!),
+                    label: Text(
+                      cat['label']!,
+                      style: TextStyle(
+                        color: isSelected 
+                            ? Colors.white 
+                            : Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
                     selected: isSelected,
                     showCheckmark: false,
                     onSelected: (_) => setState(() => _selectedCategory = cat['id']!),
-                    backgroundColor: AppColors.surface,
-                    selectedColor: AppColors.primary,
-                    labelStyle: TextStyle(color: isSelected ? Colors.white : AppColors.textPrimary),
                   );
                 }).toList(),
               ),
               const SizedBox(height: 24),
 
-              const Divider(color: AppColors.border),
+              const Divider(),
               const SizedBox(height: 24),
 
               IconColorPicker(
@@ -168,7 +169,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
               ),
 
               const SizedBox(height: 24),
-              const Divider(color: AppColors.border),
+              const Divider(),
               const SizedBox(height: 24),
 
               Text('Frekuensi', style: AppTextStyles.h3),

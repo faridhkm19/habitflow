@@ -99,8 +99,8 @@ class AppButton extends StatelessWidget {
   Widget _buildChild() {
     if (isLoading) {
       return SizedBox(
-        height: 20,
-        width: 20,
+        height: 16,
+        width: 16,
         child: CircularProgressIndicator(
           strokeWidth: 2.5,
           color: (variant == AppButtonVariant.primary || variant == AppButtonVariant.error)

@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_radius.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/date_utils.dart';
+import '../../../../core/widgets/skeleton_loader.dart';
 import '../../../habits/domain/entities/habit_entity.dart';
 import '../../presentation/providers/calendar_view_provider.dart';
 
@@ -40,12 +42,12 @@ class CalendarSection extends ConsumerWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: Theme.of(context).colorScheme.surface,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
               ),
               child: IconButton(
-                icon: const Icon(Icons.chevron_left, color: AppColors.textPrimary),
+                icon: Icon(Icons.chevron_left, color: Theme.of(context).colorScheme.onSurface),
                 onPressed: () => notifier.prevMonth(),
                 iconSize: 20,
                 constraints: const BoxConstraints(),
@@ -65,12 +67,12 @@ class CalendarSection extends ConsumerWidget {
             const SizedBox(width: 16),
             Container(
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: Theme.of(context).colorScheme.surface,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
               ),
               child: IconButton(
-                icon: const Icon(Icons.chevron_right, color: AppColors.textPrimary),
+                icon: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurface),
                 onPressed: () => notifier.nextMonth(),
                 iconSize: 20,
                 constraints: const BoxConstraints(),
@@ -89,7 +91,7 @@ class CalendarSection extends ConsumerWidget {
                       day,
                       textAlign: TextAlign.center,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -99,10 +101,23 @@ class CalendarSection extends ConsumerWidget {
         const SizedBox(height: 12),
 
         // ── Grid Kalender ─────────────────────────────────────────────────────
+        // Kategori 1: skeleton grid kalender 7×5 saat ganti bulan
         if (state.isLoading)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 32),
-            child: Center(child: CircularProgressIndicator(color: AppColors.primary)),
+          GridView.count(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: 7,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            children: List.generate(
+              35,
+              (_) => SkeletonBox(
+                width: double.infinity,
+                height: double.infinity,
+                borderRadius: AppRadius.sm,
+              ),
+            ),
           )
         else
           GridView.builder(
@@ -141,17 +156,17 @@ class CalendarSection extends ConsumerWidget {
 
               if (isBeforeCreation || isFuture) {
                 cellColor = Colors.transparent;
-                textColor = AppColors.textSecondary.withValues(alpha: 0.4);
+                textColor = Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4);
               } else if (isCompleted) {
                 // Gunakan colorHex habit — unik per habit, konsisten dengan ikon
                 cellColor = habitColor;
-                textColor = AppColors.textPrimary;
+                textColor = Theme.of(context).colorScheme.onSurface;
               } else if (!isScheduled) {
-                cellColor = AppColors.border; // tidak terjadwal
-                textColor = AppColors.textSecondary;
+                cellColor = Theme.of(context).colorScheme.outlineVariant; // tidak terjadwal
+                textColor = Theme.of(context).colorScheme.onSurfaceVariant;
               } else {
-                cellColor = AppColors.neutralMissed; // terjadwal tapi terlewat
-                textColor = AppColors.textSecondary;
+                cellColor = Theme.of(context).colorScheme.surfaceContainerHighest; // terjadwal tapi terlewat
+                textColor = Theme.of(context).colorScheme.onSurfaceVariant;
               }
 
               return Container(
@@ -197,7 +212,7 @@ class CalendarSection extends ConsumerWidget {
           children: [
             _LegendDot(color: habitColor, label: 'Selesai'),
             const SizedBox(width: 24),
-            const _LegendDot(color: AppColors.neutralMissed, label: 'Terlewat'),
+            _LegendDot(color: Theme.of(context).colorScheme.surfaceContainerHighest, label: 'Terlewat'),
           ],
         ),
 

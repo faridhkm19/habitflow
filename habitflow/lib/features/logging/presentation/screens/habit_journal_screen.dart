@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/icon_utils.dart';
+import '../../../../core/widgets/skeleton_loader.dart';
 import '../../domain/entities/journal_entry_entity.dart';
 import '../providers/habit_journal_provider.dart';
 
@@ -21,14 +22,14 @@ class HabitJournalScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catatan Check-in'),
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
           onPressed: () => context.pop(),
         ),
       ),
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           _buildSearchBar(context, ref, searchQuery),
@@ -63,7 +64,7 @@ class HabitJournalScreen extends ConsumerWidget {
                             _formatDate(date),
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.textSecondary,
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   letterSpacing: 0.5,
                                 ),
                           ),
@@ -74,11 +75,12 @@ class HabitJournalScreen extends ConsumerWidget {
                   },
                 );
               },
-              loading: () => const Center(child: CircularProgressIndicator()),
+              // Kategori 1: skeleton grup tanggal + 2–3 card catatan
+              loading: () => const JournalSkeleton(),
               error: (err, stack) => Center(
                 child: Text(
                   'Terjadi kesalahan: $err',
-                  style: const TextStyle(color: AppColors.error),
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
               ),
             ),
@@ -93,9 +95,9 @@ class HabitJournalScreen extends ConsumerWidget {
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
         ),
         child: TextField(
           controller: TextEditingController.fromValue(
@@ -105,10 +107,10 @@ class HabitJournalScreen extends ConsumerWidget {
             ),
           ),
           onChanged: (value) => ref.read(journalSearchQueryProvider.notifier).state = value,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             hintText: 'Cari catatan atau habit...',
-            hintStyle: TextStyle(color: AppColors.textSecondary, fontSize: 14),
-            prefixIcon: Icon(Icons.search_rounded, color: AppColors.textSecondary, size: 20),
+            hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 14),
+            prefixIcon: Icon(Icons.search_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
             border: InputBorder.none,
             contentPadding: EdgeInsets.symmetric(vertical: 14),
           ),
@@ -128,13 +130,13 @@ class HabitJournalScreen extends ConsumerWidget {
               width: 96,
               height: 96,
               decoration: BoxDecoration(
-                color: AppColors.primaryLight,
+                color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(24),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.menu_book_rounded,
                 size: 48,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
             const SizedBox(height: 24),
@@ -148,7 +150,7 @@ class HabitJournalScreen extends ConsumerWidget {
             Text(
               'Mulai check-in dengan mood atau catatan harian!',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -173,14 +175,14 @@ class HabitJournalScreen extends ConsumerWidget {
       moodColor = AppColors.accent1;
     } else if (entry.mood == 'tired') {
       moodIcon = Icons.sentiment_dissatisfied_rounded;
-      moodColor = AppColors.neutralMissed;
+      moodColor = Theme.of(context).colorScheme.surfaceContainerHighest;
     }
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -222,7 +224,7 @@ class HabitJournalScreen extends ConsumerWidget {
             Text(
               entry.note!,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Theme.of(context).colorScheme.onSurface,
                     height: 1.4,
                   ),
             ),

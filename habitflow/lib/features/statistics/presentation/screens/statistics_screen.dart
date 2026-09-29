@@ -10,6 +10,7 @@ import '../../../../core/utils/icon_utils.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/loading_indicator.dart';
+import '../../../../core/widgets/skeleton_loader.dart';
 import '../../../habits/presentation/providers/habit_provider.dart';
 import '../providers/statistics_provider.dart';
 import '../../../habits/domain/entities/habit_entity.dart';
@@ -37,15 +38,16 @@ class StatisticsScreen extends ConsumerWidget {
     final selectedCategory = ref.watch(selectedStatisticsCategoryProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text('Statistics', style: AppTextStyles.h1),
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
       body: habitsAsync.when(
-        loading: () => const Center(child: LoadingIndicator()),
+        // Kategori 1: skeleton chart area + heatmap grid
+        loading: () => const StatisticsSkeleton(),
         error: (err, stack) => Center(child: Text('Error loading habits: $err')),
         data: (habits) {
           final activeHabits = habits.where((h) => !h.isArchived).toList();
@@ -81,11 +83,19 @@ class StatisticsScreen extends ConsumerWidget {
                     final isSelected = selectedCategory == category['id'];
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
-                      child: FilterChip(
-                        label: Text(
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          hoverColor: AppColors.primary.withValues(alpha: 0.08),
+                          focusColor: AppColors.primary.withValues(alpha: 0.08),
+                          splashFactory: NoSplash.splashFactory,
+                        ),
+                        child: FilterChip(
+                          label: Text(
                           category['label']!,
                           style: AppTextStyles.bodyMedium.copyWith(
-                            color: isSelected ? AppColors.textOnPrimary : AppColors.textPrimary,
+                            color: isSelected ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurface,
                             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                           ),
                         ),
@@ -94,15 +104,17 @@ class StatisticsScreen extends ConsumerWidget {
                         onSelected: (_) {
                           ref.read(selectedStatisticsCategoryProvider.notifier).state = category['id']!;
                         },
-                        backgroundColor: AppColors.surface,
-                        selectedColor: AppColors.primary,
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        selectedColor: Theme.of(context).colorScheme.primary,
+                        surfaceTintColor: Colors.transparent,
                         side: BorderSide(
-                          color: isSelected ? AppColors.primary : AppColors.border,
+                          color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outlineVariant,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                       ),
+                    ),
                     );
                   }).toList(),
                 ),
@@ -119,26 +131,26 @@ class StatisticsScreen extends ConsumerWidget {
                             children: [
                               Container(
                                 padding: const EdgeInsets.all(24),
-                                decoration: const BoxDecoration(
-                                  color: AppColors.primaryLight,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primaryContainer,
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.track_changes_rounded,
                                   size: 64,
-                                  color: AppColors.primary,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                               ),
                               const SizedBox(height: 24),
                               Text(
                                 'Belum Ada Habit',
-                                style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+                                style: AppTextStyles.h2.copyWith(color: Theme.of(context).colorScheme.onSurface),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 'Yuk, mulai bangun kebiasaan positif pertamamu di kategori ini!',
-                                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                                style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 32),
@@ -171,13 +183,15 @@ class StatisticsScreen extends ConsumerWidget {
                                   onTap: () {
                                     _showHabitSelector(context, filteredHabits, currentId!, ref);
                                   },
+                                  splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
+                                  highlightColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(16),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withAlpha(5),
@@ -205,7 +219,7 @@ class StatisticsScreen extends ConsumerWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          const Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.textSecondary),
+                          Icon(Icons.keyboard_arrow_down_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant),
                         ],
                       ),
                     ),
@@ -214,10 +228,8 @@ class StatisticsScreen extends ConsumerWidget {
                   
                   // Content
                   statsAsync.when(
-                    loading: () => const Center(child: Padding(
-                      padding: EdgeInsets.all(32.0),
-                      child: LoadingIndicator(),
-                    )),
+                    // Kategori 1: skeleton chart area + heatmap grid
+                    loading: () => const StatisticsSkeleton(),
                     error: (err, stack) => Center(child: Text('Error loading stats: $err')),
                     data: (stats) {
                       if (stats == null) return const SizedBox();
@@ -269,9 +281,9 @@ class StatisticsScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return Container(
-          decoration: const BoxDecoration(
-            color: AppColors.background,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           ),
           padding: EdgeInsets.only(
             top: 24,
@@ -288,7 +300,7 @@ class StatisticsScreen extends ConsumerWidget {
                   children: [
                     Text('Pilih Habit', style: AppTextStyles.h2),
                     IconButton(
-                      icon: const Icon(Icons.close_rounded, color: AppColors.textSecondary),
+                      icon: Icon(Icons.close_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],
@@ -314,14 +326,16 @@ class StatisticsScreen extends ConsumerWidget {
                           ref.read(selectedStatisticsHabitIdProvider.notifier).state = habit.id;
                           Navigator.pop(context);
                         },
+                        splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
+                        highlightColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(16),
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                           decoration: BoxDecoration(
-                            color: isSelected ? AppColors.primaryLight : AppColors.surface,
+                            color: isSelected ? Theme.of(context).colorScheme.primaryContainer : Theme.of(context).colorScheme.surface,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: isSelected ? AppColors.primary : AppColors.border,
+                              color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outlineVariant,
                               width: isSelected ? 2 : 1,
                             ),
                           ),
@@ -340,13 +354,13 @@ class StatisticsScreen extends ConsumerWidget {
                                 child: Text(
                                   habit.name,
                                   style: AppTextStyles.bodyLarge.copyWith(
-                                    color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                                    color: isSelected ? Theme.of(context).colorScheme.onPrimaryContainer : Theme.of(context).colorScheme.onSurface,
                                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                                   ),
                                 ),
                               ),
                               if (isSelected)
-                                const Icon(Icons.check_circle_rounded, color: AppColors.primary),
+                                Icon(Icons.check_circle_rounded, color: Theme.of(context).colorScheme.onPrimaryContainer),
                             ],
                           ),
                         ),

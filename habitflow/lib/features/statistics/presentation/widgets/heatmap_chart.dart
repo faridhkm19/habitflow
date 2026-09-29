@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/utils/date_utils.dart' as app_date_utils;
 
@@ -95,7 +94,7 @@ class HeatmapChart extends StatelessWidget {
                           child: Text(
                             day,
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.textSecondary,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                               fontSize: 10,
                               height: 1.0,
                             ),
@@ -124,7 +123,7 @@ class HeatmapChart extends StatelessWidget {
                             child: Text(
                               m.label,
                               style: AppTextStyles.bodySmall.copyWith(
-                                color: AppColors.textSecondary,
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
                                 fontSize: 10,
                                 height: 1.0,
                               ),
@@ -170,9 +169,9 @@ class HeatmapChart extends StatelessWidget {
                             if (status == true) {
                               cellColor = activeColor;
                             } else if (status == false) {
-                              cellColor = const Color(0xFFD8D5CE); // neutralMissed
+                              cellColor = Theme.of(context).colorScheme.surfaceContainerHighest; // neutralMissed
                             } else {
-                              cellColor = AppColors.border; // not scheduled / no data
+                              cellColor = Theme.of(context).colorScheme.outlineVariant; // not scheduled / no data
                             }
 
                             return Padding(
