@@ -36,3 +36,6 @@ Saat ini, proyek telah menyelesaikan tahapan fondasi dasar termasuk autentikasi,
 *   **Personalisasi Pengguna:** Halaman profil dengan fitur unggah foto profil, pencapaian sederhana, dan mode gelap.
 *   **Jurnal Kebiasaan:** Halaman terpusat untuk melihat seluruh catatan harian.
 *   **Pengujian dan Performa:** Penulisan pengujian unit dan komponen, serta optimasi kecepatan muat dan kinerja pangkalan data.
+
+## Catatan Khusus
+*   **Ubah Email (Simulasi):** Fitur ubah email menggunakan Supabase Auth simulasi. Email yang ditampilkan di UI diperbarui secara responsif selama sesi aktif, namun tidak persisten di server Supabase Auth karena keterbatasan client SDK yang tetap mensyaratkan *email confirmation* pada *endpoint* `updateUser` (meskipun fitur *secure email change* dan *confirm email* telah dinonaktifkan di dashboard). Untuk implementasi tingkat produksi, diperlukan integrasi Supabase Edge Function menggunakan `service_role` key untuk mem-*bypass* proses verifikasi klien.
