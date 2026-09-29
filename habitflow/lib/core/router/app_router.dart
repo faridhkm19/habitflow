@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,7 +17,11 @@ import '../../features/habits/domain/entities/habit_entity.dart';
 import '../../features/statistics/presentation/screens/statistics_screen.dart';
 import '../../features/profile/presentation/providers/profile_provider.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
-import '../../shared/layout/adaptive_scaffold.dart';
+import '../../features/profile/presentation/screens/edit_profile_screen.dart';
+import '../../features/profile/presentation/screens/security_screen.dart';
+import '../../features/profile/presentation/screens/achievements_screen.dart';
+import '../../features/logging/presentation/screens/habit_journal_screen.dart';
+import '../../shared/layout/mobile_scaffold.dart';
 
 abstract final class AppRoutes {
   static const splash = '/';
@@ -93,7 +97,7 @@ GoRouter createAppRouter(Ref ref) {
       GoRoute(path: AppRoutes.forgotPassword, builder: (context, state) => const ForgotPasswordScreen()),
       GoRoute(path: AppRoutes.guidedSetup, builder: (context, state) => const GuidedSetupScreen()),
       ShellRoute(
-        builder: (context, state, child) => AdaptiveScaffold(child: child),
+        builder: (context, state, child) => MobileScaffold(child: child),
         routes: [
           GoRoute(path: AppRoutes.home, builder: (context, state) => const HomeScreen()),
           GoRoute(
@@ -126,6 +130,24 @@ GoRouter createAppRouter(Ref ref) {
           GoRoute(
             path: AppRoutes.profile,
             builder: (context, state) => const ProfileScreen(),
+            routes: [
+              GoRoute(
+                path: 'edit',
+                builder: (context, state) => const EditProfileScreen(),
+              ),
+              GoRoute(
+                path: 'security',
+                builder: (context, state) => const SecurityScreen(),
+              ),
+              GoRoute(
+                path: 'journal',
+                builder: (context, state) => const HabitJournalScreen(),
+              ),
+              GoRoute(
+                path: 'achievements',
+                builder: (context, state) => const AchievementsScreen(),
+              ),
+            ],
           ),
         ],
       ),

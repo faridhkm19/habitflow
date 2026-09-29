@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/icon_utils.dart';
+import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/loading_indicator.dart';
 import '../../../habits/presentation/providers/habit_provider.dart';
@@ -109,9 +112,43 @@ class StatisticsScreen extends ConsumerWidget {
               Expanded(
                 child: filteredHabits.isEmpty
                     ? Center(
-                        child: Text(
-                          "Tidak ada habit di kategori ini.",
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                        child: Padding(
+                          padding: const EdgeInsets.all(32.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(24),
+                                decoration: const BoxDecoration(
+                                  color: AppColors.primaryLight,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.track_changes_rounded,
+                                  size: 64,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              Text(
+                                'Belum Ada Habit',
+                                style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Yuk, mulai bangun kebiasaan positif pertamamu di kategori ini!',
+                                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 32),
+                              AppButton(
+                                label: 'Buat Habit Baru',
+                                onPressed: () => context.push(AppRoutes.addHabit),
+                                isFullWidth: false,
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     : Builder(builder: (context) {
@@ -185,78 +222,31 @@ class StatisticsScreen extends ConsumerWidget {
                     data: (stats) {
                       if (stats == null) return const SizedBox();
                       
-                      return LayoutBuilder(
-                        builder: (context, constraints) {
-                          if (constraints.maxWidth >= 600) {
-                            return Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Minggu Ini", style: AppTextStyles.h2),
-                                      const SizedBox(height: 16),
-                                      AppCard(
-                                        padding: const EdgeInsets.all(16),
-                                        child: WeeklyRadialChart(
-                                          heatmapData: stats.annualHeatmap,
-                                          activeColor: habitColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 32),
-                                Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Riwayat Setahun", style: AppTextStyles.h2),
-                                      const SizedBox(height: 16),
-                                      AppCard(
-                                        padding: const EdgeInsets.all(16),
-                                        child: HeatmapChart(
-                                          heatmapData: stats.annualHeatmap,
-                                          activeColor: habitColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Minggu Ini", style: AppTextStyles.h2),
+                          const SizedBox(height: 16),
+                          AppCard(
+                            padding: const EdgeInsets.all(16),
+                            child: WeeklyRadialChart(
+                              heatmapData: stats.annualHeatmap,
+                              activeColor: habitColor,
+                            ),
+                          ),
                           
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Minggu Ini", style: AppTextStyles.h2),
-                              const SizedBox(height: 16),
-                              AppCard(
-                                padding: const EdgeInsets.all(16),
-                                child: WeeklyRadialChart(
-                                  heatmapData: stats.annualHeatmap,
-                                  activeColor: habitColor,
-                                ),
-                              ),
-                              
-                              const SizedBox(height: 32),
-                              
-                              Text("Riwayat Setahun", style: AppTextStyles.h2),
-                              const SizedBox(height: 16),
-                              AppCard(
-                                padding: const EdgeInsets.all(16),
-                                child: HeatmapChart(
-                                  heatmapData: stats.annualHeatmap,
-                                  activeColor: habitColor,
-                                ),
-                              ),
-                            ],
-                          );
-                        }
+                          const SizedBox(height: 32),
+                          
+                          Text("Riwayat Setahun", style: AppTextStyles.h2),
+                          const SizedBox(height: 16),
+                          AppCard(
+                            padding: const EdgeInsets.all(16),
+                            child: HeatmapChart(
+                              heatmapData: stats.annualHeatmap,
+                              activeColor: habitColor,
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),

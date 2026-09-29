@@ -25,22 +25,6 @@ abstract final class AppSpacing {
   /// space.xl — 32px — page margin, large section gap
   static const double xl = 32;
 
-  /// space.xxl — 48px — web layout breathing room
+  /// space.xxl — 48px — large breathing room
   static const double xxl = 48;
-
-  // ── Grid constants ────────────────────────────────────────────────────────
-  /// Mobile: horizontal page margin (left + right)
-  static const double pagePaddingMobile = md; // 16px
-
-  /// Web: minimum horizontal page margin
-  static const double pagePaddingWeb = xl; // 32px
-
-  /// Mobile: gap between cards in a list
-  static const double cardGap = 12;
-
-  /// Web: gutter between grid columns
-  static const double gridGutter = lg; // 24px
-
-  /// Web: maximum content width
-  static const double maxContentWidth = 1200;
 }

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/utils/color_utils.dart';
 import '../../../logging/domain/entities/habit_log_entity.dart';
 import '../../../../core/widgets/app_card.dart';
 
 class RecentLogsSection extends StatelessWidget {
   final List<HabitLogEntity> logs;
+  final String colorHex;
 
-  const RecentLogsSection({super.key, required this.logs});
+  const RecentLogsSection({super.key, required this.logs, required this.colorHex});
 
   
   Color _getMoodLightColor(String? mood) {
@@ -29,6 +31,7 @@ class RecentLogsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     // Ambil maksimal 7 hari terakhir dari daftar log
     final recentLogs = logs.take(7).toList();
+    final habitColor = ColorExtension.fromHex(colorHex);
 
     if (recentLogs.isEmpty) {
       return const SizedBox.shrink();
@@ -64,7 +67,7 @@ class RecentLogsSection extends StatelessWidget {
                         // Status Complete
                         Icon(
                           log.isCompleted ? Icons.check_circle : Icons.cancel,
-                          color: log.isCompleted ? AppColors.secondary : AppColors.neutralMissed,
+                          color: log.isCompleted ? habitColor : AppColors.neutralMissed,
                           size: 20,
                         ),
                         const SizedBox(width: 16),

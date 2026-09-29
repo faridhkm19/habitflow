@@ -103,20 +103,18 @@ class _HabitChecklistItemState extends State<HabitChecklistItem>
                     style: AppTextStyles.h3.copyWith(
                       color: AppColors.textPrimary,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
                   if (widget.streak > 0) ...[
                     const SizedBox(height: 3),
                     Row(
                       children: [
                         Icon(Icons.local_fire_department_rounded,
-                            size: 13, color: isCompleted ? AppColors.warning : AppColors.textSecondary),
+                            size: 13, color: isCompleted ? AppColors.primary : AppColors.textSecondary),
                         const SizedBox(width: 3),
                         Text(
                           '${widget.streak} hari',
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: isCompleted ? AppColors.warning : AppColors.textSecondary,
+                            color: isCompleted ? AppColors.primary : AppColors.textSecondary,
                             fontWeight: FontWeight.w500,
                           ),
                         ),

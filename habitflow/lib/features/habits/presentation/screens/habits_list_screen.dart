@@ -146,43 +146,17 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
                   );
                 }
 
-                return LayoutBuilder(
-                  builder: (context, constraints) {
-                    if (constraints.maxWidth >= 600) {
-                      return GridView.builder(
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 2.5,
-                        ),
-                        itemCount: filteredHabits.length,
-                        itemBuilder: (context, index) {
-                          final habit = filteredHabits[index];
-                          return HabitCard(
-                            habit: habit,
-                            showCategory: _selectedCategory == 'all',
-                            onTap: () {
-                              context.push('${AppRoutes.habits}/${habit.id}', extra: habit);
-                            },
-                          );
-                        },
-                      );
-                    }
-                    return ListView.separated(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-                      itemCount: filteredHabits.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        final habit = filteredHabits[index];
-                        return HabitCard(
-                          habit: habit,
-                          showCategory: _selectedCategory == 'all',
-                          onTap: () {
-                            context.push('${AppRoutes.habits}/${habit.id}', extra: habit);
-                          },
-                        );
+                return ListView.separated(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                  itemCount: filteredHabits.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 12),
+                  itemBuilder: (context, index) {
+                    final habit = filteredHabits[index];
+                    return HabitCard(
+                      habit: habit,
+                      showCategory: _selectedCategory == 'all',
+                      onTap: () {
+                        context.push('${AppRoutes.habits}/${habit.id}', extra: habit);
                       },
                     );
                   },

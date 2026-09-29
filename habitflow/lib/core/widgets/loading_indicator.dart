@@ -42,35 +42,3 @@ class LoadingIndicator extends StatelessWidget {
     );
   }
 }
-
-/// Full-screen centered loading overlay.
-/// Use when an async operation blocks the whole screen.
-class FullScreenLoading extends StatelessWidget {
-  const FullScreenLoading({super.key, this.message});
-  final String? message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const LoadingIndicator(size: 48),
-            if (message != null) ...[
-              const SizedBox(height: 16),
-              Text(
-                message!,
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}

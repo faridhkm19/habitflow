@@ -10,6 +10,11 @@ import '../../data/datasources/habit_log_remote_datasource.dart';
 import '../../data/repositories/habit_log_repository_impl.dart';
 import '../../domain/entities/habit_log_entity.dart';
 import '../../domain/repositories/habit_log_repository.dart';
+import '../../../../core/providers/current_date_provider.dart';
+import '../../../profile/presentation/providers/profile_provider.dart';
+import '../../../profile/presentation/providers/achievement_provider.dart';
+import '../../../statistics/presentation/providers/statistics_provider.dart';
+import 'habit_journal_provider.dart';
 
 // ── Providers untuk logging ───────────────────────────────────────────────────
 
@@ -62,6 +67,8 @@ class HomeNotifier extends AsyncNotifier<HomeState> {
   Future<HomeState> build() async {
     // Watch habitsProvider agar saat ada habit baru/diubah, HomeState ikut ter-rebuild
     ref.watch(habitsProvider);
+    // Watch currentDateProvider agar saat hari berganti, list habit hari ini diperbarui
+    ref.watch(currentDateProvider);
     return _loadTodayData();
   }
 
@@ -144,6 +151,11 @@ class HomeNotifier extends AsyncNotifier<HomeState> {
       // Lempar error agar UI bisa tampilkan SnackBar
       throw result.failureOrNull?.message ?? 'Gagal menyimpan. Coba lagi.';
     }
+
+    ref.invalidate(profileDataProvider);
+    ref.invalidate(statisticsDataProvider);
+    ref.invalidate(habitJournalProvider);
+    ref.invalidate(achievementsProvider);
   }
 
   /// Simpan mood dan catatan ke log yang sudah ada (setelah bottom sheet)
@@ -181,6 +193,11 @@ class HomeNotifier extends AsyncNotifier<HomeState> {
     if (result.isErr) {
       throw result.failureOrNull?.message ?? 'Gagal menyimpan catatan.';
     }
+
+    ref.invalidate(profileDataProvider);
+    ref.invalidate(statisticsDataProvider);
+    ref.invalidate(habitJournalProvider);
+    ref.invalidate(achievementsProvider);
   }
 }
 

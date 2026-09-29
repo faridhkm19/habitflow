@@ -4,6 +4,7 @@ import '../../../habits/presentation/providers/habit_provider.dart';
 import '../../domain/usecases/get_statistics_usecase.dart';
 import '../../domain/entities/habit_statistics.dart';
 import '../../../../core/errors/failures.dart';
+import '../../../../core/providers/current_date_provider.dart';
 
 final getStatisticsUseCaseProvider = Provider<GetStatisticsUseCase>((ref) {
   final logRepository = ref.watch(habitLogRepositoryProvider);
@@ -25,6 +26,9 @@ final statisticsDataProvider = FutureProvider<HabitStatistics?>((ref) async {
   final habitsAsync = ref.watch(habitsProvider);
   final habits = habitsAsync.valueOrNull;
   if (habits == null) return null;
+
+  // Re-calculate statistics automatically when a new day starts
+  ref.watch(currentDateProvider);
 
   final habit = habits.firstWhere((h) => h.id == habitId);
   final usecase = ref.watch(getStatisticsUseCaseProvider);

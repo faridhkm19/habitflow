@@ -19,11 +19,11 @@ Referensi utama yang wajib dibaca sebelum mengerjakan task apapun di bawah ini t
 ## Bagian 1 — Fondasi Proyek
 
 ### 1.1 Project Initialization & Core Setup
-- [✔] Inisialisasi project Flutter dengan dukungan Android, iOS, dan Web
+- [✔] Inisialisasi project Flutter dengan dukungan Android dan iOS (web support telah dihapus permanen, fokus ke mobile saja)
 - [✔] Pasang seluruh dependency inti (riverpod, go_router, supabase_flutter, fl_chart, dan lainnya)
 - [✔] Bentuk folder structure sesuai Technical Architecture (feature-first, Clean Architecture)
 - [✔] Buat file konfigurasi Supabase dengan kredensial project
-- [✔] Verifikasi project berjalan tanpa error di web dan mobile
+- [✔] Verifikasi project berjalan tanpa error di Android/iOS
 
 ### 1.2 Design Tokens & Theme Implementation
 - [✔] Buat color token sesuai Design System (brand color, neutral, semantic)
@@ -91,11 +91,11 @@ Referensi utama yang wajib dibaca sebelum mengerjakan task apapun di bawah ini t
 - [✔] Buat heatmap tahunan per habit
 - [✔] Susun query agregasi yang efisien dari tabel habit_logs
 
-### 3.6 Layout Responsif
-- [✔] Buat adaptive scaffold dengan breakpoint sesuai Design System
+### 3.6 Layout Mobile
 - [✔] Buat mobile scaffold dengan bottom navigation
-- [✔] Buat web scaffold dengan sidebar navigation
-- [✔] Sesuaikan komponen inti agar tampil baik di kedua mode layout
+- [✔] Sesuaikan komponen inti untuk tampilan mobile (single column layout)
+
+> **Catatan:** Web scaffold (sidebar navigation), adaptive scaffold (breakpoint logic), dan seluruh layout responsif berbasis breakpoint 600px telah dihapus permanen. Folder `web/`, `web_scaffold.dart`, dan `adaptive_scaffold.dart` sudah tidak ada di project.
 
 ---
 
@@ -125,34 +125,35 @@ Referensi utama yang wajib dibaca sebelum mengerjakan task apapun di bawah ini t
 
 ## Bagian 5 — Penyempurnaan (Refinement)
 
-### 5.1 Web Dashboard Lanjutan
-- [ ] Tambahkan filter rentang tanggal pada halaman Statistics versi web
-- [ ] Susun tampilan dashboard multi kolom untuk web
+### 5.1 ~~Web Dashboard Lanjutan~~ *(Dibatalkan)*
 
-### 5.2 Export Data
-- [ ] Implementasikan export laporan ke PDF
-- [ ] Implementasikan export data mentah ke CSV
+> **Keputusan permanen:** Web support telah dihapus dari project HabitFlow. Seluruh kode, konfigurasi, dan logika web (folder `web/`, `web_scaffold.dart`, `adaptive_scaffold.dart`, breakpoint logic) telah dibersihkan. Fokus aplikasi dipersempit ke mobile saja (Android dan iOS). Task-task di seksi ini tidak akan dikerjakan.
+
+### 5.2 ~~Export Data~~ *(Dibatalkan)*
+
+> **Keputusan permanen:** Fitur export PDF dan CSV telah dibatalkan secara permanen. Seluruh dependency (`pdf`, `printing`) dan konfigurasi terkait telah dibersihkan secara tuntas. Task-task di seksi ini tidak akan dikerjakan.
+
 
 ### 5.3 Profil dan Personalisasi
-- [ ] Buat halaman Profile dengan ringkasan statistik pengguna
-- [ ] Implementasikan unggah foto profil ke Supabase Storage
-- [ ] Buat halaman Settings dengan pengaturan tema dan notifikasi
+- [✔] Buat halaman Profile dengan ringkasan statistik pengguna
+- [✔] Buat beberapa pengaturan di halaman Profile, seperti Keamanan Akun, Tampilan, Notifikasi, Catatan Check-in, Riwayat Pencapaian
+- [✔] Implementasikan unggah foto profil ke Supabase Storage
 
 ### 5.4 Habit Journal
-- [ ] Buat halaman yang menampilkan seluruh catatan check-in secara terpusat
-- [ ] Tambahkan fitur pencarian catatan
+- [✔] Buat halaman yang menampilkan seluruh catatan check-in secara terpusat
+- [✔] Tambahkan fitur pencarian catatan
 
 ### 5.5 Achievement Sederhana
-- [ ] Rancang beberapa milestone pencapaian (misalnya tujuh hari pertama, tiga puluh hari konsisten)
-- [ ] Tampilkan badge pencapaian di halaman Profile
+- [✔] Rancang beberapa milestone pencapaian (misalnya tujuh hari pertama, tiga puluh hari konsisten)
+- [✔] Tampilkan badge pencapaian di halaman Profile
 
 ---
 
 ## Bagian 6 — Dark Mode
 
-- [ ] Definisikan ulang seluruh color token untuk mode gelap
-- [ ] Susun ThemeData terpisah untuk dark mode
-- [ ] Implementasikan toggle perpindahan tema di halaman Settings
+- [✔] Definisikan ulang seluruh color token untuk mode gelap
+- [✔] Susun ThemeData terpisah untuk dark mode
+- [✔] Implementasikan toggle perpindahan tema di halaman Settings
 - [ ] Pastikan seluruh komponen (termasuk heatmap dan chart) tetap terbaca baik di dark mode
 
 ---

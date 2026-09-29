@@ -9,6 +9,7 @@ import '../../domain/usecases/create_batch_habits_usecase.dart';
 import '../../domain/usecases/get_habits_usecase.dart';
 import '../../domain/entities/habit_entity.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../profile/presentation/providers/profile_provider.dart';
 
 // --- Datasource & Repository ---
 final habitRemoteDataSourceProvider = Provider<HabitRemoteDataSource>((ref) {
@@ -59,6 +60,7 @@ class HabitsNotifier extends AsyncNotifier<List<HabitEntity>> {
   Future<void> refresh() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => build());
+    ref.invalidate(profileDataProvider);
   }
 
   Future<String?> createHabit({

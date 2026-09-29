@@ -59,13 +59,13 @@ class HabitCard extends ConsumerWidget {
                     Icon(
                       Icons.local_fire_department_rounded,
                       size: 16,
-                      color: AppColors.warning,
+                      color: AppColors.primary,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       '$currentStreak Hari Streak',
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.primary,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

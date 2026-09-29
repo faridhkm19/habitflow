@@ -182,12 +182,12 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                     child: Column(
                       children: [
                         streakAsync.when(
-                          data: (streak) => Text('$streak', style: AppTextStyles.numberLarge.copyWith(color: AppColors.warning)),
-                          loading: () => const SizedBox(
+                          data: (streak) => Text('$streak', style: AppTextStyles.numberLarge.copyWith(color: habitColor)),
+                          loading: () => SizedBox(
                             width: 24, height: 24, 
-                            child: CircularProgressIndicator(color: AppColors.warning, strokeWidth: 2)
+                            child: CircularProgressIndicator(color: habitColor, strokeWidth: 2)
                           ),
-                          error: (e, st) => Text('-', style: AppTextStyles.numberLarge.copyWith(color: AppColors.warning)),
+                          error: (e, st) => Text('-', style: AppTextStyles.numberLarge.copyWith(color: habitColor)),
                         ),
                         const SizedBox(height: 4),
                         Text('Hari Streak', style: AppTextStyles.bodyMedium),
@@ -204,13 +204,13 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                         consistencyAsync.when(
                           data: (score) => Text(
                             score % 1 == 0 ? '${score.toInt()}%' : '$score%', 
-                            style: AppTextStyles.numberLarge.copyWith(color: AppColors.secondaryDark)
+                            style: AppTextStyles.numberLarge.copyWith(color: habitColor)
                           ),
-                          loading: () => const SizedBox(
+                          loading: () => SizedBox(
                             width: 24, height: 24, 
-                            child: CircularProgressIndicator(color: AppColors.secondaryDark, strokeWidth: 2)
+                            child: CircularProgressIndicator(color: habitColor, strokeWidth: 2)
                           ),
-                          error: (e, st) => Text('-', style: AppTextStyles.numberLarge.copyWith(color: AppColors.secondaryDark)),
+                          error: (e, st) => Text('-', style: AppTextStyles.numberLarge.copyWith(color: habitColor)),
                         ),
                         const SizedBox(height: 4),
                         Text('Konsistensi', style: AppTextStyles.bodyMedium),
@@ -231,7 +231,7 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                 if (logs.isEmpty) return const SizedBox.shrink();
                 return Column(
                   children: [
-                    RecentLogsSection(logs: logs),
+                    RecentLogsSection(logs: logs, colorHex: widget.habit.colorHex),
                     const SizedBox(height: 32),
                   ],
                 );

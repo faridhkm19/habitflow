@@ -1,5 +1,6 @@
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/habit_log_entity.dart';
+import '../../domain/entities/journal_entry_entity.dart';
 import '../../domain/repositories/habit_log_repository.dart';
 import '../datasources/habit_log_remote_datasource.dart';
 import '../models/habit_log_model.dart';
@@ -35,6 +36,36 @@ class HabitLogRepositoryImpl implements HabitLogRepository {
     try {
       final logs = await remoteDataSource.getLogsForHabit(habitId, fromDate, toDate);
       return Ok(logs);
+    } catch (e) {
+      return Err(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<List<HabitLogEntity>>> getLogsForDateRange(String userId, DateTime fromDate, DateTime toDate) async {
+    try {
+      final logs = await remoteDataSource.getLogsForDateRange(userId, fromDate, toDate);
+      return Ok(logs);
+    } catch (e) {
+      return Err(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<List<JournalEntryEntity>>> getJournalLogs(String userId) async {
+    try {
+      final logs = await remoteDataSource.getJournalLogs(userId);
+      return Ok(logs);
+    } catch (e) {
+      return Err(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<int>> getTotalCompletedCheckIns(String userId) async {
+    try {
+      final count = await remoteDataSource.getTotalCompletedCheckIns(userId);
+      return Ok(count);
     } catch (e) {
       return Err(ServerFailure(e.toString()));
     }

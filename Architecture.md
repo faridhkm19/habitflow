@@ -563,7 +563,7 @@ Berikut daftar pustaka utama yang direncanakan digunakan, sebagai referensi saat
 | fl_chart | Grafik & heatmap | UI |
 | flutter_local_notifications | Reminder lokal | Fitur |
 | image_picker | Upload foto profil | Fitur |
-| pdf & printing | Export laporan | Fitur |
+| ~~pdf & printing~~ | Export laporan *(Dibatalkan)* | Fitur |
 | intl | Format tanggal & lokal | Utility |
 | equatable | Perbandingan objek (entities) | Utility |
 | get_it (opsional) | Dependency injection | Arsitektur |
