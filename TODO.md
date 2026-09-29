@@ -154,7 +154,7 @@ Referensi utama yang wajib dibaca sebelum mengerjakan task apapun di bawah ini t
 - [✔] Definisikan ulang seluruh color token untuk mode gelap
 - [✔] Susun ThemeData terpisah untuk dark mode
 - [✔] Implementasikan toggle perpindahan tema di halaman Settings
-- [ ] Pastikan seluruh komponen (termasuk heatmap dan chart) tetap terbaca baik di dark mode
+- [✔] Pastikan seluruh komponen (termasuk heatmap dan chart) tetap terbaca baik di dark mode
 
 ---
 
