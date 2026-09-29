@@ -11,7 +11,9 @@ final getAchievementsUseCaseProvider = Provider<GetAchievementsUseCase>((ref) {
   return GetAchievementsUseCase(logRepository);
 });
 
-final achievementsProvider = FutureProvider<List<AchievementEntity>>((ref) async {
+final achievementsProvider = FutureProvider<List<AchievementEntity>>((
+  ref,
+) async {
   final authState = ref.watch(authStateProvider);
   final userId = authState.valueOrNull?.id;
   if (userId == null) return [];

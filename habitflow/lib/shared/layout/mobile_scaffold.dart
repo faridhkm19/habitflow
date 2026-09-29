@@ -5,10 +5,7 @@ import '../../../core/constants/app_text_styles.dart';
 class MobileScaffold extends StatelessWidget {
   final Widget child;
 
-  const MobileScaffold({
-    super.key,
-    required this.child,
-  });
+  const MobileScaffold({super.key, required this.child});
 
   int _calculateSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).matchedLocation;
@@ -121,7 +118,9 @@ class MobileScaffold extends StatelessWidget {
           vertical: 8,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? Theme.of(context).colorScheme.primaryContainer : Colors.transparent,
+          color: isSelected
+              ? Theme.of(context).colorScheme.primaryContainer
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(100),
         ),
         child: Row(
@@ -129,7 +128,9 @@ class MobileScaffold extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: isSelected ? Theme.of(context).colorScheme.onPrimaryContainer : Theme.of(context).colorScheme.onSurfaceVariant,
+              color: isSelected
+                  ? Theme.of(context).colorScheme.onPrimaryContainer
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
               size: 24,
             ),
             // Gunakan AnimatedSize atau manual control untuk menyembunyikan label saat tidak aktif jika mau

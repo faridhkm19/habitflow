@@ -24,7 +24,7 @@ class ThemeNotifier extends Notifier<ThemeMode> {
         }
       }
     });
-    
+
     // Set default theme from local cache synchronously
     final cachedPref = PreferencesService.instance.themePreference;
     return _parseThemeMode(cachedPref);
@@ -34,13 +34,13 @@ class ThemeNotifier extends Notifier<ThemeMode> {
     // Update local state for immediate feedback
     state = _parseThemeMode(pref);
     await PreferencesService.instance.setThemePreference(pref);
-    
+
     // Save to Supabase
     final user = ref.read(authStateProvider).valueOrNull;
     if (user != null) {
       final usecase = ref.read(updateThemePreferenceUseCaseProvider);
       await usecase(user.id, pref);
-      
+
       // Invalidate profile so next fetch gets updated data
       ref.invalidate(profileDataProvider);
     }

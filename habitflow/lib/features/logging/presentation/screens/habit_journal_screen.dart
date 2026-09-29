@@ -25,7 +25,10 @@ class HabitJournalScreen extends ConsumerWidget {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           onPressed: () => context.pop(),
         ),
       ),
@@ -42,11 +45,14 @@ class HabitJournalScreen extends ConsumerWidget {
 
                 if (groupedEntries.isEmpty) {
                   return const Center(
-                    child: Text('Tidak ada catatan yang sesuai dengan pencarian.'),
+                    child: Text(
+                      'Tidak ada catatan yang sesuai dengan pencarian.',
+                    ),
                   );
                 }
 
-                final dates = groupedEntries.keys.toList()..sort((a, b) => b.compareTo(a));
+                final dates = groupedEntries.keys.toList()
+                  ..sort((a, b) => b.compareTo(a));
 
                 return ListView.builder(
                   padding: const EdgeInsets.fromLTRB(20, 16, 20, 90),
@@ -59,17 +65,25 @@ class HabitJournalScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(bottom: 12, top: index == 0 ? 0 : 24),
+                          padding: EdgeInsets.only(
+                            bottom: 12,
+                            top: index == 0 ? 0 : 24,
+                          ),
                           child: Text(
                             _formatDate(date),
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
                                   fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
                                   letterSpacing: 0.5,
                                 ),
                           ),
                         ),
-                        ...dateEntries.map((entry) => _buildJournalCard(context, entry)),
+                        ...dateEntries.map(
+                          (entry) => _buildJournalCard(context, entry),
+                        ),
                       ],
                     );
                   },
@@ -90,14 +104,20 @@ class HabitJournalScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSearchBar(BuildContext context, WidgetRef ref, String currentQuery) {
+  Widget _buildSearchBar(
+    BuildContext context,
+    WidgetRef ref,
+    String currentQuery,
+  ) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outlineVariant,
+          ),
         ),
         child: TextField(
           controller: TextEditingController.fromValue(
@@ -106,11 +126,19 @@ class HabitJournalScreen extends ConsumerWidget {
               selection: TextSelection.collapsed(offset: currentQuery.length),
             ),
           ),
-          onChanged: (value) => ref.read(journalSearchQueryProvider.notifier).state = value,
+          onChanged: (value) =>
+              ref.read(journalSearchQueryProvider.notifier).state = value,
           decoration: InputDecoration(
             hintText: 'Cari catatan atau habit...',
-            hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 14),
-            prefixIcon: Icon(Icons.search_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
+            hintStyle: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 14,
+            ),
+            prefixIcon: Icon(
+              Icons.search_rounded,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              size: 20,
+            ),
             border: InputBorder.none,
             contentPadding: EdgeInsets.symmetric(vertical: 14),
           ),
@@ -142,16 +170,16 @@ class HabitJournalScreen extends ConsumerWidget {
             const SizedBox(height: 24),
             Text(
               'Belum ada catatan',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 12),
             Text(
               'Mulai check-in dengan mood atau catatan harian!',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -210,13 +238,12 @@ class HabitJournalScreen extends ConsumerWidget {
               Expanded(
                 child: Text(
                   entry.habitName,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),
-              if (moodIcon != null)
-                Icon(moodIcon, color: moodColor, size: 24),
+              if (moodIcon != null) Icon(moodIcon, color: moodColor, size: 24),
             ],
           ),
           if (entry.note != null && entry.note!.isNotEmpty) ...[
@@ -224,11 +251,11 @@ class HabitJournalScreen extends ConsumerWidget {
             Text(
               entry.note!,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    height: 1.4,
-                  ),
+                color: Theme.of(context).colorScheme.onSurface,
+                height: 1.4,
+              ),
             ),
-          ]
+          ],
         ],
       ),
     );

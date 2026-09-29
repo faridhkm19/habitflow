@@ -23,13 +23,13 @@ class JournalEntryEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        habitId,
-        logDate,
-        isCompleted,
-        mood,
-        note,
-        habitName,
-        habitIconName,
-        habitColorHex,
-      ];
+    habitId,
+    logDate,
+    isCompleted,
+    mood,
+    note,
+    habitName,
+    habitIconName,
+    habitColorHex,
+  ];
 }

@@ -22,7 +22,11 @@ class AuthHeader extends StatelessWidget {
                 color: AppColors.primary,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.bolt_rounded, color: Colors.white, size: 24),
+              child: const Icon(
+                Icons.bolt_rounded,
+                color: Colors.white,
+                size: 24,
+              ),
             ),
             const SizedBox(width: AppSpacing.sm),
             Text(
@@ -37,7 +41,9 @@ class AuthHeader extends StatelessWidget {
         const SizedBox(height: AppSpacing.xs),
         Text(
           'Build better days, one habit at a time.',
-          style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+          style: AppTextStyles.bodySmall.copyWith(
+            color: AppColors.textSecondary,
+          ),
         ),
       ],
     );

@@ -5,5 +5,8 @@ abstract interface class ProfileRepository {
   Future<Result<ProfileEntity>> getProfile(String userId);
   Future<Result<void>> updateDisplayName(String userId, String name);
   Future<Result<String>> uploadAvatar(String userId, String filePath);
-  Future<Result<void>> updateThemePreference(String userId, String themePreference);
+  Future<Result<void>> updateThemePreference(
+    String userId,
+    String themePreference,
+  );
 }

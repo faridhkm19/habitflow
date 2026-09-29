@@ -23,13 +23,13 @@ class HabitLogEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        habitId,
-        userId,
-        logDate,
-        isCompleted,
-        mood,
-        note,
-        createdAt,
-      ];
+    id,
+    habitId,
+    userId,
+    logDate,
+    isCompleted,
+    mood,
+    note,
+    createdAt,
+  ];
 }

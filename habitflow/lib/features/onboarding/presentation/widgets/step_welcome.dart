@@ -7,10 +7,7 @@ import '../../../../core/widgets/app_button.dart';
 class StepWelcome extends StatelessWidget {
   final VoidCallback onNext;
 
-  const StepWelcome({
-    super.key,
-    required this.onNext,
-  });
+  const StepWelcome({super.key, required this.onNext});
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +40,13 @@ class StepWelcome extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             'Bangun kebiasaan baik,\nsatu langkah kecil setiap harinya.',
-            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.textSecondary,
+            ),
             textAlign: TextAlign.center,
           ),
           const Spacer(),
-          AppButton(
-            label: 'Mulai',
-            onPressed: onNext,
-            isFullWidth: true,
-          ),
+          AppButton(label: 'Mulai', onPressed: onNext, isFullWidth: true),
         ],
       ),
     );

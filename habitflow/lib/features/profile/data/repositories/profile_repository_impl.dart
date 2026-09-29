@@ -39,7 +39,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<Result<void>> updateThemePreference(String userId, String themePreference) async {
+  Future<Result<void>> updateThemePreference(
+    String userId,
+    String themePreference,
+  ) async {
     try {
       await _remoteDataSource.updateThemePreference(userId, themePreference);
       return const Ok(null);

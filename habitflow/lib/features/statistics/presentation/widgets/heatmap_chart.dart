@@ -45,8 +45,19 @@ class HeatmapChart extends StatelessWidget {
     // falling on a Sunday — in that case col 0 contains Dec 28–Jan 3, so the
     // month label for Jan goes on col 1 when Jan 1 falls on it).
     const monthNames = [
-      '', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
-      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+      '',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'Mei',
+      'Jun',
+      'Jul',
+      'Agu',
+      'Sep',
+      'Okt',
+      'Nov',
+      'Des',
     ];
 
     final List<({String label, double offset})> monthLabels = [];
@@ -85,7 +96,13 @@ class HeatmapChart extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     for (final day in [
-                      'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'
+                      'Sen',
+                      'Sel',
+                      'Rab',
+                      'Kam',
+                      'Jum',
+                      'Sab',
+                      'Min',
                     ])
                       SizedBox(
                         height: colWidth,
@@ -94,7 +111,9 @@ class HeatmapChart extends StatelessWidget {
                           child: Text(
                             day,
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                               fontSize: 10,
                               height: 1.0,
                             ),
@@ -123,7 +142,9 @@ class HeatmapChart extends StatelessWidget {
                             child: Text(
                               m.label,
                               style: AppTextStyles.bodySmall.copyWith(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
                                 fontSize: 10,
                                 height: 1.0,
                               ),
@@ -152,7 +173,10 @@ class HeatmapChart extends StatelessWidget {
                             if (beforeYear || afterToday) {
                               return const Padding(
                                 padding: EdgeInsets.only(bottom: cellGap),
-                                child: SizedBox(width: cellSize, height: cellSize),
+                                child: SizedBox(
+                                  width: cellSize,
+                                  height: cellSize,
+                                ),
                               );
                             }
 
@@ -169,9 +193,13 @@ class HeatmapChart extends StatelessWidget {
                             if (status == true) {
                               cellColor = activeColor;
                             } else if (status == false) {
-                              cellColor = Theme.of(context).colorScheme.surfaceContainerHighest; // neutralMissed
+                              cellColor = Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHighest; // neutralMissed
                             } else {
-                              cellColor = Theme.of(context).colorScheme.outlineVariant; // not scheduled / no data
+                              cellColor = Theme.of(context)
+                                  .colorScheme
+                                  .outlineVariant; // not scheduled / no data
                             }
 
                             return Padding(

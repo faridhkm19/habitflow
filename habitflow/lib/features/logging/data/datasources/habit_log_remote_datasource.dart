@@ -5,8 +5,16 @@ import '../models/journal_entry_model.dart';
 abstract class HabitLogRemoteDataSource {
   Future<void> upsertLog(HabitLogModel log);
   Future<List<HabitLogModel>> getLogsForDate(String userId, DateTime date);
-  Future<List<HabitLogModel>> getLogsForHabit(String habitId, DateTime fromDate, DateTime toDate);
-  Future<List<HabitLogModel>> getLogsForDateRange(String userId, DateTime fromDate, DateTime toDate);
+  Future<List<HabitLogModel>> getLogsForHabit(
+    String habitId,
+    DateTime fromDate,
+    DateTime toDate,
+  );
+  Future<List<HabitLogModel>> getLogsForDateRange(
+    String userId,
+    DateTime fromDate,
+    DateTime toDate,
+  );
   Future<List<JournalEntryModel>> getJournalLogs(String userId);
   Future<int> getTotalCompletedCheckIns(String userId);
 }
@@ -24,16 +32,18 @@ class HabitLogRemoteDataSourceImpl implements HabitLogRemoteDataSource {
       json.remove('id'); // Biar Supabase generate jika baru
     }
 
-    await supabaseClient.from('habit_logs').upsert(
-      json,
-      onConflict: 'habit_id,log_date',
-    );
+    await supabaseClient
+        .from('habit_logs')
+        .upsert(json, onConflict: 'habit_id,log_date');
   }
 
   @override
-  Future<List<HabitLogModel>> getLogsForDate(String userId, DateTime date) async {
+  Future<List<HabitLogModel>> getLogsForDate(
+    String userId,
+    DateTime date,
+  ) async {
     final String dateString = date.toIso8601String().split('T').first;
-    
+
     final response = await supabaseClient
         .from('habit_logs')
         .select()
@@ -45,10 +55,14 @@ class HabitLogRemoteDataSourceImpl implements HabitLogRemoteDataSource {
   }
 
   @override
-  Future<List<HabitLogModel>> getLogsForHabit(String habitId, DateTime fromDate, DateTime toDate) async {
+  Future<List<HabitLogModel>> getLogsForHabit(
+    String habitId,
+    DateTime fromDate,
+    DateTime toDate,
+  ) async {
     final String fromDateString = fromDate.toIso8601String().split('T').first;
     final String toDateString = toDate.toIso8601String().split('T').first;
-    
+
     final response = await supabaseClient
         .from('habit_logs')
         .select()
@@ -62,10 +76,14 @@ class HabitLogRemoteDataSourceImpl implements HabitLogRemoteDataSource {
   }
 
   @override
-  Future<List<HabitLogModel>> getLogsForDateRange(String userId, DateTime fromDate, DateTime toDate) async {
+  Future<List<HabitLogModel>> getLogsForDateRange(
+    String userId,
+    DateTime fromDate,
+    DateTime toDate,
+  ) async {
     final String fromDateString = fromDate.toIso8601String().split('T').first;
     final String toDateString = toDate.toIso8601String().split('T').first;
-    
+
     final response = await supabaseClient
         .from('habit_logs')
         .select()
@@ -82,7 +100,9 @@ class HabitLogRemoteDataSourceImpl implements HabitLogRemoteDataSource {
   Future<List<JournalEntryModel>> getJournalLogs(String userId) async {
     final response = await supabaseClient
         .from('habit_logs')
-        .select('habit_id, log_date, is_completed, mood, note, habits!inner(name, icon_name, color_hex)')
+        .select(
+          'habit_id, log_date, is_completed, mood, note, habits!inner(name, icon_name, color_hex)',
+        )
         .eq('user_id', userId)
         .or('mood.not.is.null,note.not.is.null')
         .order('log_date', ascending: false)
@@ -99,7 +119,7 @@ class HabitLogRemoteDataSourceImpl implements HabitLogRemoteDataSource {
         .count(CountOption.exact)
         .eq('user_id', userId)
         .eq('is_completed', true);
-        
+
     return count;
   }
 }

@@ -24,13 +24,13 @@ class AchievementEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        description,
-        icon,
-        color,
-        backgroundColor,
-        isUnlocked,
-        unlockedAt,
-      ];
+    id,
+    title,
+    description,
+    icon,
+    color,
+    backgroundColor,
+    isUnlocked,
+    unlockedAt,
+  ];
 }

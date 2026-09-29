@@ -43,10 +43,10 @@ class _DailyProgressRingState extends State<DailyProgressRing>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.progress != widget.progress) {
       final currentValue = _animation.value;
-      _animation = Tween<double>(
-        begin: currentValue,
-        end: widget.progress,
-      ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOutCubic));
+      _animation = Tween<double>(begin: currentValue, end: widget.progress)
+          .animate(
+            CurvedAnimation(parent: _controller, curve: Curves.easeInOutCubic),
+          );
       _controller.forward(from: 0.0);
     }
   }
@@ -63,10 +63,10 @@ class _DailyProgressRingState extends State<DailyProgressRing>
       animation: _animation,
       builder: (context, _) {
         final isComplete = widget.progress >= 1.0;
-        
+
         // Sesuaikan ukuran font persentase berdasarkan ukuran ring
-        final textStyle = widget.size >= 100 
-            ? AppTextStyles.numberLarge 
+        final textStyle = widget.size >= 100
+            ? AppTextStyles.numberLarge
             : Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Outfit',
@@ -78,15 +78,23 @@ class _DailyProgressRingState extends State<DailyProgressRing>
           child: CustomPaint(
             painter: _RingPainter(
               progress: _animation.value,
-              ringColor: isComplete ? AppColors.secondaryDark : AppColors.primary,
-              trackColor: AppColors.neutralMissed.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.3 : 1.0),
+              ringColor: isComplete
+                  ? AppColors.secondaryDark
+                  : AppColors.primary,
+              trackColor: AppColors.neutralMissed.withValues(
+                alpha: Theme.of(context).brightness == Brightness.dark
+                    ? 0.3
+                    : 1.0,
+              ),
               strokeWidth: widget.strokeWidth,
             ),
             child: Center(
               child: Text(
                 '${(_animation.value * 100).round()}%',
                 style: textStyle?.copyWith(
-                  color: isComplete ? AppColors.secondaryDark : AppColors.primary,
+                  color: isComplete
+                      ? AppColors.secondaryDark
+                      : AppColors.primary,
                 ),
               ),
             ),
@@ -145,5 +153,7 @@ class _RingPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _RingPainter old) =>
-      old.progress != progress || old.ringColor != ringColor || old.trackColor != trackColor;
+      old.progress != progress ||
+      old.ringColor != ringColor ||
+      old.trackColor != trackColor;
 }

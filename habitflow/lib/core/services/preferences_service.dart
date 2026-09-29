@@ -13,13 +13,15 @@ class PreferencesService {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  bool get notificationsEnabled => _prefs.getBool(_keyNotificationsEnabled) ?? true;
+  bool get notificationsEnabled =>
+      _prefs.getBool(_keyNotificationsEnabled) ?? true;
 
   Future<void> setNotificationsEnabled(bool value) async {
     await _prefs.setBool(_keyNotificationsEnabled, value);
   }
 
-  String get themePreference => _prefs.getString(_keyThemePreference) ?? 'system';
+  String get themePreference =>
+      _prefs.getString(_keyThemePreference) ?? 'system';
 
   Future<void> setThemePreference(String value) async {
     await _prefs.setString(_keyThemePreference, value);

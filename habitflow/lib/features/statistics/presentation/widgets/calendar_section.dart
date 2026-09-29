@@ -28,9 +28,18 @@ class CalendarSection extends ConsumerWidget {
     final habitColor = ColorExtension.fromHex(habit.colorHex);
 
     // Calculate days in month
-    final daysInMonth = DateTime(state.currentMonth.year, state.currentMonth.month + 1, 0).day;
-    final firstDayOfMonth = DateTime(state.currentMonth.year, state.currentMonth.month, 1);
-    final offset = firstDayOfMonth.weekday - 1; // weekday 1(Mon)..7(Sun) → offset 0..6
+    final daysInMonth = DateTime(
+      state.currentMonth.year,
+      state.currentMonth.month + 1,
+      0,
+    ).day;
+    final firstDayOfMonth = DateTime(
+      state.currentMonth.year,
+      state.currentMonth.month,
+      1,
+    );
+    final offset =
+        firstDayOfMonth.weekday - 1; // weekday 1(Mon)..7(Sun) → offset 0..6
     final today = DateTime.now();
 
     return Column(
@@ -44,10 +53,15 @@ class CalendarSection extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 shape: BoxShape.circle,
-                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
               ),
               child: IconButton(
-                icon: Icon(Icons.chevron_left, color: Theme.of(context).colorScheme.onSurface),
+                icon: Icon(
+                  Icons.chevron_left,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 onPressed: () => notifier.prevMonth(),
                 iconSize: 20,
                 constraints: const BoxConstraints(),
@@ -69,10 +83,15 @@ class CalendarSection extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 shape: BoxShape.circle,
-                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
               ),
               child: IconButton(
-                icon: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurface),
+                icon: Icon(
+                  Icons.chevron_right,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 onPressed: () => notifier.nextMonth(),
                 iconSize: 20,
                 constraints: const BoxConstraints(),
@@ -86,16 +105,18 @@ class CalendarSection extends ConsumerWidget {
         // ── Nama Hari ─────────────────────────────────────────────────────────
         Row(
           children: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min']
-              .map((day) => Expanded(
-                    child: Text(
-                      day,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontWeight: FontWeight.bold,
-                      ),
+              .map(
+                (day) => Expanded(
+                  child: Text(
+                    day,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ))
+                  ),
+                ),
+              )
               .toList(),
         ),
         const SizedBox(height: 12),
@@ -135,20 +156,33 @@ class CalendarSection extends ConsumerWidget {
               if (index < offset) return const SizedBox.shrink();
 
               final day = index - offset + 1;
-              final date = DateTime(state.currentMonth.year, state.currentMonth.month, day);
-              final isToday = date.year == today.year &&
+              final date = DateTime(
+                state.currentMonth.year,
+                state.currentMonth.month,
+                day,
+              );
+              final isToday =
+                  date.year == today.year &&
                   date.month == today.month &&
                   date.day == today.day;
               final isFuture = date.isAfter(today) && !isToday;
               final isBeforeCreation = date.isBefore(
-                DateTime(habit.createdAt.year, habit.createdAt.month, habit.createdAt.day),
+                DateTime(
+                  habit.createdAt.year,
+                  habit.createdAt.month,
+                  habit.createdAt.day,
+                ),
               );
 
               final isScheduled = isScheduledForToday(habit, date);
-              final log = state.logs.where((l) =>
-                  l.logDate.year == date.year &&
-                  l.logDate.month == date.month &&
-                  l.logDate.day == date.day).firstOrNull;
+              final log = state.logs
+                  .where(
+                    (l) =>
+                        l.logDate.year == date.year &&
+                        l.logDate.month == date.month &&
+                        l.logDate.day == date.day,
+                  )
+                  .firstOrNull;
               final isCompleted = log != null && log.isCompleted;
 
               Color cellColor;
@@ -156,16 +190,22 @@ class CalendarSection extends ConsumerWidget {
 
               if (isBeforeCreation || isFuture) {
                 cellColor = Colors.transparent;
-                textColor = Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.4);
+                textColor = Theme.of(
+                  context,
+                ).colorScheme.onSurfaceVariant.withValues(alpha: 0.4);
               } else if (isCompleted) {
                 // Gunakan colorHex habit — unik per habit, konsisten dengan ikon
                 cellColor = habitColor;
                 textColor = Theme.of(context).colorScheme.onSurface;
               } else if (!isScheduled) {
-                cellColor = Theme.of(context).colorScheme.outlineVariant; // tidak terjadwal
+                cellColor = Theme.of(
+                  context,
+                ).colorScheme.outlineVariant; // tidak terjadwal
                 textColor = Theme.of(context).colorScheme.onSurfaceVariant;
               } else {
-                cellColor = Theme.of(context).colorScheme.surfaceContainerHighest; // terjadwal tapi terlewat
+                cellColor = Theme.of(context)
+                    .colorScheme
+                    .surfaceContainerHighest; // terjadwal tapi terlewat
                 textColor = Theme.of(context).colorScheme.onSurfaceVariant;
               }
 
@@ -173,7 +213,9 @@ class CalendarSection extends ConsumerWidget {
                 decoration: BoxDecoration(
                   color: cellColor,
                   borderRadius: BorderRadius.circular(8), // radius.sm
-                  border: isToday ? Border.all(color: AppColors.primary, width: 2) : null,
+                  border: isToday
+                      ? Border.all(color: AppColors.primary, width: 2)
+                      : null,
                 ),
                 alignment: Alignment.center,
                 child: Stack(
@@ -183,7 +225,9 @@ class CalendarSection extends ConsumerWidget {
                       '$day',
                       style: AppTextStyles.bodyMedium.copyWith(
                         color: textColor,
-                        fontWeight: isToday || isCompleted ? FontWeight.bold : FontWeight.normal,
+                        fontWeight: isToday || isCompleted
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                     ),
                     if (isToday && !isCompleted)
@@ -212,15 +256,16 @@ class CalendarSection extends ConsumerWidget {
           children: [
             _LegendDot(color: habitColor, label: 'Selesai'),
             const SizedBox(width: 24),
-            _LegendDot(color: Theme.of(context).colorScheme.surfaceContainerHighest, label: 'Terlewat'),
+            _LegendDot(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              label: 'Terlewat',
+            ),
           ],
         ),
-
       ],
     );
   }
 }
-
 
 class _LegendDot extends StatelessWidget {
   final Color color;
@@ -244,7 +289,9 @@ class _LegendDot extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           label,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.textSecondary,
+          ),
         ),
       ],
     );

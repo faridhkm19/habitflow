@@ -30,8 +30,6 @@ Future<void> main() async {
 
   runApp(
     // ProviderScope is the root Riverpod container — required for all providers
-    const ProviderScope(
-      child: HabitFlowApp(),
-    ),
+    const ProviderScope(child: HabitFlowApp()),
   );
 }

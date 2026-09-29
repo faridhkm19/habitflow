@@ -19,6 +19,8 @@ import '../../features/profile/presentation/providers/profile_provider.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/profile/presentation/screens/edit_profile_screen.dart';
 import '../../features/profile/presentation/screens/security_screen.dart';
+import '../../features/profile/presentation/screens/change_email_screen.dart';
+import '../../features/profile/presentation/screens/change_password_screen.dart';
 import '../../features/profile/presentation/screens/achievements_screen.dart';
 import '../../features/logging/presentation/screens/habit_journal_screen.dart';
 import '../../shared/layout/mobile_scaffold.dart';
@@ -84,27 +86,51 @@ GoRouter createAppRouter(Ref ref) {
       }
 
       // 2. User sudah onboarding → jangan biarkan kembali ke halaman auth/onboarding
-      if (isOnboarded && (isPublicRoute || location == AppRoutes.guidedSetup || location == AppRoutes.splash)) {
+      if (isOnboarded &&
+          (isPublicRoute ||
+              location == AppRoutes.guidedSetup ||
+              location == AppRoutes.splash)) {
         return AppRoutes.home;
       }
 
       return null; // biarkan jalan
     },
     routes: [
-      GoRoute(path: AppRoutes.splash, builder: (context, state) => const SplashScreen()),
-      GoRoute(path: AppRoutes.login, builder: (context, state) => const LoginScreen()),
-      GoRoute(path: AppRoutes.register, builder: (context, state) => const RegisterScreen()),
-      GoRoute(path: AppRoutes.forgotPassword, builder: (context, state) => const ForgotPasswordScreen()),
-      GoRoute(path: AppRoutes.guidedSetup, builder: (context, state) => const GuidedSetupScreen()),
+      GoRoute(
+        path: AppRoutes.splash,
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.login,
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.register,
+        builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.forgotPassword,
+        builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.guidedSetup,
+        builder: (context, state) => const GuidedSetupScreen(),
+      ),
       ShellRoute(
         builder: (context, state, child) => MobileScaffold(child: child),
         routes: [
-          GoRoute(path: AppRoutes.home, builder: (context, state) => const HomeScreen()),
+          GoRoute(
+            path: AppRoutes.home,
+            builder: (context, state) => const HomeScreen(),
+          ),
           GoRoute(
             path: AppRoutes.habits,
             builder: (context, state) => const HabitsListScreen(),
             routes: [
-              GoRoute(path: 'add', builder: (context, state) => const AddHabitScreen()),
+              GoRoute(
+                path: 'add',
+                builder: (context, state) => const AddHabitScreen(),
+              ),
               GoRoute(
                 path: ':id',
                 builder: (context, state) {
@@ -138,6 +164,16 @@ GoRouter createAppRouter(Ref ref) {
               GoRoute(
                 path: 'security',
                 builder: (context, state) => const SecurityScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'change-email',
+                    builder: (context, state) => const ChangeEmailScreen(),
+                  ),
+                  GoRoute(
+                    path: 'change-password',
+                    builder: (context, state) => const ChangePasswordScreen(),
+                  ),
+                ],
               ),
               GoRoute(
                 path: 'journal',

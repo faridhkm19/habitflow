@@ -18,7 +18,9 @@ import 'habit_journal_provider.dart';
 
 // ── Providers untuk logging ───────────────────────────────────────────────────
 
-final habitLogRemoteDataSourceProvider = Provider<HabitLogRemoteDataSource>((ref) {
+final habitLogRemoteDataSourceProvider = Provider<HabitLogRemoteDataSource>((
+  ref,
+) {
   return HabitLogRemoteDataSourceImpl(supabaseClient: Supabase.instance.client);
 });
 
@@ -99,10 +101,7 @@ class HomeNotifier extends AsyncNotifier<HomeState> {
       }
     }
 
-    return HomeState(
-      todayHabits: todayHabits,
-      logsMap: logsMap,
-    );
+    return HomeState(todayHabits: todayHabits, logsMap: logsMap);
   }
 
   Future<void> refresh() async {
@@ -146,7 +145,9 @@ class HomeNotifier extends AsyncNotifier<HomeState> {
 
     if (result.isErr) {
       // Rollback jika gagal
-      final rollbackMap = Map<String, HabitLogEntity?>.from(currentState.logsMap);
+      final rollbackMap = Map<String, HabitLogEntity?>.from(
+        currentState.logsMap,
+      );
       state = AsyncValue.data(currentState.copyWith(logsMap: rollbackMap));
       // Lempar error agar UI bisa tampilkan SnackBar
       throw result.failureOrNull?.message ?? 'Gagal menyimpan. Coba lagi.';

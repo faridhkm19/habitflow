@@ -47,7 +47,9 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
 
   Future<void> _handleSave() async {
     setState(() => _isSaving = true);
-    final note = _noteController.text.trim().isEmpty ? null : _noteController.text.trim();
+    final note = _noteController.text.trim().isEmpty
+        ? null
+        : _noteController.text.trim();
     try {
       await widget.onSave(_selectedMood, note);
     } finally {
@@ -92,12 +94,16 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
           // ── Header ─────────────────────────────────────────────────────────
           Text(
             widget.habitName,
-            style: AppTextStyles.h2.copyWith(color: Theme.of(context).colorScheme.onSurface),
+            style: AppTextStyles.h2.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             'Bagaimana perasaanmu setelah ini?',
-            style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 24),
 
@@ -110,24 +116,30 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
                 label: 'Semangat',
                 value: 'good',
                 selected: _selectedMood == 'good',
-                onTap: () => setState(() =>
-                    _selectedMood = _selectedMood == 'good' ? null : 'good'),
+                onTap: () => setState(
+                  () => _selectedMood = _selectedMood == 'good' ? null : 'good',
+                ),
               ),
               _MoodOption(
                 emoji: '😐',
                 label: 'Biasa',
                 value: 'neutral',
                 selected: _selectedMood == 'neutral',
-                onTap: () => setState(() =>
-                    _selectedMood = _selectedMood == 'neutral' ? null : 'neutral'),
+                onTap: () => setState(
+                  () => _selectedMood = _selectedMood == 'neutral'
+                      ? null
+                      : 'neutral',
+                ),
               ),
               _MoodOption(
                 emoji: '😔',
                 label: 'Lelah',
                 value: 'tired',
                 selected: _selectedMood == 'tired',
-                onTap: () => setState(() =>
-                    _selectedMood = _selectedMood == 'tired' ? null : 'tired'),
+                onTap: () => setState(
+                  () =>
+                      _selectedMood = _selectedMood == 'tired' ? null : 'tired',
+                ),
               ),
             ],
           ),
@@ -147,26 +159,42 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
             maxLength: 100,
             maxLines: 2,
             inputFormatters: [LengthLimitingTextInputFormatter(100)],
-            style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurface),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             decoration: InputDecoration(
               hintText: 'Tambahkan catatan...',
-              hintStyle: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              hintStyle: AppTextStyles.bodyMedium.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
               filled: true,
               fillColor: Theme.of(context).scaffoldBackgroundColor,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1.5,
+                ),
               ),
-              counterStyle: AppTextStyles.bodySmall.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              counterStyle: AppTextStyles.bodySmall.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -179,7 +207,9 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
                   onPressed: _isSaving ? null : _handleSkip,
                   child: Text(
                     'Lewati',
-                    style: AppTextStyles.button.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    style: AppTextStyles.button.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
               ),
@@ -246,10 +276,14 @@ class _MoodOption extends StatelessWidget {
         curve: Curves.easeOut,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: selected ? Theme.of(context).colorScheme.primaryContainer : Colors.transparent,
+          color: selected
+              ? Theme.of(context).colorScheme.primaryContainer
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outlineVariant,
+            color: selected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.outlineVariant,
             width: selected ? 2.0 : 1.5,
           ),
         ),
@@ -260,7 +294,9 @@ class _MoodOption extends StatelessWidget {
             Text(
               label,
               style: AppTextStyles.bodySmall.copyWith(
-                color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant,
+                color: selected
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.onSurfaceVariant,
                 fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
               ),
             ),

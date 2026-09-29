@@ -15,35 +15,40 @@ final calculateStreakUseCaseProvider = Provider<CalculateStreakUseCase>((ref) {
   );
 });
 
-final calculateConsistencyScoreUseCaseProvider = Provider<CalculateConsistencyScoreUseCase>((ref) {
-  final logRepo = ref.watch(habitLogRepositoryProvider);
-  return CalculateConsistencyScoreUseCase(
-    logRepository: logRepo,
-  );
-});
+final calculateConsistencyScoreUseCaseProvider =
+    Provider<CalculateConsistencyScoreUseCase>((ref) {
+      final logRepo = ref.watch(habitLogRepositoryProvider);
+      return CalculateConsistencyScoreUseCase(logRepository: logRepo);
+    });
 
-final currentStreakProvider = FutureProvider.family<int, String>((ref, habitId) async {
+final currentStreakProvider = FutureProvider.family<int, String>((
+  ref,
+  habitId,
+) async {
   // Re-evaluate when logs are added/removed (watch homeProvider)
   ref.watch(homeProvider);
-  
+
   final habits = await ref.watch(habitsProvider.future);
   final habit = habits.firstWhere((h) => h.id == habitId);
-  
+
   final useCase = ref.watch(calculateStreakUseCaseProvider);
   final result = await useCase(habit);
-  
+
   return result.valueOrNull ?? 0;
 });
 
-final consistencyScoreProvider = FutureProvider.family<double, String>((ref, habitId) async {
+final consistencyScoreProvider = FutureProvider.family<double, String>((
+  ref,
+  habitId,
+) async {
   // Re-evaluate when logs are added/removed (watch homeProvider)
   ref.watch(homeProvider);
-  
+
   final habits = await ref.watch(habitsProvider.future);
   final habit = habits.firstWhere((h) => h.id == habitId);
-  
+
   final useCase = ref.watch(calculateConsistencyScoreUseCaseProvider);
   final result = await useCase(habit);
-  
+
   return result.valueOrNull ?? 0.0;
 });

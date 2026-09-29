@@ -32,10 +32,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
-    await ref.read(authNotifierProvider.notifier).signIn(
-          email: _emailCtrl.text.trim(),
-          password: _passwordCtrl.text,
-        );
+    await ref
+        .read(authNotifierProvider.notifier)
+        .signIn(email: _emailCtrl.text.trim(), password: _passwordCtrl.text);
   }
 
   @override
@@ -76,11 +75,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 const SizedBox(height: AppSpacing.xxl),
 
-                Text('Masuk', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                Text(
+                  'Masuk',
+                  style: AppTextStyles.h1.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'Selamat datang kembali',
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
                 ),
 
                 const SizedBox(height: AppSpacing.xl),
@@ -134,7 +140,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   children: [
                     Text(
                       'Belum punya akun? ',
-                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                     GestureDetector(
                       onTap: () => context.go('/register'),
@@ -156,5 +164,3 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 }
-
-

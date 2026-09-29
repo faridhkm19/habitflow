@@ -26,6 +26,7 @@ import '../../domain/usecases/sign_up_usecase.dart';
 import '../../domain/usecases/sign_in_usecase.dart';
 import '../../domain/usecases/sign_out_usecase.dart';
 import '../../domain/usecases/reset_password_usecase.dart';
+import '../../domain/usecases/update_email_usecase.dart';
 import '../../../../core/errors/failures.dart';
 
 // ── Dependency Providers ─────────────────────────────────────────────────────
@@ -60,6 +61,11 @@ final resetPasswordUseCaseProvider = Provider<ResetPasswordUseCase>((ref) {
   return ResetPasswordUseCase(ref.watch(authRepositoryProvider));
 });
 
+/// Menyediakan [UpdateEmailUseCase].
+final updateEmailUseCaseProvider = Provider<UpdateEmailUseCase>((ref) {
+  return UpdateEmailUseCase(ref.watch(authRepositoryProvider));
+});
+
 // ── State Providers ──────────────────────────────────────────────────────────
 
 /// Stream status autentikasi — digunakan oleh route guard di app_router.dart.
@@ -68,6 +74,15 @@ final resetPasswordUseCaseProvider = Provider<ResetPasswordUseCase>((ref) {
 /// Menggunakan StreamProvider agar router otomatis bereaksi saat login/logout.
 final authStateProvider = StreamProvider<UserEntity?>((ref) {
   return ref.watch(authRepositoryProvider).authStateChanges;
+});
+
+/// Email pengguna yang sedang aktif, dapat di-update secara manual.
+///
+/// Digunakan untuk memastikan UI langsung menampilkan email terbaru setelah
+/// `updateEmail()` berhasil, tanpa bergantung pada timing stream Supabase.
+final currentEmailProvider = StateProvider<String>((ref) {
+  // Nilai awal diambil dari stream auth. Jika stream belum ada nilainya, kosong.
+  return ref.watch(authStateProvider).valueOrNull?.email ?? '';
 });
 
 // ── Auth Notifier ────────────────────────────────────────────────────────────
@@ -112,10 +127,7 @@ class AuthNotifier extends Notifier<AuthState> {
   AuthState build() => const AuthState();
 
   /// Sign in dengan email dan password.
-  Future<void> signIn({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> signIn({required String email, required String password}) async {
     state = state.copyWith(isLoading: true, clearError: true);
 
     final result = await ref.read(signInUseCaseProvider)(
@@ -127,18 +139,12 @@ class AuthNotifier extends Notifier<AuthState> {
       case Ok():
         state = const AuthState(isSuccess: true);
       case Err(:final failure):
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: failure.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
     }
   }
 
   /// Sign up dengan email dan password.
-  Future<void> signUp({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> signUp({required String email, required String password}) async {
     state = state.copyWith(isLoading: true, clearError: true);
 
     final result = await ref.read(signUpUseCaseProvider)(
@@ -150,10 +156,7 @@ class AuthNotifier extends Notifier<AuthState> {
       case Ok():
         state = const AuthState(isSuccess: true);
       case Err(:final failure):
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: failure.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
     }
   }
 
@@ -167,10 +170,7 @@ class AuthNotifier extends Notifier<AuthState> {
       case Ok():
         state = const AuthState();
       case Err(:final failure):
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: failure.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
     }
   }
 
@@ -178,17 +178,82 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> updatePassword({required String newPassword}) async {
     state = state.copyWith(isLoading: true, clearError: true);
 
-    final result = await ref
-        .read(resetPasswordUseCaseProvider)(newPassword: newPassword);
+    final result = await ref.read(resetPasswordUseCaseProvider)(
+      newPassword: newPassword,
+    );
 
     switch (result) {
       case Ok():
         state = const AuthState(isSuccess: true);
       case Err(:final failure):
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: failure.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
+    }
+  }
+
+  /// Update email untuk user yang sedang login dengan memverifikasi password
+  Future<void> updateEmail({
+    required String newEmail,
+    required String currentPassword,
+  }) async {
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    final result = await ref.read(updateEmailUseCaseProvider)(
+      newEmail: newEmail,
+      currentPassword: currentPassword,
+    );
+
+    switch (result) {
+      case Ok():
+        state = const AuthState(isSuccess: true);
+        // Set email baru langsung ke currentEmailProvider agar UI langsung rebuild
+        // tanpa menunggu event dari stream Supabase (yang bisa tertunda).
+        ref.read(currentEmailProvider.notifier).state = newEmail;
+      case Err(:final failure):
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
+    }
+  }
+
+  /// Update password untuk user yang sedang login dengan memverifikasi password lama
+  Future<void> updatePasswordWithVerification({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    // Ambil email user aktif untuk re-auth
+    final user = ref.read(authStateProvider).valueOrNull;
+    if (user == null || user.email.isEmpty) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'Sesi tidak valid. Silakan login kembali.',
+      );
+      return;
+    }
+
+    // 1. Verifikasi (Re-auth)
+    final signInResult = await ref.read(signInUseCaseProvider)(
+      email: user.email,
+      password: currentPassword,
+    );
+
+    switch (signInResult) {
+      case Err(:final failure):
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
+        return;
+      case Ok():
+        break; // Lanjut ke langkah 2
+    }
+
+    // 2. Update password
+    final updateResult = await ref.read(resetPasswordUseCaseProvider)(
+      newPassword: newPassword,
+    );
+
+    switch (updateResult) {
+      case Ok():
+        state = const AuthState(isSuccess: true);
+      case Err(:final failure):
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
     }
   }
 

@@ -20,12 +20,6 @@ import '../../../../core/errors/failures.dart';
 /// yang eksplisit tanpa exception propagation ke presentation layer.
 abstract class AuthRepository {
   /// Mendaftarkan user baru dengan email dan password.
-  ///
-  /// Mengembalikan [UserEntity] jika berhasil, atau [Failure] jika gagal
-  /// (misal: email sudah terdaftar, format tidak valid, dll).
-  ///
-  /// Catatan: email bersifat simulasi (tidak wajib email asli — PRD §6 FR-1).
-  /// Fitur "Confirm email" dinonaktifkan di Supabase agar akun langsung aktif.
   Future<Result<UserEntity>> signUp({
     required String email,
     required String password,
@@ -48,6 +42,12 @@ abstract class AuthRepository {
   /// pengiriman email verifikasi. User yang masih punya sesi aktif dapat
   /// mengubah password-nya lewat form di aplikasi.
   Future<Result<void>> updatePassword({required String newPassword});
+
+  /// Mengubah email pengguna yang sedang aktif dengan memverifikasi password saat ini.
+  Future<Result<void>> updateEmail({
+    required String newEmail,
+    required String currentPassword,
+  });
 
   /// Mengambil user yang sedang login dari sesi lokal Supabase.
   ///

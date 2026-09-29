@@ -124,7 +124,9 @@ final List<HabitTemplate> onboardingTemplates = [
         colorHex: '#6C9BEB',
         category: 'learning',
         frequencyType: 'specific_days',
-        frequencyValue: {'days': ['mon', 'wed', 'fri']},
+        frequencyValue: {
+          'days': ['mon', 'wed', 'fri'],
+        },
       ),
       HabitTemplateItem(
         name: 'Tanpa Sosmed 2 Jam',
@@ -197,7 +199,9 @@ final List<HabitTemplate> onboardingTemplates = [
         colorHex: '#4E55E0',
         category: 'health',
         frequencyType: 'specific_days',
-        frequencyValue: {'days': ['mon', 'wed', 'fri']},
+        frequencyValue: {
+          'days': ['mon', 'wed', 'fri'],
+        },
       ),
       HabitTemplateItem(
         name: 'Peregangan / Stretching',
@@ -234,7 +238,9 @@ final List<HabitTemplate> onboardingTemplates = [
         colorHex: '#F7CD63',
         category: 'learning',
         frequencyType: 'specific_days',
-        frequencyValue: {'days': ['mon', 'wed', 'fri']},
+        frequencyValue: {
+          'days': ['mon', 'wed', 'fri'],
+        },
       ),
       HabitTemplateItem(
         name: 'Hubungi Rekan / Networking',
@@ -250,7 +256,9 @@ final List<HabitTemplate> onboardingTemplates = [
         colorHex: '#B8EB6C',
         category: 'productivity',
         frequencyType: 'specific_days',
-        frequencyValue: {'days': ['sun']},
+        frequencyValue: {
+          'days': ['sun'],
+        },
       ),
     ],
   ),
@@ -280,7 +288,9 @@ final List<HabitTemplate> onboardingTemplates = [
         colorHex: '#EB8F6C',
         category: 'mindfulness',
         frequencyType: 'specific_days',
-        frequencyValue: {'days': ['sat', 'sun']},
+        frequencyValue: {
+          'days': ['sat', 'sun'],
+        },
       ),
       HabitTemplateItem(
         name: 'Baca Buku Santai',

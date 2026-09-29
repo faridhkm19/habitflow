@@ -58,7 +58,9 @@ class WeeklyRadialChart extends StatelessWidget {
                 CircularProgressIndicator(
                   value: percentage,
                   strokeWidth: 12,
-                  backgroundColor: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.4),
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.outlineVariant.withValues(alpha: 0.4),
                   valueColor: AlwaysStoppedAnimation<Color>(activeColor),
                   strokeCap: StrokeCap.round,
                 ),
@@ -98,7 +100,9 @@ class WeeklyRadialChart extends StatelessWidget {
                 _buildStatRow(
                   context,
                   Icons.cancel_rounded,
-                  Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+                  Theme.of(
+                    context,
+                  ).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
                   'Tidak Selesai',
                   '$missedDays Hari',
                 ),
@@ -149,7 +153,9 @@ class WeeklyRadialChart extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           value,
-          style: AppTextStyles.h3.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          style: AppTextStyles.h3.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ],
     );

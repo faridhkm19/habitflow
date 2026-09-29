@@ -11,7 +11,9 @@ final getStatisticsUseCaseProvider = Provider<GetStatisticsUseCase>((ref) {
   return GetStatisticsUseCase(logRepository: logRepository);
 });
 
-final selectedStatisticsCategoryProvider = StateProvider<String>((ref) => 'all');
+final selectedStatisticsCategoryProvider = StateProvider<String>(
+  (ref) => 'all',
+);
 
 final selectedStatisticsHabitIdProvider = StateProvider<String?>((ref) {
   // Try to default to the first habit available

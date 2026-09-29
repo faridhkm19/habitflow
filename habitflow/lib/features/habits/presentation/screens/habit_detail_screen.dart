@@ -31,13 +31,20 @@ class HabitDetailScreen extends ConsumerStatefulWidget {
 class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
   String _getCategoryDisplayName(String categoryId) {
     switch (categoryId) {
-      case 'health': return 'Kesehatan';
-      case 'learning': return 'Belajar';
-      case 'mindfulness': return 'Mindful';
-      case 'productivity': return 'Produktivitas';
-      case 'social': return 'Sosial';
-      case 'custom': return 'Lainnya';
-      default: return 'Kategori';
+      case 'health':
+        return 'Kesehatan';
+      case 'learning':
+        return 'Belajar';
+      case 'mindfulness':
+        return 'Mindful';
+      case 'productivity':
+        return 'Produktivitas';
+      case 'social':
+        return 'Sosial';
+      case 'custom':
+        return 'Lainnya';
+      default:
+        return 'Kategori';
     }
   }
 
@@ -48,7 +55,9 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
     );
     if (!confirm) return;
 
-    final errorMessage = await ref.read(habitsProvider.notifier).archiveHabit(widget.habit.id);
+    final errorMessage = await ref
+        .read(habitsProvider.notifier)
+        .archiveHabit(widget.habit.id);
     if (errorMessage == null && mounted) {
       context.pop();
     } else if (mounted) {
@@ -66,47 +75,71 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
     );
     if (!confirm) return;
 
-    final errorMessage = await ref.read(habitsProvider.notifier).deleteHabit(widget.habit.id);
+    final errorMessage = await ref
+        .read(habitsProvider.notifier)
+        .deleteHabit(widget.habit.id);
     if (errorMessage == null && mounted) {
       context.pop();
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage ?? 'Gagal menghapus habit secara permanen.')),
+        SnackBar(
+          content: Text(
+            errorMessage ?? 'Gagal menghapus habit secara permanen.',
+          ),
+        ),
       );
     }
   }
 
-  Future<bool> _showConfirmDialog(String title, String content, {bool isDestructive = false}) async {
+  Future<bool> _showConfirmDialog(
+    String title,
+    String content, {
+    bool isDestructive = false,
+  }) async {
     return await showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(title, style: AppTextStyles.h2),
-          content: Text(content, style: AppTextStyles.bodyMedium),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text('Batal', style: AppTextStyles.button.copyWith(color: AppColors.textSecondary)),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(
-                isDestructive ? 'Hapus' : 'Ya, Lanjutkan',
-                style: AppTextStyles.button.copyWith(color: isDestructive ? AppColors.error : AppColors.primary),
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(title, style: AppTextStyles.h2),
+              content: Text(content, style: AppTextStyles.bodyMedium),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
-            ),
-          ],
-        );
-      },
-    ) ?? false;
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(
+                    'Batal',
+                    style: AppTextStyles.button.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: Text(
+                    isDestructive ? 'Hapus' : 'Ya, Lanjutkan',
+                    style: AppTextStyles.button.copyWith(
+                      color: isDestructive
+                          ? AppColors.error
+                          : AppColors.primary,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
   }
 
   @override
   Widget build(BuildContext context) {
     final habitColor = ColorExtension.fromHex(widget.habit.colorHex);
     final streakAsync = ref.watch(currentStreakProvider(widget.habit.id));
-    final consistencyAsync = ref.watch(consistencyScoreProvider(widget.habit.id));
+    final consistencyAsync = ref.watch(
+      consistencyScoreProvider(widget.habit.id),
+    );
     final recentLogsAsync = ref.watch(recentHabitLogsProvider(widget.habit.id));
 
     return Scaffold(
@@ -116,14 +149,23 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           onPressed: () => context.pop(),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.onSurface),
+            icon: Icon(
+              Icons.edit,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             onPressed: () {
-              context.push('${AppRoutes.habits}/${widget.habit.id}/edit', extra: widget.habit);
+              context.push(
+                '${AppRoutes.habits}/${widget.habit.id}/edit',
+                extra: widget.habit,
+              );
             },
           ),
         ],
@@ -157,10 +199,15 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                   ),
                   const SizedBox(height: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surface,
-                      border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.outlineVariant,
+                      ),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
@@ -175,7 +222,7 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
               ),
             ),
             const SizedBox(height: 32),
-            
+
             // Stats
             Row(
               children: [
@@ -185,14 +232,24 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                     child: Column(
                       children: [
                         streakAsync.when(
-                          data: (streak) => Text('$streak', style: AppTextStyles.numberLarge.copyWith(color: habitColor)),
+                          data: (streak) => Text(
+                            '$streak',
+                            style: AppTextStyles.numberLarge.copyWith(
+                              color: habitColor,
+                            ),
+                          ),
                           // Kategori 1: skeleton placeholder angka streak
                           loading: () => SkeletonBox(
                             width: 48,
                             height: 28,
                             borderRadius: AppRadius.sm,
                           ),
-                          error: (e, st) => Text('-', style: AppTextStyles.numberLarge.copyWith(color: habitColor)),
+                          error: (e, st) => Text(
+                            '-',
+                            style: AppTextStyles.numberLarge.copyWith(
+                              color: habitColor,
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 4),
                         Text('Hari Streak', style: AppTextStyles.bodyMedium),
@@ -208,8 +265,10 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                       children: [
                         consistencyAsync.when(
                           data: (score) => Text(
-                            score % 1 == 0 ? '${score.toInt()}%' : '$score%', 
-                            style: AppTextStyles.numberLarge.copyWith(color: habitColor)
+                            score % 1 == 0 ? '${score.toInt()}%' : '$score%',
+                            style: AppTextStyles.numberLarge.copyWith(
+                              color: habitColor,
+                            ),
                           ),
                           // Kategori 1: skeleton placeholder angka konsistensi
                           loading: () => SkeletonBox(
@@ -217,7 +276,12 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
                             height: 28,
                             borderRadius: AppRadius.sm,
                           ),
-                          error: (e, st) => Text('-', style: AppTextStyles.numberLarge.copyWith(color: habitColor)),
+                          error: (e, st) => Text(
+                            '-',
+                            style: AppTextStyles.numberLarge.copyWith(
+                              color: habitColor,
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 4),
                         Text('Konsistensi', style: AppTextStyles.bodyMedium),
@@ -232,13 +296,16 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
             // Kalender Bulanan terintegrasi
             CalendarSection(habit: widget.habit),
             const SizedBox(height: 32),
-            
+
             recentLogsAsync.when(
               data: (logs) {
                 if (logs.isEmpty) return const SizedBox.shrink();
                 return Column(
                   children: [
-                    RecentLogsSection(logs: logs, colorHex: widget.habit.colorHex),
+                    RecentLogsSection(
+                      logs: logs,
+                      colorHex: widget.habit.colorHex,
+                    ),
                     const SizedBox(height: 32),
                   ],
                 );
@@ -250,7 +317,7 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
               ),
               error: (e, st) => const SizedBox.shrink(),
             ),
-            
+
             // Actions
             AppButton(
               label: 'Arsipkan Habit',

@@ -34,10 +34,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
-    await ref.read(authNotifierProvider.notifier).signUp(
-          email: _emailCtrl.text.trim(),
-          password: _passwordCtrl.text,
-        );
+    await ref
+        .read(authNotifierProvider.notifier)
+        .signUp(email: _emailCtrl.text.trim(), password: _passwordCtrl.text);
   }
 
   @override
@@ -80,11 +79,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
                 const SizedBox(height: AppSpacing.xxl),
 
-                Text('Buat Akun', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                Text(
+                  'Buat Akun',
+                  style: AppTextStyles.h1.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'Mulai perjalanan kebiasaan barumu',
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
                 ),
 
                 const SizedBox(height: AppSpacing.xl),
@@ -118,7 +124,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   obscureText: true,
                   textInputAction: TextInputAction.done,
                   prefixIcon: Icons.lock_outline_rounded,
-                  validator: (v) => validateConfirmPassword(_passwordCtrl.text, v),
+                  validator: (v) =>
+                      validateConfirmPassword(_passwordCtrl.text, v),
                   onFieldSubmitted: (_) => _submit(),
                 ),
 
@@ -137,7 +144,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   children: [
                     Text(
                       'Sudah punya akun? ',
-                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                     GestureDetector(
                       onTap: () => context.go('/login'),

@@ -28,7 +28,7 @@ class HabitLogModel extends HabitLogEntity {
   Map<String, dynamic> toJson() {
     // Format YYYY-MM-DD for date
     final String dateString = logDate.toIso8601String().split('T').first;
-    
+
     final map = <String, dynamic>{
       'habit_id': habitId,
       'user_id': userId,

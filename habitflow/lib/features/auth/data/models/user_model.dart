@@ -40,10 +40,6 @@ class UserModel {
 
   /// Mengkonversi model ini ke [UserEntity] untuk domain layer.
   UserEntity toEntity() {
-    return UserEntity(
-      id: id,
-      email: email,
-      createdAt: createdAt,
-    );
+    return UserEntity(id: id, email: email, createdAt: createdAt);
   }
 }

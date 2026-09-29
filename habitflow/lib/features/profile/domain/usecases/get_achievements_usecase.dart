@@ -12,7 +12,10 @@ class GetAchievementsUseCase {
 
   GetAchievementsUseCase(this.logRepository);
 
-  Future<List<AchievementEntity>> call(String userId, List<HabitEntity> habits) async {
+  Future<List<AchievementEntity>> call(
+    String userId,
+    List<HabitEntity> habits,
+  ) async {
     // 1. Dapatkan max streak dari semua habit
     int maxStreak = 0;
     for (final habit in habits) {
@@ -22,7 +25,9 @@ class GetAchievementsUseCase {
     }
 
     // 2. Dapatkan total check-in
-    final totalCheckinsResult = await logRepository.getTotalCompletedCheckIns(userId);
+    final totalCheckinsResult = await logRepository.getTotalCompletedCheckIns(
+      userId,
+    );
     final int totalCheckins = totalCheckinsResult.valueOrNull ?? 0;
 
     // 3. Hitung average consistency 7 hari terakhir
@@ -30,7 +35,11 @@ class GetAchievementsUseCase {
     if (habits.isNotEmpty) {
       final today = DateTime.now();
       final fromDate = today.subtract(const Duration(days: 7));
-      final logsResult = await logRepository.getLogsForDateRange(userId, fromDate, today);
+      final logsResult = await logRepository.getLogsForDateRange(
+        userId,
+        fromDate,
+        today,
+      );
       final logs = logsResult.valueOrNull ?? [];
 
       int totalScheduled = 0;
@@ -38,12 +47,22 @@ class GetAchievementsUseCase {
 
       for (int i = 0; i < 7; i++) {
         final checkDateRaw = today.subtract(Duration(days: i));
-        final checkDate = DateTime(checkDateRaw.year, checkDateRaw.month, checkDateRaw.day);
+        final checkDate = DateTime(
+          checkDateRaw.year,
+          checkDateRaw.month,
+          checkDateRaw.day,
+        );
 
         for (final habit in habits) {
           // Hanya hitung habit yang sudah ada pada tanggal tersebut
           final createdAtLocal = habit.createdAt.toLocal();
-          if (checkDate.isBefore(DateTime(createdAtLocal.year, createdAtLocal.month, createdAtLocal.day))) {
+          if (checkDate.isBefore(
+            DateTime(
+              createdAtLocal.year,
+              createdAtLocal.month,
+              createdAtLocal.day,
+            ),
+          )) {
             continue;
           }
 
@@ -56,10 +75,12 @@ class GetAchievementsUseCase {
 
           if (scheduled) {
             totalScheduled++;
-            final completed = logs.any((l) =>
-                l.habitId == habit.id &&
-                l.isCompleted &&
-                date_utils.isSameDate(l.logDate, checkDate));
+            final completed = logs.any(
+              (l) =>
+                  l.habitId == habit.id &&
+                  l.isCompleted &&
+                  date_utils.isSameDate(l.logDate, checkDate),
+            );
             if (completed) {
               totalCompleted++;
             }
@@ -136,7 +157,9 @@ class GetAchievementsUseCase {
         icon: Icons.stars_rounded,
         color: AppColors.accent1,
         backgroundColor: AppColors.accent1Light,
-        isUnlocked: avgConsistency >= 80.0 && totalCheckins >= 1, // Harus ada minimal 1 check-in
+        isUnlocked:
+            avgConsistency >= 80.0 &&
+            totalCheckins >= 1, // Harus ada minimal 1 check-in
       ),
     ];
   }

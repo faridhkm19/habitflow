@@ -41,7 +41,9 @@ final class ServerFailure extends Failure {
 
 /// Error koneksi jaringan — device offline atau request timeout.
 final class NetworkFailure extends Failure {
-  const NetworkFailure([super.message = 'Tidak ada koneksi internet. Periksa jaringan kamu.']);
+  const NetworkFailure([
+    super.message = 'Tidak ada koneksi internet. Periksa jaringan kamu.',
+  ]);
 }
 
 // ── Result<T> — custom Either alternative ────────────────────────────────────
@@ -88,13 +90,13 @@ extension ResultX<T> on Result<T> {
 
   /// Mengambil nilai dari [Ok], atau `null` jika [Err].
   T? get valueOrNull => switch (this) {
-        Ok(:final value) => value,
-        Err() => null,
-      };
+    Ok(:final value) => value,
+    Err() => null,
+  };
 
   /// Mengambil [Failure] dari [Err], atau `null` jika [Ok].
   Failure? get failureOrNull => switch (this) {
-        Ok() => null,
-        Err(:final failure) => failure,
-      };
+    Ok() => null,
+    Err(:final failure) => failure,
+  };
 }

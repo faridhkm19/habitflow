@@ -41,6 +41,19 @@ String? validatePassword(String? value) {
   return null;
 }
 
+/// Memvalidasi password baru saat proses ubah password.
+///
+/// Aturan: minimal 8 karakter.
+String? validateNewPassword(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Password tidak boleh kosong';
+  }
+  if (value.length < 8) {
+    return 'Password baru minimal 8 karakter';
+  }
+  return null;
+}
+
 /// Memvalidasi konfirmasi password — harus cocok dengan [password].
 ///
 /// Dipanggil dengan nilai field password asli sebagai parameter:
@@ -56,4 +69,3 @@ String? validateConfirmPassword(String? password, String? confirm) {
   }
   return null;
 }
-

@@ -22,7 +22,10 @@ class HabitLogRepositoryImpl implements HabitLogRepository {
   }
 
   @override
-  Future<Result<List<HabitLogEntity>>> getLogsForDate(String userId, DateTime date) async {
+  Future<Result<List<HabitLogEntity>>> getLogsForDate(
+    String userId,
+    DateTime date,
+  ) async {
     try {
       final logs = await remoteDataSource.getLogsForDate(userId, date);
       return Ok(logs);
@@ -32,9 +35,17 @@ class HabitLogRepositoryImpl implements HabitLogRepository {
   }
 
   @override
-  Future<Result<List<HabitLogEntity>>> getLogsForHabit(String habitId, DateTime fromDate, DateTime toDate) async {
+  Future<Result<List<HabitLogEntity>>> getLogsForHabit(
+    String habitId,
+    DateTime fromDate,
+    DateTime toDate,
+  ) async {
     try {
-      final logs = await remoteDataSource.getLogsForHabit(habitId, fromDate, toDate);
+      final logs = await remoteDataSource.getLogsForHabit(
+        habitId,
+        fromDate,
+        toDate,
+      );
       return Ok(logs);
     } catch (e) {
       return Err(ServerFailure(e.toString()));
@@ -42,9 +53,17 @@ class HabitLogRepositoryImpl implements HabitLogRepository {
   }
 
   @override
-  Future<Result<List<HabitLogEntity>>> getLogsForDateRange(String userId, DateTime fromDate, DateTime toDate) async {
+  Future<Result<List<HabitLogEntity>>> getLogsForDateRange(
+    String userId,
+    DateTime fromDate,
+    DateTime toDate,
+  ) async {
     try {
-      final logs = await remoteDataSource.getLogsForDateRange(userId, fromDate, toDate);
+      final logs = await remoteDataSource.getLogsForDateRange(
+        userId,
+        fromDate,
+        toDate,
+      );
       return Ok(logs);
     } catch (e) {
       return Err(ServerFailure(e.toString()));

@@ -56,9 +56,11 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
     _selectedDays = [];
     _timesPerWeek = 3;
 
-    if (_frequencyType == 'specific_days' && widget.habit.frequencyValue['days'] != null) {
+    if (_frequencyType == 'specific_days' &&
+        widget.habit.frequencyValue['days'] != null) {
       _selectedDays = List<String>.from(widget.habit.frequencyValue['days']);
-    } else if (_frequencyType == 'x_per_week' && widget.habit.frequencyValue['times'] != null) {
+    } else if (_frequencyType == 'x_per_week' &&
+        widget.habit.frequencyValue['times'] != null) {
       _timesPerWeek = widget.habit.frequencyValue['times'] as int;
     }
   }
@@ -88,15 +90,17 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
       freqValue = {'times': _timesPerWeek};
     }
 
-    final errorMessage = await ref.read(habitsProvider.notifier).updateHabit(
-      id: widget.habit.id,
-      name: _nameController.text.trim(),
-      iconName: _selectedIcon,
-      colorHex: _selectedColor.toHex(),
-      category: _selectedCategory,
-      frequencyType: _frequencyType,
-      frequencyValue: freqValue,
-    );
+    final errorMessage = await ref
+        .read(habitsProvider.notifier)
+        .updateHabit(
+          id: widget.habit.id,
+          name: _nameController.text.trim(),
+          iconName: _selectedIcon,
+          colorHex: _selectedColor.toHex(),
+          category: _selectedCategory,
+          frequencyType: _frequencyType,
+          frequencyValue: freqValue,
+        );
 
     setState(() => _isLoading = false);
 
@@ -116,7 +120,10 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
         title: Text('Edit Habit', style: AppTextStyles.h2),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           onPressed: () => context.pop(),
         ),
       ),
@@ -130,7 +137,9 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
               AppTextField(
                 controller: _nameController,
                 label: 'Nama Habit',
-                validator: (val) => val == null || val.trim().isEmpty ? 'Nama wajib diisi' : null,
+                validator: (val) => val == null || val.trim().isEmpty
+                    ? 'Nama wajib diisi'
+                    : null,
               ),
               const SizedBox(height: 24),
 
@@ -145,14 +154,15 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
                     label: Text(
                       cat['label']!,
                       style: TextStyle(
-                        color: isSelected 
-                            ? Colors.white 
+                        color: isSelected
+                            ? Colors.white
                             : Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     selected: isSelected,
                     showCheckmark: false,
-                    onSelected: (_) => setState(() => _selectedCategory = cat['id']!),
+                    onSelected: (_) =>
+                        setState(() => _selectedCategory = cat['id']!),
                   );
                 }).toList(),
               ),
@@ -165,7 +175,8 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
                 selectedIcon: _selectedIcon,
                 selectedColor: _selectedColor,
                 onIconChanged: (icon) => setState(() => _selectedIcon = icon),
-                onColorChanged: (color) => setState(() => _selectedColor = color),
+                onColorChanged: (color) =>
+                    setState(() => _selectedColor = color),
               ),
 
               const SizedBox(height: 24),
@@ -180,7 +191,8 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
                 selectedDays: _selectedDays,
                 onDaysChanged: (days) => setState(() => _selectedDays = days),
                 timesPerWeek: _timesPerWeek,
-                onTimesPerWeekChanged: (times) => setState(() => _timesPerWeek = times),
+                onTimesPerWeekChanged: (times) =>
+                    setState(() => _timesPerWeek = times),
               ),
               const SizedBox(height: 24),
               AppButton(

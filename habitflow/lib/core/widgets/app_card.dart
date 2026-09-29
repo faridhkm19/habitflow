@@ -47,15 +47,17 @@ class AppCard extends StatelessWidget {
 
   /// External margin around the card.
   final EdgeInsetsGeometry? margin;
-  
+
   /// Custom background color (overrides the default surface color).
   final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    final effectiveRadius =
-        variant == AppCardVariant.stat ? AppRadius.lg : AppRadius.md;
-    final effectivePadding = padding ??
+    final effectiveRadius = variant == AppCardVariant.stat
+        ? AppRadius.lg
+        : AppRadius.md;
+    final effectivePadding =
+        padding ??
         EdgeInsets.all(
           variant == AppCardVariant.stat ? AppSpacing.lg : AppSpacing.md,
         );
@@ -75,18 +77,16 @@ class AppCard extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: onTap,
-                  splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
-                  highlightColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
-                  child: Padding(
-                    padding: effectivePadding,
-                    child: child,
-                  ),
+                  splashColor: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.12),
+                  highlightColor: Theme.of(
+                    context,
+                  ).colorScheme.primary.withValues(alpha: 0.08),
+                  child: Padding(padding: effectivePadding, child: child),
                 ),
               )
-            : Padding(
-                padding: effectivePadding,
-                child: child,
-              ),
+            : Padding(padding: effectivePadding, child: child),
       ),
     );
   }

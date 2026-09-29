@@ -103,7 +103,9 @@ class AppButton extends StatelessWidget {
         width: 16,
         child: CircularProgressIndicator(
           strokeWidth: 2.5,
-          color: (variant == AppButtonVariant.primary || variant == AppButtonVariant.error)
+          color:
+              (variant == AppButtonVariant.primary ||
+                  variant == AppButtonVariant.error)
               ? AppColors.textOnPrimary
               : AppColors.primary,
         ),

@@ -10,9 +10,12 @@ class RecentLogsSection extends StatelessWidget {
   final List<HabitLogEntity> logs;
   final String colorHex;
 
-  const RecentLogsSection({super.key, required this.logs, required this.colorHex});
+  const RecentLogsSection({
+    super.key,
+    required this.logs,
+    required this.colorHex,
+  });
 
-  
   Color _getMoodLightColor(String? mood) {
     if (mood == 'good') return AppColors.secondaryLight;
     if (mood == 'neutral') return AppColors.accent1Light;
@@ -67,7 +70,9 @@ class RecentLogsSection extends StatelessWidget {
                         // Status Complete
                         Icon(
                           log.isCompleted ? Icons.check_circle : Icons.cancel,
-                          color: log.isCompleted ? habitColor : AppColors.neutralMissed,
+                          color: log.isCompleted
+                              ? habitColor
+                              : AppColors.neutralMissed,
                           size: 20,
                         ),
                         const SizedBox(width: 16),
@@ -76,13 +81,19 @@ class RecentLogsSection extends StatelessWidget {
                           width: 40,
                           child: log.mood != null
                               ? Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: _getMoodLightColor(log.mood),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   alignment: Alignment.center,
-                                  child: Text(_getMoodEmoji(log.mood), style: const TextStyle(fontSize: 16)),
+                                  child: Text(
+                                    _getMoodEmoji(log.mood),
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
                                 )
                               : const SizedBox.shrink(),
                         ),
@@ -92,7 +103,11 @@ class RecentLogsSection extends StatelessWidget {
                           child: Text(
                             log.note ?? '-',
                             style: AppTextStyles.bodyMedium.copyWith(
-                              color: log.note != null ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: log.note != null
+                                  ? Theme.of(context).colorScheme.onSurface
+                                  : Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

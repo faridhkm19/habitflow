@@ -10,14 +10,11 @@ class SecurityScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
-    final user = authState.valueOrNull;
-    final email = user?.email ?? '-';
+    final email = ref.watch(currentEmailProvider);
+    final displayEmail = email.isEmpty ? '-' : email;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Keamanan Akun'),
-      ),
+      appBar: AppBar(title: const Text('Keamanan Akun')),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
@@ -40,13 +37,9 @@ class SecurityScreen extends ConsumerWidget {
                   iconBg: AppColors.primaryLight,
                   iconColor: AppColors.primary,
                   title: 'Ubah Email',
-                  subtitle: email,
+                  subtitle: displayEmail,
                   isFirst: true,
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Fitur ubah email segera hadir')),
-                    );
-                  },
+                  onTap: () => context.push('/profile/security/change-email'),
                 ),
                 const _RowDivider(),
                 _NavRow(
@@ -56,7 +49,8 @@ class SecurityScreen extends ConsumerWidget {
                   title: 'Ubah Password',
                   subtitle: 'Perbarui kata sandi akun',
                   isLast: true,
-                  onTap: () => context.push('/forgot-password'),
+                  onTap: () =>
+                      context.push('/profile/security/change-password'),
                 ),
               ],
             ),
@@ -119,20 +113,24 @@ class _NavRow extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right_rounded, color: AppColors.textSecondary, size: 20),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.textSecondary,
+                size: 20,
+              ),
             ],
           ),
         ),

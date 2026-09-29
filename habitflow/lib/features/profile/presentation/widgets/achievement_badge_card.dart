@@ -6,10 +6,7 @@ import '../../domain/entities/achievement_entity.dart';
 class AchievementBadgeCard extends StatelessWidget {
   final AchievementEntity achievement;
 
-  const AchievementBadgeCard({
-    super.key,
-    required this.achievement,
-  });
+  const AchievementBadgeCard({super.key, required this.achievement});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +14,12 @@ class AchievementBadgeCard extends StatelessWidget {
 
     // Styling untuk state locked vs unlocked
     final Color bgColor = achievement.isUnlocked
-        ? (isDark ? achievement.color.withValues(alpha: 0.15) : achievement.backgroundColor)
-        : (isDark ? Colors.white10 : AppColors.neutralMissed.withValues(alpha: 0.2));
+        ? (isDark
+              ? achievement.color.withValues(alpha: 0.15)
+              : achievement.backgroundColor)
+        : (isDark
+              ? Colors.white10
+              : AppColors.neutralMissed.withValues(alpha: 0.2));
 
     final Color iconColor = achievement.isUnlocked
         ? achievement.color
@@ -59,15 +60,8 @@ class AchievementBadgeCard extends StatelessWidget {
           Container(
             width: 56,
             height: 56,
-            decoration: BoxDecoration(
-              color: bgColor,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              displayIcon,
-              color: iconColor,
-              size: 28,
-            ),
+            decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
+            child: Icon(displayIcon, color: iconColor, size: 28),
           ),
           const SizedBox(height: 12),
           // Judul
@@ -75,9 +69,9 @@ class AchievementBadgeCard extends StatelessWidget {
             achievement.title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: textColor,
-                ),
+              fontWeight: FontWeight.w600,
+              color: textColor,
+            ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -86,10 +80,9 @@ class AchievementBadgeCard extends StatelessWidget {
           Text(
             achievement.description,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: descColor,
-                  fontSize: 11,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: descColor, fontSize: 11),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),

@@ -14,7 +14,8 @@ class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
-  ConsumerState<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  ConsumerState<ForgotPasswordScreen> createState() =>
+      _ForgotPasswordScreenState();
 }
 
 class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
@@ -31,9 +32,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
-    await ref.read(authNotifierProvider.notifier).updatePassword(
-          newPassword: _newPasswordCtrl.text,
-        );
+    await ref
+        .read(authNotifierProvider.notifier)
+        .updatePassword(newPassword: _newPasswordCtrl.text);
   }
 
   @override
@@ -70,7 +71,10 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: AppColors.textPrimary,
+          ),
           onPressed: () => context.pop(),
         ),
       ),
@@ -87,11 +91,18 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               children: [
                 const SizedBox(height: AppSpacing.md),
 
-                Text('Ubah Password', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                Text(
+                  'Ubah Password',
+                  style: AppTextStyles.h1.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'Masukkan password baru untuk akunmu.',
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
                 ),
 
                 const SizedBox(height: AppSpacing.sm),
@@ -106,12 +117,18 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.info_outline_rounded, color: AppColors.primary, size: 18),
+                      const Icon(
+                        Icons.info_outline_rounded,
+                        color: AppColors.primary,
+                        size: 18,
+                      ),
                       const SizedBox(width: AppSpacing.sm),
                       Expanded(
                         child: Text(
                           'Fitur ini hanya tersedia jika kamu sedang dalam sesi aktif.',
-                          style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary),
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.primary,
+                          ),
                         ),
                       ),
                     ],
@@ -138,7 +155,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   obscureText: true,
                   textInputAction: TextInputAction.done,
                   prefixIcon: Icons.lock_outline_rounded,
-                  validator: (v) => validateConfirmPassword(_newPasswordCtrl.text, v),
+                  validator: (v) =>
+                      validateConfirmPassword(_newPasswordCtrl.text, v),
                   onFieldSubmitted: (_) => _submit(),
                 ),
 

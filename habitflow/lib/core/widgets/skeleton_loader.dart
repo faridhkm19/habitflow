@@ -12,7 +12,8 @@ import '../constants/app_radius.dart';
 class _ShimmerBase extends StatefulWidget {
   const _ShimmerBase({required this.builder});
 
-  final Widget Function(BuildContext context, Animation<double> animation) builder;
+  final Widget Function(BuildContext context, Animation<double> animation)
+  builder;
 
   @override
   State<_ShimmerBase> createState() => _ShimmerBaseState();
@@ -31,9 +32,10 @@ class _ShimmerBaseState extends State<_ShimmerBase>
       duration: const Duration(milliseconds: 1400),
     )..repeat();
 
-    _animation = Tween<double>(begin: -1.0, end: 2.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: -1.0,
+      end: 2.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -173,9 +175,17 @@ class HomeScreenSkeleton extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SkeletonBox(width: 160, height: 18, borderRadius: AppRadius.sm),
+                    SkeletonBox(
+                      width: 160,
+                      height: 18,
+                      borderRadius: AppRadius.sm,
+                    ),
                     const SizedBox(height: 10),
-                    SkeletonBox(width: 120, height: 14, borderRadius: AppRadius.sm),
+                    SkeletonBox(
+                      width: 120,
+                      height: 14,
+                      borderRadius: AppRadius.sm,
+                    ),
                   ],
                 ),
               ),
@@ -216,18 +226,22 @@ class HabitsListSkeleton extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SkeletonBox(width: double.infinity, height: 15, borderRadius: AppRadius.sm),
+                  SkeletonBox(
+                    width: double.infinity,
+                    height: 15,
+                    borderRadius: AppRadius.sm,
+                  ),
                   const SizedBox(height: 8),
-                  SkeletonBox(width: 80, height: 12, borderRadius: AppRadius.sm),
+                  SkeletonBox(
+                    width: 80,
+                    height: 12,
+                    borderRadius: AppRadius.sm,
+                  ),
                 ],
               ),
             ),
             const SizedBox(width: 12),
-            SkeletonBox(
-              width: 60,
-              height: 24,
-              borderRadius: AppRadius.full,
-            ),
+            SkeletonBox(width: 60, height: 24, borderRadius: AppRadius.full),
           ],
         ),
       ),
@@ -253,7 +267,10 @@ class StatisticsSkeleton extends StatelessWidget {
           // Weekly chart area (Donut + Stats)
           _SkeletonCard(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 8.0,
+              ),
               child: Row(
                 children: [
                   const SkeletonCircle(diameter: 96),
@@ -366,9 +383,17 @@ class HabitDetailSkeleton extends StatelessWidget {
                 child: _SkeletonCard(
                   child: Column(
                     children: [
-                      SkeletonBox(width: 48, height: 28, borderRadius: AppRadius.sm),
+                      SkeletonBox(
+                        width: 48,
+                        height: 28,
+                        borderRadius: AppRadius.sm,
+                      ),
                       const SizedBox(height: 8),
-                      SkeletonBox(width: 60, height: 12, borderRadius: AppRadius.sm),
+                      SkeletonBox(
+                        width: 60,
+                        height: 12,
+                        borderRadius: AppRadius.sm,
+                      ),
                     ],
                   ),
                 ),
@@ -378,9 +403,17 @@ class HabitDetailSkeleton extends StatelessWidget {
                 child: _SkeletonCard(
                   child: Column(
                     children: [
-                      SkeletonBox(width: 48, height: 28, borderRadius: AppRadius.sm),
+                      SkeletonBox(
+                        width: 48,
+                        height: 28,
+                        borderRadius: AppRadius.sm,
+                      ),
                       const SizedBox(height: 8),
-                      SkeletonBox(width: 60, height: 12, borderRadius: AppRadius.sm),
+                      SkeletonBox(
+                        width: 60,
+                        height: 12,
+                        borderRadius: AppRadius.sm,
+                      ),
                     ],
                   ),
                 ),
@@ -469,38 +502,86 @@ class ProfileSkeleton extends StatelessWidget {
             children: [
               const SkeletonCircle(diameter: 100),
               const SizedBox(height: 16),
-              Center(child: SkeletonBox(width: 140, height: 18, borderRadius: AppRadius.sm)),
+              Center(
+                child: SkeletonBox(
+                  width: 140,
+                  height: 18,
+                  borderRadius: AppRadius.sm,
+                ),
+              ),
               const SizedBox(height: 8),
-              Center(child: SkeletonBox(width: 100, height: 13, borderRadius: AppRadius.sm)),
+              Center(
+                child: SkeletonBox(
+                  width: 100,
+                  height: 13,
+                  borderRadius: AppRadius.sm,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 32),
           // Stats row
           Row(
             children: [
-              Expanded(child: _SkeletonCard(
-                child: Column(children: [
-                  SkeletonBox(width: 40, height: 24, borderRadius: AppRadius.sm),
-                  const SizedBox(height: 8),
-                  SkeletonBox(width: 56, height: 12, borderRadius: AppRadius.sm),
-                ]),
-              )),
+              Expanded(
+                child: _SkeletonCard(
+                  child: Column(
+                    children: [
+                      SkeletonBox(
+                        width: 40,
+                        height: 24,
+                        borderRadius: AppRadius.sm,
+                      ),
+                      const SizedBox(height: 8),
+                      SkeletonBox(
+                        width: 56,
+                        height: 12,
+                        borderRadius: AppRadius.sm,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(width: 12),
-              Expanded(child: _SkeletonCard(
-                child: Column(children: [
-                  SkeletonBox(width: 40, height: 24, borderRadius: AppRadius.sm),
-                  const SizedBox(height: 8),
-                  SkeletonBox(width: 56, height: 12, borderRadius: AppRadius.sm),
-                ]),
-              )),
+              Expanded(
+                child: _SkeletonCard(
+                  child: Column(
+                    children: [
+                      SkeletonBox(
+                        width: 40,
+                        height: 24,
+                        borderRadius: AppRadius.sm,
+                      ),
+                      const SizedBox(height: 8),
+                      SkeletonBox(
+                        width: 56,
+                        height: 12,
+                        borderRadius: AppRadius.sm,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(width: 12),
-              Expanded(child: _SkeletonCard(
-                child: Column(children: [
-                  SkeletonBox(width: 40, height: 24, borderRadius: AppRadius.sm),
-                  const SizedBox(height: 8),
-                  SkeletonBox(width: 56, height: 12, borderRadius: AppRadius.sm),
-                ]),
-              )),
+              Expanded(
+                child: _SkeletonCard(
+                  child: Column(
+                    children: [
+                      SkeletonBox(
+                        width: 40,
+                        height: 24,
+                        borderRadius: AppRadius.sm,
+                      ),
+                      const SizedBox(height: 8),
+                      SkeletonBox(
+                        width: 56,
+                        height: 12,
+                        borderRadius: AppRadius.sm,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 24),
@@ -558,7 +639,11 @@ class _SkeletonHabitRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SkeletonBox(width: double.infinity, height: 15, borderRadius: AppRadius.sm),
+                SkeletonBox(
+                  width: double.infinity,
+                  height: 15,
+                  borderRadius: AppRadius.sm,
+                ),
                 const SizedBox(height: 8),
                 SkeletonBox(width: 80, height: 12, borderRadius: AppRadius.sm),
               ],
@@ -585,7 +670,11 @@ class _SkeletonJournalCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SkeletonBox(width: double.infinity, height: 14, borderRadius: AppRadius.sm),
+                SkeletonBox(
+                  width: double.infinity,
+                  height: 14,
+                  borderRadius: AppRadius.sm,
+                ),
                 const SizedBox(height: 6),
                 SkeletonBox(width: 120, height: 12, borderRadius: AppRadius.sm),
               ],
@@ -607,7 +696,11 @@ class _SkeletonMenuRow extends StatelessWidget {
           const SkeletonCircle(diameter: 32),
           const SizedBox(width: 12),
           Expanded(
-            child: SkeletonBox(width: double.infinity, height: 14, borderRadius: AppRadius.sm),
+            child: SkeletonBox(
+              width: double.infinity,
+              height: 14,
+              borderRadius: AppRadius.sm,
+            ),
           ),
           const SizedBox(width: 12),
           const SkeletonCircle(diameter: 16),
@@ -626,7 +719,11 @@ class _SkeletonStatRow extends StatelessWidget {
         const SkeletonCircle(diameter: 28),
         const SizedBox(width: 12),
         Expanded(
-          child: SkeletonBox(width: double.infinity, height: 14, borderRadius: AppRadius.sm),
+          child: SkeletonBox(
+            width: double.infinity,
+            height: 14,
+            borderRadius: AppRadius.sm,
+          ),
         ),
         const SizedBox(width: 8),
         const SkeletonBox(width: 40, height: 14, borderRadius: AppRadius.sm),

@@ -21,7 +21,10 @@ class AchievementsScreen extends ConsumerWidget {
         title: const Text('Riwayat Pencapaian'),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           onPressed: () => context.pop(),
         ),
       ),
@@ -41,7 +44,9 @@ class AchievementsScreen extends ConsumerWidget {
 
           final unlockedCount = achievements.where((a) => a.isUnlocked).length;
           final totalCount = achievements.length;
-          final progressRatio = totalCount > 0 ? unlockedCount / totalCount : 0.0;
+          final progressRatio = totalCount > 0
+              ? unlockedCount / totalCount
+              : 0.0;
 
           return CustomScrollView(
             slivers: [
@@ -54,7 +59,9 @@ class AchievementsScreen extends ConsumerWidget {
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.outlineVariant,
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,14 +71,18 @@ class AchievementsScreen extends ConsumerWidget {
                           children: [
                             Text(
                               'Pencapaian Terbuka',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: isDark ? Colors.white70 : AppColors.textSecondary,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: isDark
+                                        ? Colors.white70
+                                        : AppColors.textSecondary,
                                     fontWeight: FontWeight.w500,
                                   ),
                             ),
                             Text(
                               '$unlockedCount / $totalCount',
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              style: Theme.of(context).textTheme.bodyLarge
+                                  ?.copyWith(
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.primary,
                                   ),
@@ -84,8 +95,12 @@ class AchievementsScreen extends ConsumerWidget {
                           child: LinearProgressIndicator(
                             value: progressRatio,
                             minHeight: 8,
-                            backgroundColor: isDark ? AppColors.primary.withValues(alpha: 0.15) : AppColors.primaryLight,
-                            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                            backgroundColor: isDark
+                                ? AppColors.primary.withValues(alpha: 0.15)
+                                : AppColors.primaryLight,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              AppColors.primary,
+                            ),
                           ),
                         ),
                       ],
@@ -104,19 +119,14 @@ class AchievementsScreen extends ConsumerWidget {
                     crossAxisSpacing: 16,
                     childAspectRatio: 0.85,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final achievement = achievements[index];
-                      return AchievementBadgeCard(achievement: achievement);
-                    },
-                    childCount: achievements.length,
-                  ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final achievement = achievements[index];
+                    return AchievementBadgeCard(achievement: achievement);
+                  }, childCount: achievements.length),
                 ),
               ),
-              
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 100),
-              ),
+
+              const SliverToBoxAdapter(child: SizedBox(height: 100)),
             ],
           );
         },

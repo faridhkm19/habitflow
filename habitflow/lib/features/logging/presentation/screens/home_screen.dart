@@ -31,12 +31,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  void _handleHabitTap(String habitId, String habitName, bool isCompleted) async {
+  void _handleHabitTap(
+    String habitId,
+    String habitName,
+    bool isCompleted,
+  ) async {
     final notifier = ref.read(homeProvider.notifier);
-    
+
     try {
       await notifier.toggleComplete(habitId);
-      
+
       // Jika baru saja ditandai selesai (dari false -> true), munculkan bottom sheet
       if (!isCompleted && mounted) {
         // Beri sedikit delay agar animasi checklist selesai dulu
@@ -45,7 +49,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           await CheckinBottomSheet.show(
             context,
             habitName: habitName,
-            onSave: (mood, note) => notifier.saveCheckin(habitId, mood: mood, note: note),
+            onSave: (mood, note) =>
+                notifier.saveCheckin(habitId, mood: mood, note: note),
           );
         }
       }
@@ -65,10 +70,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
     final userEmail = authState.value?.email ?? '';
-    final userName = userEmail.isNotEmpty ? userEmail.split('@')[0] : 'Pengguna';
-    
+    final userName = userEmail.isNotEmpty
+        ? userEmail.split('@')[0]
+        : 'Pengguna';
+
     final homeAsync = ref.watch(homeProvider);
-    
+
     // Format tanggal
     final today = DateTime.now();
     final dateFormatter = DateFormat('EEEE, d MMMM', 'id_ID');
@@ -86,12 +93,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             Text(
               dateString,
-              style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               'Halo, $userName! 👋',
-              style: AppTextStyles.h1.copyWith(color: Theme.of(context).colorScheme.onSurface),
+              style: AppTextStyles.h1.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
           ],
         ),
@@ -103,12 +114,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.error_outline_rounded, size: 48, color: Theme.of(context).colorScheme.error),
+              Icon(
+                Icons.error_outline_rounded,
+                size: 48,
+                color: Theme.of(context).colorScheme.error,
+              ),
               const SizedBox(height: 16),
               Text(
                 'Gagal memuat data:\n$err',
                 textAlign: TextAlign.center,
-                style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
               const SizedBox(height: 16),
               TextButton(
@@ -144,13 +161,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   const SizedBox(height: 24),
                   Text(
                     'Kosong untuk hari ini',
-                    style: AppTextStyles.h2.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                    style: AppTextStyles.h2.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Tidak ada habit yang dijadwalkan.\nWaktunya bersantai!',
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
@@ -170,21 +191,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   totalCount: totalCount,
                 ),
                 const SizedBox(height: 32),
-                
+
                 // ── Habit Checklist ──────────────────────────────────────────────
                 ...state.todayHabits.map((habit) {
                   final log = state.logsMap[habit.id];
                   final isCompleted = log?.isCompleted ?? false;
-                  
-                  final streakAsync = ref.watch(currentStreakProvider(habit.id));
+
+                  final streakAsync = ref.watch(
+                    currentStreakProvider(habit.id),
+                  );
                   final streak = streakAsync.valueOrNull ?? 0;
-                  
+
                   return HabitChecklistItem(
                     habit: habit,
                     isCompleted: isCompleted,
                     streak: streak,
-                    onTap: () => _handleHabitTap(habit.id, habit.name, isCompleted),
-                    onCardTap: () => context.push('/habits/${habit.id}', extra: habit),
+                    onTap: () =>
+                        _handleHabitTap(habit.id, habit.name, isCompleted),
+                    onCardTap: () =>
+                        context.push('/habits/${habit.id}', extra: habit),
                   );
                 }),
               ],
@@ -211,7 +236,7 @@ class _DailySummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isComplete = progress >= 1.0 && totalCount > 0;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     String titleText;
     if (progress == 0) {
       titleText = 'Ayo mulai harimu!';
@@ -223,12 +248,12 @@ class _DailySummaryCard extends StatelessWidget {
       titleText = 'Terus semangat!';
     }
 
-    // Menggunakan AppColors.primaryLight agar selaras dengan warna tema, 
+    // Menggunakan AppColors.primaryLight agar selaras dengan warna tema,
     // namun disesuaikan opacity-nya di dark mode agar tetap terbaca.
-    final backgroundColor = isDark 
-        ? AppColors.primary.withValues(alpha: 0.15) 
+    final backgroundColor = isDark
+        ? AppColors.primary.withValues(alpha: 0.15)
         : AppColors.primaryLight;
-        
+
     final textColor = isDark ? Colors.white : AppColors.primaryDark;
 
     return AppCard(
@@ -243,27 +268,23 @@ class _DailySummaryCard extends StatelessWidget {
                 Text(
                   titleText,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: textColor,
-                      ),
+                    fontWeight: FontWeight.w700,
+                    color: textColor,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   '$completedCount dari $totalCount habit selesai',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: textColor.withValues(alpha: 0.8),
-                        fontWeight: FontWeight.w500,
-                      ),
+                    color: textColor.withValues(alpha: 0.8),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
           ),
           const SizedBox(width: 16),
-          DailyProgressRing(
-            progress: progress,
-            size: 80,
-            strokeWidth: 8,
-          ),
+          DailyProgressRing(progress: progress, size: 80, strokeWidth: 8),
         ],
       ),
     );

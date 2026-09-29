@@ -7,7 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/services/preferences_service.dart';
 
 class NotificationNotifier extends StateNotifier<bool> {
-  NotificationNotifier() : super(PreferencesService.instance.notificationsEnabled);
+  NotificationNotifier()
+    : super(PreferencesService.instance.notificationsEnabled);
 
   Future<void> toggle(bool value) async {
     await PreferencesService.instance.setNotificationsEnabled(value);
@@ -16,6 +17,8 @@ class NotificationNotifier extends StateNotifier<bool> {
   }
 }
 
-final notificationProvider = StateNotifierProvider<NotificationNotifier, bool>((ref) {
+final notificationProvider = StateNotifierProvider<NotificationNotifier, bool>((
+  ref,
+) {
   return NotificationNotifier();
 });

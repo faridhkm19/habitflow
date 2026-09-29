@@ -10,10 +10,7 @@ import '../providers/onboarding_provider.dart';
 class StepCompletion extends ConsumerWidget {
   final VoidCallback onBack;
 
-  const StepCompletion({
-    super.key,
-    required this.onBack,
-  });
+  const StepCompletion({super.key, required this.onBack});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -48,7 +45,9 @@ class StepCompletion extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             '$selectedCount habit siap dimulai!\nKamu bisa mengubahnya kapan saja.',
-            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.textSecondary,
+            ),
             textAlign: TextAlign.center,
           ),
           if (state.errorMessage != null) ...[
@@ -73,12 +72,16 @@ class StepCompletion extends ConsumerWidget {
                 child: AppButton(
                   label: 'Simpan & Mulai',
                   isLoading: state.isLoading,
-                  onPressed: state.isLoading ? null : () async {
-                    final success = await ref.read(onboardingProvider.notifier).saveHabits();
-                    if (success && context.mounted) {
-                      context.go('/home');
-                    }
-                  },
+                  onPressed: state.isLoading
+                      ? null
+                      : () async {
+                          final success = await ref
+                              .read(onboardingProvider.notifier)
+                              .saveHabits();
+                          if (success && context.mounted) {
+                            context.go('/home');
+                          }
+                        },
                 ),
               ),
             ],

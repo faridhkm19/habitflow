@@ -37,13 +37,13 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
     final bool showFab = habitsAsync.maybeWhen(
       data: (habits) {
         return habits.any((habit) {
-          final matchesCategory = _selectedCategory == 'all' || habit.category == _selectedCategory;
+          final matchesCategory =
+              _selectedCategory == 'all' || habit.category == _selectedCategory;
           return matchesCategory && !habit.isArchived;
         });
       },
       orElse: () => false,
     );
-
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -75,30 +75,36 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
                     ),
                     child: FilterChip(
                       label: Text(
-                      category['label']!,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: isSelected ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurface,
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                        category['label']!,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: isSelected
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : Theme.of(context).colorScheme.onSurface,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
+                        ),
+                      ),
+                      selected: isSelected,
+                      showCheckmark: false,
+                      onSelected: (_) {
+                        setState(() {
+                          _selectedCategory = category['id']!;
+                        });
+                      },
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      selectedColor: Theme.of(context).colorScheme.primary,
+                      surfaceTintColor: Colors.transparent,
+                      side: BorderSide(
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.outlineVariant,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    selected: isSelected,
-                    showCheckmark: false,
-                    onSelected: (_) {
-                      setState(() {
-                        _selectedCategory = category['id']!;
-                      });
-                    },
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                    selectedColor: Theme.of(context).colorScheme.primary,
-                    surfaceTintColor: Colors.transparent,
-                    side: BorderSide(
-                      color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outlineVariant,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
                   ),
-                ),
                 );
               }).toList(),
             ),
@@ -110,7 +116,9 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
               data: (habits) {
                 // Filter habits based on selected category and exclude archived
                 final filteredHabits = habits.where((habit) {
-                  final matchesCategory = _selectedCategory == 'all' || habit.category == _selectedCategory;
+                  final matchesCategory =
+                      _selectedCategory == 'all' ||
+                      habit.category == _selectedCategory;
                   return matchesCategory && !habit.isArchived;
                 }).toList();
 
@@ -124,7 +132,9 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
                           Container(
                             padding: const EdgeInsets.all(24),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primaryContainer,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primaryContainer,
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -136,13 +146,19 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
                           const SizedBox(height: 24),
                           Text(
                             'Belum Ada Habit',
-                            style: AppTextStyles.h2.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                            style: AppTextStyles.h2.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             'Yuk, mulai bangun kebiasaan positif pertamamu di kategori ini!',
-                            style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 32),
@@ -160,14 +176,18 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
                 return ListView.separated(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
                   itemCount: filteredHabits.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 12),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 12),
                   itemBuilder: (context, index) {
                     final habit = filteredHabits[index];
                     return HabitCard(
                       habit: habit,
                       showCategory: _selectedCategory == 'all',
                       onTap: () {
-                        context.push('${AppRoutes.habits}/${habit.id}', extra: habit);
+                        context.push(
+                          '${AppRoutes.habits}/${habit.id}',
+                          extra: habit,
+                        );
                       },
                     );
                   },
@@ -176,7 +196,10 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
               // Kategori 1: skeleton mencerminkan card list dengan ikon, teks, dan chip kategori
               loading: () => const HabitsListSkeleton(),
               error: (error, _) => Center(
-                child: Text('Gagal memuat daftar habit.', style: AppTextStyles.bodyMedium),
+                child: Text(
+                  'Gagal memuat daftar habit.',
+                  style: AppTextStyles.bodyMedium,
+                ),
               ),
             ),
           ),

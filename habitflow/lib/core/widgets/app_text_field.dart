@@ -99,7 +99,9 @@ class _AppTextFieldState extends State<AppTextField> {
       maxLength: widget.maxLength,
       autofocus: widget.autofocus,
       initialValue: widget.initialValue,
-      style: AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurface),
+      style: AppTextStyles.bodyMedium.copyWith(
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       decoration: InputDecoration(
         labelText: widget.label,
         hintText: widget.hint,
@@ -116,7 +118,9 @@ class _AppTextFieldState extends State<AppTextField> {
         suffixIcon: widget.obscureText
             ? IconButton(
                 icon: Icon(
-                  _isObscured ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                  _isObscured
+                      ? Icons.visibility_off_rounded
+                      : Icons.visibility_rounded,
                   size: 20,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
@@ -125,50 +129,79 @@ class _AppTextFieldState extends State<AppTextField> {
             : widget.suffixIcon,
 
         // Counter styling for fields with maxLength
-        counterStyle:
-            AppTextStyles.bodySmall.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+        counterStyle: AppTextStyles.bodySmall.copyWith(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
 
         // All border and fill specs come from AppTheme.light inputDecorationTheme
         // but we set them here too for standalone usage outside MaterialApp
         filled: true,
-        fillColor: widget.enabled ? Theme.of(context).colorScheme.surface : Theme.of(context).scaffoldBackgroundColor,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        fillColor: widget.enabled
+            ? Theme.of(context).colorScheme.surface
+            : Theme.of(context).scaffoldBackgroundColor,
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 14,
+          horizontal: 16,
+        ),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
 
         border: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant, width: 1),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.outlineVariant,
+            width: 1,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.outlineVariant, width: 1),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.outlineVariant,
+            width: 1,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 1.5,
+          ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.error, width: 1),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+            width: 1,
+          ),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.error, width: 1.5),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+            width: 1.5,
+          ),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: AppRadius.sm,
-          borderSide:
-              BorderSide(color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5), width: 1),
+          borderSide: BorderSide(
+            color: Theme.of(
+              context,
+            ).colorScheme.outlineVariant.withValues(alpha: 0.5),
+            width: 1,
+          ),
         ),
 
-        labelStyle:
-            AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
-        floatingLabelStyle:
-            AppTextStyles.bodySmall.copyWith(color: Theme.of(context).colorScheme.primary),
-        hintStyle:
-            AppTextStyles.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
-        errorStyle: AppTextStyles.bodySmall.copyWith(color: Theme.of(context).colorScheme.error),
+        labelStyle: AppTextStyles.bodyMedium.copyWith(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
+        floatingLabelStyle: AppTextStyles.bodySmall.copyWith(
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        hintStyle: AppTextStyles.bodyMedium.copyWith(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
+        errorStyle: AppTextStyles.bodySmall.copyWith(
+          color: Theme.of(context).colorScheme.error,
+        ),
       ),
     );
   }

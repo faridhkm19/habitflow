@@ -34,14 +34,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final name = _nameController.text.trim();
     if (name.isEmpty) return;
 
-    await ref.read(editProfileNotifierProvider.notifier).updateDisplayName(name);
+    await ref
+        .read(editProfileNotifierProvider.notifier)
+        .updateDisplayName(name);
 
     if (mounted) {
       final error = ref.read(editProfileNotifierProvider).error;
       if (error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error.toString())));
       } else {
         context.pop();
       }
@@ -54,9 +56,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final isLoading = state.isLoading;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Profil'),
-      ),
+      appBar: AppBar(title: const Text('Edit Profil')),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -64,9 +64,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           children: [
             TextField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Nama Tampilan',
-              ),
+              decoration: const InputDecoration(labelText: 'Nama Tampilan'),
               enabled: !isLoading,
             ),
             const SizedBox(height: 32),

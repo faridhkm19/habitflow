@@ -77,7 +77,9 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
 
   Future<bool> saveHabits() async {
     if (state.selectedTemplate == null || state.includedHabitNames.isEmpty) {
-      state = state.copyWith(errorMessage: 'Pilih minimal 1 habit untuk memulai');
+      state = state.copyWith(
+        errorMessage: 'Pilih minimal 1 habit untuk memulai',
+      );
       return false;
     }
 
@@ -86,7 +88,10 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
     try {
       final user = _ref.read(authStateProvider).value;
       if (user == null) {
-        state = state.copyWith(isLoading: false, errorMessage: 'User tidak ditemukan');
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'User tidak ditemukan',
+        );
         return false;
       }
 
@@ -94,22 +99,23 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
       final habitsToSave = state.selectedTemplate!.habits
           .where((h) => state.includedHabitNames.contains(h.name))
           .map((h) {
-        return HabitEntity(
-          id: '', // Diabaikan, Supabase pakai uuid_generate_v4() atau dari model 
-                  // Wait, Entity butuh ID. Di Model id diambil dari json. 
-                  // Saat create, Supabase mengabaikan ID jika kosong (atau kita harus skip).
-                  // Karena kita Entity mewajibkan id non-null, kita kasih kosong.
-          userId: user.id,
-          name: h.name,
-          iconName: h.iconName,
-          colorHex: h.colorHex,
-          category: h.category,
-          frequencyType: h.frequencyType,
-          frequencyValue: h.frequencyValue,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        );
-      }).toList();
+            return HabitEntity(
+              id: '', // Diabaikan, Supabase pakai uuid_generate_v4() atau dari model
+              // Wait, Entity butuh ID. Di Model id diambil dari json.
+              // Saat create, Supabase mengabaikan ID jika kosong (atau kita harus skip).
+              // Karena kita Entity mewajibkan id non-null, kita kasih kosong.
+              userId: user.id,
+              name: h.name,
+              iconName: h.iconName,
+              colorHex: h.colorHex,
+              category: h.category,
+              frequencyType: h.frequencyType,
+              frequencyValue: h.frequencyValue,
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+            );
+          })
+          .toList();
 
       final createBatch = _ref.read(createBatchHabitsUseCaseProvider);
       final result = await createBatch(habitsToSave);
@@ -137,6 +143,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
   }
 }
 
-final onboardingProvider = StateNotifierProvider<OnboardingNotifier, OnboardingState>((ref) {
-  return OnboardingNotifier(ref);
-});
+final onboardingProvider =
+    StateNotifierProvider<OnboardingNotifier, OnboardingState>((ref) {
+      return OnboardingNotifier(ref);
+    });

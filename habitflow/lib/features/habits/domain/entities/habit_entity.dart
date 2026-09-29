@@ -35,19 +35,19 @@ class HabitEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        userId,
-        name,
-        iconName,
-        colorHex,
-        category,
-        frequencyType,
-        frequencyValue,
-        reminderTime,
-        reminderMessage,
-        isArchived,
-        longestStreak,
-        createdAt,
-        updatedAt,
-      ];
+    id,
+    userId,
+    name,
+    iconName,
+    colorHex,
+    category,
+    frequencyType,
+    frequencyValue,
+    reminderTime,
+    reminderMessage,
+    isArchived,
+    longestStreak,
+    createdAt,
+    updatedAt,
+  ];
 }

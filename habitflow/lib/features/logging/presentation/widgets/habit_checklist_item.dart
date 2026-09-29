@@ -73,92 +73,106 @@ class _HabitChecklistItemState extends State<HabitChecklistItem>
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        child: Row(
-          children: [
-            // ── Ikon habit ─────────────────────────────────────────────────
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: habitColor.withValues(alpha: 0.12),
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Icon(
-                  getHabitIcon(widget.habit.iconName),
-                  color: habitColor,
-                  size: 22,
+          child: Row(
+            children: [
+              // ── Ikon habit ─────────────────────────────────────────────────
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: habitColor.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Icon(
+                    getHabitIcon(widget.habit.iconName),
+                    color: habitColor,
+                    size: 22,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 14),
-            // ── Nama habit & streak ────────────────────────────────────────
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.habit.name,
-                    style: AppTextStyles.h3.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
+              const SizedBox(width: 14),
+              // ── Nama habit & streak ────────────────────────────────────────
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.habit.name,
+                      style: AppTextStyles.h3.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
-                  ),
-                  if (widget.streak > 0) ...[
-                    const SizedBox(height: 3),
-                    Row(
-                      children: [
-                        Icon(Icons.local_fire_department_rounded,
-                            size: 13, color: isCompleted ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant),
-                        const SizedBox(width: 3),
-                        Text(
-                          '${widget.streak} hari',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: isCompleted ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurfaceVariant,
-                            fontWeight: FontWeight.w500,
+                    if (widget.streak > 0) ...[
+                      const SizedBox(height: 3),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.local_fire_department_rounded,
+                            size: 13,
+                            color: isCompleted
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
                           ),
-                        ),
-                      ],
-                    ),
+                          const SizedBox(width: 3),
+                          Text(
+                            '${widget.streak} hari',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: isCompleted
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ],
-                ],
-              ),
-            ),
-            const SizedBox(width: 12),
-            // ── Animated Checkbox ──────────────────────────────────────────
-            GestureDetector(
-              onTap: _handleTap,
-              child: AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return Transform.scale(
-                    scale: 1.0 + (_controller.value * 0.15),
-                    child: child,
-                  );
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.easeOutBack,
-                  width: 32,
-                  height: 32,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isCompleted ? habitColor : Colors.transparent,
-                    border: Border.all(
-                      color: habitColor,
-                      width: isCompleted ? 0 : 2.5,
-                    ),
-                  ),
-                  child: isCompleted
-                      ? const Icon(Icons.check_rounded,
-                          color: Colors.white, size: 18)
-                      : null,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 12),
+              // ── Animated Checkbox ──────────────────────────────────────────
+              GestureDetector(
+                onTap: _handleTap,
+                child: AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: 1.0 + (_controller.value * 0.15),
+                      child: child,
+                    );
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeOutBack,
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isCompleted ? habitColor : Colors.transparent,
+                      border: Border.all(
+                        color: habitColor,
+                        width: isCompleted ? 0 : 2.5,
+                      ),
+                    ),
+                    child: isCompleted
+                        ? const Icon(
+                            Icons.check_rounded,
+                            color: Colors.white,
+                            size: 18,
+                          )
+                        : null,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
-
 }

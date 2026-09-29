@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CurrentDateNotifier extends StateNotifier<DateTime> with WidgetsBindingObserver {
+class CurrentDateNotifier extends StateNotifier<DateTime>
+    with WidgetsBindingObserver {
   Timer? _timer;
 
   CurrentDateNotifier() : super(DateTime.now()) {
@@ -12,7 +13,9 @@ class CurrentDateNotifier extends StateNotifier<DateTime> with WidgetsBindingObs
 
   void _checkDate() {
     final now = DateTime.now();
-    if (now.day != state.day || now.month != state.month || now.year != state.year) {
+    if (now.day != state.day ||
+        now.month != state.month ||
+        now.year != state.year) {
       state = now;
     }
   }
@@ -32,6 +35,7 @@ class CurrentDateNotifier extends StateNotifier<DateTime> with WidgetsBindingObs
   }
 }
 
-final currentDateProvider = StateNotifierProvider<CurrentDateNotifier, DateTime>((ref) {
-  return CurrentDateNotifier();
-});
+final currentDateProvider =
+    StateNotifierProvider<CurrentDateNotifier, DateTime>((ref) {
+      return CurrentDateNotifier();
+    });

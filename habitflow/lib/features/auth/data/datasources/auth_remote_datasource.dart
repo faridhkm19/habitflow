@@ -26,6 +26,10 @@ abstract class AuthRemoteDataSource {
   Future<UserEntity> signIn({required String email, required String password});
   Future<void> signOut();
   Future<void> updatePassword({required String newPassword});
+  Future<void> updateEmail({
+    required String newEmail,
+    required String currentPassword,
+  });
   UserEntity? getCurrentUser();
   Stream<UserEntity?> get authStateChanges;
 }
@@ -66,7 +70,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
     final user = response.user;
     if (user == null) {
-      throw const AuthException('Login gagal. Periksa email dan password kamu.');
+      throw const AuthException(
+        'Login gagal. Periksa email dan password kamu.',
+      );
     }
 
     return UserModel.fromSupabaseUser(user).toEntity();
@@ -79,9 +85,30 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<void> updatePassword({required String newPassword}) async {
-    await _client.auth.updateUser(
-      UserAttributes(password: newPassword),
+    await _client.auth.updateUser(UserAttributes(password: newPassword));
+  }
+
+  @override
+  Future<void> updateEmail({
+    required String newEmail,
+    required String currentPassword,
+  }) async {
+    final user = _client.auth.currentUser;
+    if (user == null || user.email == null) {
+      throw const AuthException('Sesi tidak valid.');
+    }
+
+    // Re-authenticate untuk keamanan
+    await _client.auth.signInWithPassword(
+      email: user.email!,
+      password: currentPassword,
     );
+
+    // Update email
+    await _client.auth.updateUser(UserAttributes(email: newEmail));
+
+    // Paksa refresh session agar state lokal Supabase langsung mendapatkan data user (email) yang baru
+    await _client.auth.refreshSession();
   }
 
   @override

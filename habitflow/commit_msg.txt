@@ -1,0 +1,22 @@
+feat(theme): implement dynamic light & dark mode and migrate to material 3 color scheme
+
+Pembaruan besar ini menghadirkan dukungan Dark Mode secara menyeluruh dan memigrasikan sistem warna aplikasi untuk menggunakan Material 3 Color Scheme.
+
+Detail Perubahan:
+1. Penyempurnaan Tema & State Management:
+   - Mengimplementasikan `ThemeProvider` menggunakan `ChangeNotifier` untuk mengatur tema aplikasi (Light, Dark, System Default).
+   - Menyimpan preferensi tema pengguna secara lokal menggunakan `SharedPreferences` (`PreferencesService`).
+   - Memperbarui `AppTheme` untuk menyertakan definisi `ColorScheme` lengkap untuk versi Light dan Dark.
+
+2. Migrasi Warna Dinamis (Refactoring Massal):
+   - Menghilangkan penggunaan warna statis / hardcoded dari `AppColors` di seluruh komponen dan layar aplikasi (meliputi lebih dari 30 file).
+   - Mengganti pemanggilan warna dengan `Theme.of(context).colorScheme.*` (seperti `primary`, `surface`, `onSurface`, `onSurfaceVariant`, `outline`, dsb) agar responsif terhadap perubahan tema.
+
+3. Penambahan Fitur & Komponen Baru:
+   - Menambahkan komponen `SkeletonLoader` baru untuk memberikan efek shimmer loading yang modern dan adaptif terhadap tema saat memuat data.
+   - Memperbarui warna `LoadingIndicator` agar menggunakan warna `primary` dari tema.
+
+4. Penyesuaian UI & Layout:
+   - Menyesuaikan `MobileScaffold` agar shadow pada bottom navigation bar terlihat natural baik di Light maupun Dark mode (dengan menyesuaikan opacity berdasarkan `Brightness`).
+   - Merapikan visual chart pada halaman statistik (`HeatmapChart` & `WeeklyRadialChart`), mengubah indikator kosong/missed agar lebih serasi dengan warna container di Dark mode.
+   - Memperbaiki kontras teks, border, background pada `AppButton`, `AppCard`, `AppTextField`, `HabitCard`, dan form input lainnya.

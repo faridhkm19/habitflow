@@ -27,7 +27,9 @@ final getHabitsUseCaseProvider = Provider<GetHabitsUseCase>((ref) {
   return GetHabitsUseCase(repository);
 });
 
-final createBatchHabitsUseCaseProvider = Provider<CreateBatchHabitsUseCase>((ref) {
+final createBatchHabitsUseCaseProvider = Provider<CreateBatchHabitsUseCase>((
+  ref,
+) {
   final repository = ref.watch(habitRepositoryProvider);
   return CreateBatchHabitsUseCase(repository);
 });
@@ -150,7 +152,8 @@ class HabitsNotifier extends AsyncNotifier<List<HabitEntity>> {
       await refresh();
       return null;
     }
-    return res.failureOrNull?.message ?? 'Gagal menghapus habit secara permanen.';
+    return res.failureOrNull?.message ??
+        'Gagal menghapus habit secara permanen.';
   }
 }
 

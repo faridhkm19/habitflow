@@ -39,7 +39,7 @@ class IconColorPicker extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
-        
+
         Text('Pilih Warna', style: AppTextStyles.h3),
         const SizedBox(height: 12),
         // Color Swatches
@@ -57,7 +57,12 @@ class IconColorPicker extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: color,
                     shape: BoxShape.circle,
-                    border: isSelected ? Border.all(color: Theme.of(context).colorScheme.primary, width: 3) : null,
+                    border: isSelected
+                        ? Border.all(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 3,
+                          )
+                        : null,
                   ),
                 ),
               );
@@ -87,13 +92,21 @@ class IconColorPicker extends StatelessWidget {
               onTap: () => onIconChanged(iconName),
               child: Container(
                 decoration: BoxDecoration(
-                  color: isSelected ? getLighterColor(selectedColor, 0.15) : Theme.of(context).colorScheme.surface,
+                  color: isSelected
+                      ? getLighterColor(selectedColor, 0.15)
+                      : Theme.of(context).colorScheme.surface,
                   shape: BoxShape.circle,
-                  border: isSelected ? Border.all(color: selectedColor, width: 2) : Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                  border: isSelected
+                      ? Border.all(color: selectedColor, width: 2)
+                      : Border.all(
+                          color: Theme.of(context).colorScheme.outlineVariant,
+                        ),
                 ),
                 child: Icon(
                   getHabitIcon(iconName),
-                  color: isSelected ? selectedColor : Theme.of(context).colorScheme.onSurfaceVariant,
+                  color: isSelected
+                      ? selectedColor
+                      : Theme.of(context).colorScheme.onSurfaceVariant,
                   size: 24,
                 ),
               ),

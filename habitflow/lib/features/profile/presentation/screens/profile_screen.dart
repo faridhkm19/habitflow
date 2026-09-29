@@ -40,12 +40,15 @@ class ProfileScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 8),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
+                ),
                 child: Text(
                   'Ganti Foto Profil',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               const Divider(height: 1),
@@ -57,7 +60,11 @@ class ProfileScreen extends ConsumerWidget {
                     color: AppColors.primaryLight,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.camera_alt_rounded, color: AppColors.primary, size: 20),
+                  child: const Icon(
+                    Icons.camera_alt_rounded,
+                    color: AppColors.primary,
+                    size: 20,
+                  ),
                 ),
                 title: const Text('Ambil Foto'),
                 onTap: () {
@@ -73,7 +80,11 @@ class ProfileScreen extends ConsumerWidget {
                     color: AppColors.accent1Light,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.photo_library_rounded, color: AppColors.accent1, size: 20),
+                  child: const Icon(
+                    Icons.photo_library_rounded,
+                    color: AppColors.accent1,
+                    size: 20,
+                  ),
                 ),
                 title: const Text('Pilih dari Galeri'),
                 onTap: () {
@@ -89,7 +100,11 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _pickImage(BuildContext context, WidgetRef ref, ImageSource source) async {
+  Future<void> _pickImage(
+    BuildContext context,
+    WidgetRef ref,
+    ImageSource source,
+  ) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
       source: source,
@@ -99,14 +114,16 @@ class ProfileScreen extends ConsumerWidget {
     );
 
     if (pickedFile != null) {
-      await ref.read(avatarUploadNotifierProvider.notifier).uploadAvatar(pickedFile.path);
+      await ref
+          .read(avatarUploadNotifierProvider.notifier)
+          .uploadAvatar(pickedFile.path);
       // ignore: use_build_context_synchronously
       if (!context.mounted) return;
       final error = ref.read(avatarUploadNotifierProvider).error;
       if (error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error.toString())));
       }
     }
   }
@@ -145,7 +162,9 @@ class ProfileScreen extends ConsumerWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           contentPadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -158,25 +177,32 @@ class ProfileScreen extends ConsumerWidget {
                   color: AppColors.primaryLight,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Icon(Icons.self_improvement_rounded, color: AppColors.primary, size: 32),
+                child: const Icon(
+                  Icons.self_improvement_rounded,
+                  color: AppColors.primary,
+                  size: 32,
+                ),
               ),
               const SizedBox(height: 16),
               Text(
                 'HabitFlow',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 4),
               Text(
                 'Versi 1.0.0',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
               ),
               const SizedBox(height: 12),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.primaryLight,
                   borderRadius: BorderRadius.circular(10),
@@ -184,19 +210,19 @@ class ProfileScreen extends ConsumerWidget {
                 child: Text(
                   '"Build better days, one habit at a time."',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.primary,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    color: AppColors.primary,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w500,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(height: 12),
               Text(
                 'Aplikasi tracking kebiasaan yang rendah friksi, penuh konteks, dan ramah secara psikologis.',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -217,8 +243,9 @@ class ProfileScreen extends ConsumerWidget {
     final profileAsync = ref.watch(profileDataProvider);
     final authState = ref.watch(authStateProvider);
     final user = authState.valueOrNull;
+    final currentEmail = ref.watch(currentEmailProvider);
     final isUploading = ref.watch(avatarUploadNotifierProvider).isLoading;
-    
+
     // Toggles state
     final themeMode = ref.watch(themeProvider);
     final isNotifEnabled = ref.watch(notificationProvider);
@@ -264,9 +291,8 @@ class ProfileScreen extends ConsumerWidget {
                       children: [
                         Text(
                           displayName,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.w700),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(width: 8),
@@ -275,17 +301,19 @@ class ProfileScreen extends ConsumerWidget {
                           child: Icon(
                             Icons.edit_rounded,
                             size: 20,
-                            color: AppColors.textSecondary.withValues(alpha: 0.8),
+                            color: AppColors.textSecondary.withValues(
+                              alpha: 0.8,
+                            ),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      user.email,
+                      currentEmail.isEmpty ? (user!.email) : currentEmail,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                        color: AppColors.textSecondary,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -377,7 +405,8 @@ class ProfileScreen extends ConsumerWidget {
                       children: [
                         _ThemeDropdownRow(
                           currentMode: themeMode,
-                          onChanged: (val) => ref.read(themeProvider.notifier).setTheme(val),
+                          onChanged: (val) =>
+                              ref.read(themeProvider.notifier).setTheme(val),
                         ),
                         const _RowDivider(),
                         _ToggleRow(
@@ -385,9 +414,13 @@ class ProfileScreen extends ConsumerWidget {
                           iconBg: AppColors.accent1Light,
                           iconColor: AppColors.accent1,
                           title: 'Notifikasi',
-                          subtitle: isNotifEnabled ? 'Pengingat habit aktif' : 'Pengingat habit nonaktif',
+                          subtitle: isNotifEnabled
+                              ? 'Pengingat habit aktif'
+                              : 'Pengingat habit nonaktif',
                           value: isNotifEnabled,
-                          onChanged: (val) => ref.read(notificationProvider.notifier).toggle(val),
+                          onChanged: (val) => ref
+                              .read(notificationProvider.notifier)
+                              .toggle(val),
                         ),
                       ],
                     ),
@@ -487,10 +520,10 @@ class _SectionLabel extends StatelessWidget {
     return Text(
       label.toUpperCase(),
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 0.6,
-          ),
+        color: AppColors.textSecondary,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.6,
+      ),
     );
   }
 }
@@ -538,9 +571,7 @@ class _MenuTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final effectiveIconBg = isDark
-        ? iconColor.withValues(alpha: 0.15)
-        : iconBg;
+    final effectiveIconBg = isDark ? iconColor.withValues(alpha: 0.15) : iconBg;
 
     return Material(
       color: Colors.transparent,
@@ -565,12 +596,16 @@ class _MenuTile extends StatelessWidget {
                 child: Text(
                   title,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: textColor,
-                      ),
+                    fontWeight: FontWeight.w500,
+                    color: textColor,
+                  ),
                 ),
               ),
-              Icon(Icons.chevron_right_rounded, color: AppColors.textSecondary, size: 20),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.textSecondary,
+                size: 20,
+              ),
             ],
           ),
         ),
@@ -634,9 +669,7 @@ class _ToggleRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final effectiveIconBg = isDark
-        ? iconColor.withValues(alpha: 0.15)
-        : iconBg;
+    final effectiveIconBg = isDark ? iconColor.withValues(alpha: 0.15) : iconBg;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -658,16 +691,16 @@ class _ToggleRow extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
+                    color: AppColors.textSecondary,
+                  ),
                 ),
               ],
             ),
@@ -683,10 +716,7 @@ class _ThemeDropdownRow extends StatelessWidget {
   final ThemeMode currentMode;
   final ValueChanged<String> onChanged;
 
-  const _ThemeDropdownRow({
-    required this.currentMode,
-    required this.onChanged,
-  });
+  const _ThemeDropdownRow({required this.currentMode, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -734,16 +764,16 @@ class _ThemeDropdownRow extends StatelessWidget {
               children: [
                 Text(
                   'Tampilan',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   getSubtitle(),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
+                    color: AppColors.textSecondary,
+                  ),
                 ),
               ],
             ),
@@ -754,9 +784,9 @@ class _ThemeDropdownRow extends StatelessWidget {
             elevation: 16,
             borderRadius: BorderRadius.circular(12),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: AppColors.primary,
+              fontWeight: FontWeight.w600,
+            ),
             underline: const SizedBox(),
             alignment: Alignment.centerRight,
             onChanged: (String? newValue) {
@@ -765,18 +795,9 @@ class _ThemeDropdownRow extends StatelessWidget {
               }
             },
             items: const [
-              DropdownMenuItem(
-                value: 'light',
-                child: Text('Terang'),
-              ),
-              DropdownMenuItem(
-                value: 'dark',
-                child: Text('Gelap'),
-              ),
-              DropdownMenuItem(
-                value: 'system',
-                child: Text('Default'),
-              ),
+              DropdownMenuItem(value: 'light', child: Text('Terang')),
+              DropdownMenuItem(value: 'dark', child: Text('Gelap')),
+              DropdownMenuItem(value: 'system', child: Text('Default')),
             ],
           ),
         ],

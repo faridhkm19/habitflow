@@ -65,9 +65,9 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
         .select('id, longest_streak')
         .eq('user_id', userId)
         .eq('is_archived', false);
-        
+
     final int totalHabits = (habitsResponse as List).length;
-    
+
     // 3. Ambil longest streak (maksimum dari seluruh habit)
     int maxLongestStreak = 0;
     for (final habit in habitsResponse) {
@@ -82,7 +82,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
         .eq('user_id', userId)
         .eq('is_completed', true)
         .count(CountOption.exact);
-        
+
     final int totalCheckIns = countResponse.count;
 
     return ProfileModel.fromJson(
@@ -103,10 +103,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   @override
   Future<void> updateAvatarUrl(String userId, String url) async {
-    await _client
-        .from('profiles')
-        .update({'avatar_url': url})
-        .eq('id', userId);
+    await _client.from('profiles').update({'avatar_url': url}).eq('id', userId);
   }
 
   @override
@@ -115,23 +112,26 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     final ext = filePath.split('.').last;
     final path = '$userId/avatar_${DateTime.now().millisecondsSinceEpoch}.$ext';
 
-    await _client.storage.from('avatars').upload(path, file,
-        fileOptions: const FileOptions(upsert: true));
+    await _client.storage
+        .from('avatars')
+        .upload(path, file, fileOptions: const FileOptions(upsert: true));
 
     final publicUrl = _client.storage.from('avatars').getPublicUrl(path);
-    
+
     // Simpan public URL ke tabel profiles
     await updateAvatarUrl(userId, publicUrl);
-    
+
     return publicUrl;
   }
 
   @override
-  Future<void> updateThemePreference(String userId, String themePreference) async {
+  Future<void> updateThemePreference(
+    String userId,
+    String themePreference,
+  ) async {
     await _client
         .from('profiles')
         .update({'theme_preference': themePreference})
         .eq('id', userId);
   }
 }
-

@@ -23,7 +23,7 @@ class HabitCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final habitColor = ColorExtension.fromHex(habit.colorHex);
     final bgColor = getLighterColor(habitColor, 0.15);
-    
+
     final streakAsync = ref.watch(currentStreakProvider(habit.id));
     final currentStreak = streakAsync.valueOrNull ?? 0;
 
@@ -33,10 +33,7 @@ class HabitCard extends ConsumerWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: bgColor,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
             child: Icon(
               getHabitIcon(habit.iconName),
               color: habitColor,
@@ -50,7 +47,9 @@ class HabitCard extends ConsumerWidget {
               children: [
                 Text(
                   habit.name,
-                  style: AppTextStyles.h3.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                  style: AppTextStyles.h3.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Row(
@@ -79,7 +78,9 @@ class HabitCard extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
-                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.outlineVariant,
+                ),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
@@ -98,13 +99,20 @@ class HabitCard extends ConsumerWidget {
 
   String _getCategoryDisplayName(String category) {
     switch (category) {
-      case 'health': return 'Kesehatan';
-      case 'learning': return 'Belajar';
-      case 'mindfulness': return 'Mindful';
-      case 'productivity': return 'Produktivitas';
-      case 'social': return 'Sosial';
-      case 'custom': return 'Lainnya';
-      default: return category;
+      case 'health':
+        return 'Kesehatan';
+      case 'learning':
+        return 'Belajar';
+      case 'mindfulness':
+        return 'Mindful';
+      case 'productivity':
+        return 'Produktivitas';
+      case 'social':
+        return 'Sosial';
+      case 'custom':
+        return 'Lainnya';
+      default:
+        return category;
     }
   }
 }

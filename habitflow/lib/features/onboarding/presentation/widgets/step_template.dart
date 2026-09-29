@@ -12,11 +12,7 @@ class StepTemplate extends ConsumerWidget {
   final VoidCallback onNext;
   final VoidCallback onBack;
 
-  const StepTemplate({
-    super.key,
-    required this.onNext,
-    required this.onBack,
-  });
+  const StepTemplate({super.key, required this.onNext, required this.onBack});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,14 +23,13 @@ class StepTemplate extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Pilih gaya hidupmu',
-            style: AppTextStyles.h2,
-          ),
+          Text('Pilih gaya hidupmu', style: AppTextStyles.h2),
           const SizedBox(height: 8),
           Text(
             'Pilih yang paling cocok dengan keseharianmu.',
-            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodyLarge.copyWith(
+              color: AppColors.textSecondary,
+            ),
           ),
           const SizedBox(height: 24),
           Expanded(
@@ -47,16 +42,22 @@ class StepTemplate extends ConsumerWidget {
 
                 return AppCard(
                   onTap: () {
-                    ref.read(onboardingProvider.notifier).selectTemplate(template);
+                    ref
+                        .read(onboardingProvider.notifier)
+                        .selectTemplate(template);
                   },
-                  backgroundColor: isSelected ? AppColors.primaryLight : AppColors.surface,
+                  backgroundColor: isSelected
+                      ? AppColors.primaryLight
+                      : AppColors.surface,
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: isSelected ? AppColors.primary : AppColors.background,
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.background,
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
@@ -72,7 +73,9 @@ class StepTemplate extends ConsumerWidget {
                             Text(
                               template.title,
                               style: AppTextStyles.h3.copyWith(
-                                color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : AppColors.textPrimary,
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -84,7 +87,10 @@ class StepTemplate extends ConsumerWidget {
                         ),
                       ),
                       if (isSelected)
-                        const Icon(Icons.check_circle, color: AppColors.primary)
+                        const Icon(
+                          Icons.check_circle,
+                          color: AppColors.primary,
+                        ),
                     ],
                   ),
                 );
@@ -116,14 +122,22 @@ class StepTemplate extends ConsumerWidget {
 
   IconData _getIconForTemplate(String id) {
     switch (id) {
-      case 'morning_routine': return Icons.wb_sunny;
-      case 'healthy_lifestyle': return Icons.favorite;
-      case 'study_focus': return Icons.school;
-      case 'mindfulness': return Icons.spa;
-      case 'fitness': return Icons.sports_gymnastics;
-      case 'self_development': return Icons.trending_up;
-      case 'rest_relaxation': return Icons.weekend;
-      default: return Icons.list;
+      case 'morning_routine':
+        return Icons.wb_sunny;
+      case 'healthy_lifestyle':
+        return Icons.favorite;
+      case 'study_focus':
+        return Icons.school;
+      case 'mindfulness':
+        return Icons.spa;
+      case 'fitness':
+        return Icons.sports_gymnastics;
+      case 'self_development':
+        return Icons.trending_up;
+      case 'rest_relaxation':
+        return Icons.weekend;
+      default:
+        return Icons.list;
     }
   }
 }

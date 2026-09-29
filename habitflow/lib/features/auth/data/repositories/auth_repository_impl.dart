@@ -46,7 +46,9 @@ class AuthRepositoryImpl implements AuthRepository {
     } on SocketException {
       return const Err(NetworkFailure());
     } catch (e) {
-      return Err(ServerFailure('Terjadi kesalahan tidak terduga: ${e.toString()}'));
+      return Err(
+        ServerFailure('Terjadi kesalahan tidak terduga: ${e.toString()}'),
+      );
     }
   }
 
@@ -63,7 +65,9 @@ class AuthRepositoryImpl implements AuthRepository {
     } on SocketException {
       return const Err(NetworkFailure());
     } catch (e) {
-      return Err(ServerFailure('Terjadi kesalahan tidak terduga: ${e.toString()}'));
+      return Err(
+        ServerFailure('Terjadi kesalahan tidak terduga: ${e.toString()}'),
+      );
     }
   }
 
@@ -96,6 +100,26 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Result<void>> updateEmail({
+    required String newEmail,
+    required String currentPassword,
+  }) async {
+    try {
+      await _dataSource.updateEmail(
+        newEmail: newEmail,
+        currentPassword: currentPassword,
+      );
+      return const Ok(null);
+    } on AuthException catch (e) {
+      return Err(AuthFailure(_mapAuthExceptionMessage(e.message)));
+    } on SocketException {
+      return const Err(NetworkFailure());
+    } catch (e) {
+      return Err(ServerFailure('Gagal mengubah email: ${e.toString()}'));
+    }
+  }
+
+  @override
   UserEntity? getCurrentUser() => _dataSource.getCurrentUser();
 
   @override
@@ -115,8 +139,9 @@ class AuthRepositoryImpl implements AuthRepository {
       return 'Email atau password salah. Periksa kembali dan coba lagi.';
     }
     if (lower.contains('user already registered') ||
-        lower.contains('email already')) {
-      return 'Email ini sudah terdaftar. Coba login atau gunakan email lain.';
+        lower.contains('email already') ||
+        lower.contains('email address already in use')) {
+      return 'Email ini sudah terdaftar di akun lain.';
     }
     if (lower.contains('email not confirmed')) {
       return 'Akun belum aktif. Hubungi administrator.';

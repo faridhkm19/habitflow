@@ -60,14 +60,20 @@ abstract final class AppTheme {
     // Text theme built from Poppins — applies to all Material widgets
     final textTheme = TextTheme(
       // display* → our display / h1 / h2
-      displayLarge: AppTextStyles.display.copyWith(color: AppColors.textPrimary),
+      displayLarge: AppTextStyles.display.copyWith(
+        color: AppColors.textPrimary,
+      ),
       displayMedium: AppTextStyles.h1.copyWith(color: AppColors.textPrimary),
       displaySmall: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
 
       // headline* → our h3 / bodyLarge
       headlineLarge: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
-      headlineMedium: AppTextStyles.bodyLarge.copyWith(color: AppColors.textPrimary),
-      headlineSmall: AppTextStyles.bodyLarge.copyWith(color: AppColors.textPrimary),
+      headlineMedium: AppTextStyles.bodyLarge.copyWith(
+        color: AppColors.textPrimary,
+      ),
+      headlineSmall: AppTextStyles.bodyLarge.copyWith(
+        color: AppColors.textPrimary,
+      ),
 
       // title* → mapped to h3 and bodyLarge
       titleLarge: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
@@ -82,13 +88,21 @@ abstract final class AppTheme {
 
       // body* → bodyLarge / bodyMedium
       bodyLarge: AppTextStyles.bodyLarge.copyWith(color: AppColors.textPrimary),
-      bodyMedium: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
-      bodySmall: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+      bodyMedium: AppTextStyles.bodyMedium.copyWith(
+        color: AppColors.textPrimary,
+      ),
+      bodySmall: AppTextStyles.bodySmall.copyWith(
+        color: AppColors.textSecondary,
+      ),
 
       // label* → button / bodySmall
       labelLarge: AppTextStyles.button.copyWith(color: AppColors.textPrimary),
-      labelMedium: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-      labelSmall: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+      labelMedium: AppTextStyles.bodySmall.copyWith(
+        color: AppColors.textSecondary,
+      ),
+      labelSmall: AppTextStyles.bodySmall.copyWith(
+        color: AppColors.textSecondary,
+      ),
     );
 
     return ThemeData(
@@ -133,7 +147,9 @@ abstract final class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textOnPrimary,
           disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.4),
-          disabledForegroundColor: AppColors.textOnPrimary.withValues(alpha: 0.6),
+          disabledForegroundColor: AppColors.textOnPrimary.withValues(
+            alpha: 0.6,
+          ),
           elevation: 0,
           shadowColor: Colors.transparent,
           shape: AppRadius.mdShape,
@@ -181,7 +197,10 @@ abstract final class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.surface,
-        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 14,
+          horizontal: 16,
+        ),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
 
         // Border styles
@@ -214,9 +233,15 @@ abstract final class AppTheme {
         ),
 
         // Label & hint styling
-        labelStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
-        floatingLabelStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.primary),
-        hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+        labelStyle: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.textSecondary,
+        ),
+        floatingLabelStyle: AppTextStyles.bodySmall.copyWith(
+          color: AppColors.primary,
+        ),
+        hintStyle: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.textSecondary,
+        ),
         errorStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
       ),
 
@@ -248,7 +273,9 @@ abstract final class AppTheme {
               fontWeight: FontWeight.w600,
             );
           }
-          return AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary);
+          return AppTextStyles.bodySmall.copyWith(
+            color: AppColors.textSecondary,
+          );
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
@@ -305,8 +332,9 @@ abstract final class AppTheme {
         backgroundColor: AppColors.surface,
         shape: AppRadius.lgShape,
         titleTextStyle: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
-        contentTextStyle:
-            AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+        contentTextStyle: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.textSecondary,
+        ),
       ),
     );
   }
@@ -354,8 +382,14 @@ abstract final class AppTheme {
       headlineMedium: AppTextStyles.bodyLarge.copyWith(color: Colors.white),
       headlineSmall: AppTextStyles.bodyLarge.copyWith(color: Colors.white),
       titleLarge: AppTextStyles.h3.copyWith(color: Colors.white),
-      titleMedium: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w500, color: Colors.white),
-      titleSmall: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.w500, color: Colors.white),
+      titleMedium: AppTextStyles.bodyMedium.copyWith(
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+      ),
+      titleSmall: AppTextStyles.bodySmall.copyWith(
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+      ),
       bodyLarge: AppTextStyles.bodyLarge.copyWith(color: Colors.white),
       bodyMedium: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
       bodySmall: AppTextStyles.bodySmall.copyWith(color: Colors.white),
@@ -429,7 +463,10 @@ abstract final class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: const Color(0xFF1E1E1E),
-        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 14,
+          horizontal: 16,
+        ),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         border: const OutlineInputBorder(
           borderRadius: AppRadius.sm,
@@ -459,7 +496,9 @@ abstract final class AppTheme {
           ),
         ),
         labelStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
-        floatingLabelStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.primary),
+        floatingLabelStyle: AppTextStyles.bodySmall.copyWith(
+          color: AppColors.primary,
+        ),
         hintStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
         errorStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
       ),
@@ -535,8 +574,9 @@ abstract final class AppTheme {
         backgroundColor: const Color(0xFF1E1E1E),
         shape: AppRadius.lgShape,
         titleTextStyle: AppTextStyles.h2.copyWith(color: Colors.white),
-        contentTextStyle:
-            AppTextStyles.bodyMedium.copyWith(color: Colors.white),
+        contentTextStyle: AppTextStyles.bodyMedium.copyWith(
+          color: Colors.white,
+        ),
       ),
     );
   }

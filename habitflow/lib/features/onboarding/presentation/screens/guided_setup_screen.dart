@@ -72,12 +72,13 @@ class _GuidedSetupScreenState extends ConsumerState<GuidedSetupScreen> {
                 }),
               ),
             ),
-            
+
             // Konten Layar (PageView)
             Expanded(
               child: PageView(
                 controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(), // cegah swipe manual
+                physics:
+                    const NeverScrollableScrollPhysics(), // cegah swipe manual
                 children: [
                   StepWelcome(onNext: () => _onNextStep(state.currentStep)),
                   StepTemplate(

@@ -18,7 +18,9 @@ class HabitRepositoryImpl implements HabitRepository {
       final habits = await remoteDataSource.getHabits();
       return Ok(habits);
     } on AuthException {
-      return const Err(AuthFailure('Sesi telah berakhir, silakan login kembali.'));
+      return const Err(
+        AuthFailure('Sesi telah berakhir, silakan login kembali.'),
+      );
     } on PostgrestException catch (e) {
       return Err(ServerFailure(e.message));
     } on SocketException {
@@ -29,13 +31,17 @@ class HabitRepositoryImpl implements HabitRepository {
   }
 
   @override
-  Future<Result<List<HabitEntity>>> createBatchHabits(List<HabitEntity> habits) async {
+  Future<Result<List<HabitEntity>>> createBatchHabits(
+    List<HabitEntity> habits,
+  ) async {
     try {
       final models = habits.map((e) => HabitModel.fromEntity(e)).toList();
       final result = await remoteDataSource.createBatchHabits(models);
       return Ok(result);
     } on AuthException {
-      return const Err(AuthFailure('Sesi telah berakhir, silakan login kembali.'));
+      return const Err(
+        AuthFailure('Sesi telah berakhir, silakan login kembali.'),
+      );
     } on PostgrestException catch (e) {
       return Err(ServerFailure(e.message));
     } on SocketException {
@@ -52,13 +58,17 @@ class HabitRepositoryImpl implements HabitRepository {
       final result = await remoteDataSource.updateHabit(model);
       return Ok(result);
     } on AuthException {
-      return const Err(AuthFailure('Sesi telah berakhir, silakan login kembali.'));
+      return const Err(
+        AuthFailure('Sesi telah berakhir, silakan login kembali.'),
+      );
     } on PostgrestException catch (e) {
       return Err(ServerFailure(e.message));
     } on SocketException {
       return const Err(NetworkFailure('Tidak ada koneksi internet.'));
     } catch (e) {
-      return const Err(ServerFailure('Terjadi kesalahan saat memperbarui data.'));
+      return const Err(
+        ServerFailure('Terjadi kesalahan saat memperbarui data.'),
+      );
     }
   }
 
@@ -68,13 +78,17 @@ class HabitRepositoryImpl implements HabitRepository {
       await remoteDataSource.archiveHabit(id);
       return const Ok(null);
     } on AuthException {
-      return const Err(AuthFailure('Sesi telah berakhir, silakan login kembali.'));
+      return const Err(
+        AuthFailure('Sesi telah berakhir, silakan login kembali.'),
+      );
     } on PostgrestException catch (e) {
       return Err(ServerFailure(e.message));
     } on SocketException {
       return const Err(NetworkFailure('Tidak ada koneksi internet.'));
     } catch (e) {
-      return const Err(ServerFailure('Terjadi kesalahan saat mengarsipkan habit.'));
+      return const Err(
+        ServerFailure('Terjadi kesalahan saat mengarsipkan habit.'),
+      );
     }
   }
 
@@ -84,13 +98,17 @@ class HabitRepositoryImpl implements HabitRepository {
       await remoteDataSource.deleteHabit(id);
       return const Ok(null);
     } on AuthException {
-      return const Err(AuthFailure('Sesi telah berakhir, silakan login kembali.'));
+      return const Err(
+        AuthFailure('Sesi telah berakhir, silakan login kembali.'),
+      );
     } on PostgrestException catch (e) {
       return Err(ServerFailure(e.message));
     } on SocketException {
       return const Err(NetworkFailure('Tidak ada koneksi internet.'));
     } catch (e) {
-      return const Err(ServerFailure('Terjadi kesalahan saat menghapus habit.'));
+      return const Err(
+        ServerFailure('Terjadi kesalahan saat menghapus habit.'),
+      );
     }
   }
 
@@ -101,13 +119,17 @@ class HabitRepositoryImpl implements HabitRepository {
       final results = await remoteDataSource.createBatchHabits([model]);
       return Ok(results.first);
     } on AuthException {
-      return const Err(AuthFailure('Sesi telah berakhir, silakan login kembali.'));
+      return const Err(
+        AuthFailure('Sesi telah berakhir, silakan login kembali.'),
+      );
     } on PostgrestException catch (e) {
       return Err(ServerFailure(e.message));
     } on SocketException {
       return const Err(NetworkFailure('Tidak ada koneksi internet.'));
     } catch (e) {
-      return const Err(ServerFailure('Terjadi kesalahan saat menyimpan habit.'));
+      return const Err(
+        ServerFailure('Terjadi kesalahan saat menyimpan habit.'),
+      );
     }
   }
 

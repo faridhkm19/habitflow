@@ -13,7 +13,9 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../../core/errors/failures.dart';
 
 // --- Datasource ---
-final profileRemoteDataSourceProvider = Provider<ProfileRemoteDataSource>((ref) {
+final profileRemoteDataSourceProvider = Provider<ProfileRemoteDataSource>((
+  ref,
+) {
   return ProfileRemoteDataSourceImpl(Supabase.instance.client);
 });
 
@@ -28,7 +30,9 @@ final getProfileUseCaseProvider = Provider<GetProfileUseCase>((ref) {
   return GetProfileUseCase(ref.watch(profileRepositoryProvider));
 });
 
-final updateDisplayNameUseCaseProvider = Provider<UpdateDisplayNameUseCase>((ref) {
+final updateDisplayNameUseCaseProvider = Provider<UpdateDisplayNameUseCase>((
+  ref,
+) {
   return UpdateDisplayNameUseCase(ref.watch(profileRepositoryProvider));
 });
 
@@ -36,9 +40,10 @@ final uploadAvatarUseCaseProvider = Provider<UploadAvatarUseCase>((ref) {
   return UploadAvatarUseCase(ref.watch(profileRepositoryProvider));
 });
 
-final updateThemePreferenceUseCaseProvider = Provider<UpdateThemePreferenceUseCase>((ref) {
-  return UpdateThemePreferenceUseCase(ref.watch(profileRepositoryProvider));
-});
+final updateThemePreferenceUseCaseProvider =
+    Provider<UpdateThemePreferenceUseCase>((ref) {
+      return UpdateThemePreferenceUseCase(ref.watch(profileRepositoryProvider));
+    });
 
 /// Membaca status is_onboarded dari tabel profiles untuk user yang sedang login.
 final isOnboardedProvider = FutureProvider<bool?>((ref) async {
@@ -93,14 +98,18 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<void>> {
       state = const AsyncValue.data(null);
       ref.invalidate(profileDataProvider);
     } else {
-      state = AsyncValue.error(result.failureOrNull!.message, StackTrace.current);
+      state = AsyncValue.error(
+        result.failureOrNull!.message,
+        StackTrace.current,
+      );
     }
   }
 }
 
-final editProfileNotifierProvider = StateNotifierProvider<EditProfileNotifier, AsyncValue<void>>((ref) {
-  return EditProfileNotifier(ref);
-});
+final editProfileNotifierProvider =
+    StateNotifierProvider<EditProfileNotifier, AsyncValue<void>>((ref) {
+      return EditProfileNotifier(ref);
+    });
 
 class AvatarUploadNotifier extends StateNotifier<AsyncValue<void>> {
   final Ref ref;
@@ -118,11 +127,15 @@ class AvatarUploadNotifier extends StateNotifier<AsyncValue<void>> {
       state = const AsyncValue.data(null);
       ref.invalidate(profileDataProvider);
     } else {
-      state = AsyncValue.error(result.failureOrNull!.message, StackTrace.current);
+      state = AsyncValue.error(
+        result.failureOrNull!.message,
+        StackTrace.current,
+      );
     }
   }
 }
 
-final avatarUploadNotifierProvider = StateNotifierProvider<AvatarUploadNotifier, AsyncValue<void>>((ref) {
-  return AvatarUploadNotifier(ref);
-});
+final avatarUploadNotifierProvider =
+    StateNotifierProvider<AvatarUploadNotifier, AsyncValue<void>>((ref) {
+      return AvatarUploadNotifier(ref);
+    });

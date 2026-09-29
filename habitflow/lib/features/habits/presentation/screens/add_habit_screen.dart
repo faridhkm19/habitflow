@@ -66,14 +66,16 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
       freqValue = {'times': _timesPerWeek};
     }
 
-    final errorMessage = await ref.read(habitsProvider.notifier).createHabit(
-      name: _nameController.text.trim(),
-      iconName: _selectedIcon,
-      colorHex: _selectedColor.toHex(),
-      category: _selectedCategory,
-      frequencyType: _frequencyType,
-      frequencyValue: freqValue,
-    );
+    final errorMessage = await ref
+        .read(habitsProvider.notifier)
+        .createHabit(
+          name: _nameController.text.trim(),
+          iconName: _selectedIcon,
+          colorHex: _selectedColor.toHex(),
+          category: _selectedCategory,
+          frequencyType: _frequencyType,
+          frequencyValue: freqValue,
+        );
 
     setState(() => _isLoading = false);
 
@@ -93,7 +95,10 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
         title: Text('Tambah Habit', style: AppTextStyles.h2),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           onPressed: () => context.pop(),
         ),
       ),
@@ -107,7 +112,9 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
               AppTextField(
                 controller: _nameController,
                 label: 'Nama Habit (Mis. Lari Pagi)',
-                validator: (val) => val == null || val.trim().isEmpty ? 'Nama wajib diisi' : null,
+                validator: (val) => val == null || val.trim().isEmpty
+                    ? 'Nama wajib diisi'
+                    : null,
               ),
               const SizedBox(height: 24),
 
@@ -122,14 +129,15 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                     label: Text(
                       cat['label']!,
                       style: TextStyle(
-                        color: isSelected 
-                            ? Colors.white 
+                        color: isSelected
+                            ? Colors.white
                             : Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     selected: isSelected,
                     showCheckmark: false,
-                    onSelected: (_) => setState(() => _selectedCategory = cat['id']!),
+                    onSelected: (_) =>
+                        setState(() => _selectedCategory = cat['id']!),
                   );
                 }).toList(),
               ),
@@ -142,7 +150,8 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                 selectedIcon: _selectedIcon,
                 selectedColor: _selectedColor,
                 onIconChanged: (icon) => setState(() => _selectedIcon = icon),
-                onColorChanged: (color) => setState(() => _selectedColor = color),
+                onColorChanged: (color) =>
+                    setState(() => _selectedColor = color),
               ),
 
               const SizedBox(height: 24),
@@ -157,7 +166,8 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                 selectedDays: _selectedDays,
                 onDaysChanged: (days) => setState(() => _selectedDays = days),
                 timesPerWeek: _timesPerWeek,
-                onTimesPerWeekChanged: (times) => setState(() => _timesPerWeek = times),
+                onTimesPerWeekChanged: (times) =>
+                    setState(() => _timesPerWeek = times),
               ),
 
               const SizedBox(height: 24),

@@ -55,18 +55,22 @@ abstract final class AppRadius {
   // ── RoundedRectangleBorder (for ThemeData shapes) ─────────────────────────
 
   /// radius.sm as RoundedRectangleBorder
-  static const RoundedRectangleBorder smShape =
-      RoundedRectangleBorder(borderRadius: sm);
+  static const RoundedRectangleBorder smShape = RoundedRectangleBorder(
+    borderRadius: sm,
+  );
 
   /// radius.md as RoundedRectangleBorder
-  static const RoundedRectangleBorder mdShape =
-      RoundedRectangleBorder(borderRadius: md);
+  static const RoundedRectangleBorder mdShape = RoundedRectangleBorder(
+    borderRadius: md,
+  );
 
   /// radius.lg as RoundedRectangleBorder
-  static const RoundedRectangleBorder lgShape =
-      RoundedRectangleBorder(borderRadius: lg);
+  static const RoundedRectangleBorder lgShape = RoundedRectangleBorder(
+    borderRadius: lg,
+  );
 
   /// radius.full as RoundedRectangleBorder
-  static const RoundedRectangleBorder fullShape =
-      RoundedRectangleBorder(borderRadius: full);
+  static const RoundedRectangleBorder fullShape = RoundedRectangleBorder(
+    borderRadius: full,
+  );
 }

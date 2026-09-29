@@ -37,9 +37,7 @@ class ProfileStatCard extends StatelessWidget {
         ? Border.all(color: effectiveIconColor.withValues(alpha: 0.3), width: 1)
         : null;
 
-    final effectiveValueColor = isDark
-        ? Colors.white
-        : AppColors.textPrimary;
+    final effectiveValueColor = isDark ? Colors.white : AppColors.textPrimary;
 
     final effectiveLabelColor = isDark
         ? Colors.white70
@@ -84,9 +82,9 @@ class ProfileStatCard extends StatelessWidget {
             Text(
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w500,
-                    color: effectiveLabelColor,
-                  ),
+                fontWeight: FontWeight.w500,
+                color: effectiveLabelColor,
+              ),
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -97,4 +95,3 @@ class ProfileStatCard extends StatelessWidget {
     );
   }
 }
-

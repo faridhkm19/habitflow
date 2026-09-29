@@ -24,13 +24,13 @@ class ProfileEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        displayName,
-        avatarUrl,
-        themePreference,
-        isOnboarded,
-        totalHabits,
-        longestStreak,
-        totalCheckIns,
-      ];
+    id,
+    displayName,
+    avatarUrl,
+    themePreference,
+    isOnboarded,
+    totalHabits,
+    longestStreak,
+    totalCheckIns,
+  ];
 }

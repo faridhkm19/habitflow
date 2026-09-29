@@ -73,12 +73,16 @@ abstract final class AppColors {
 
   // ── Habit Category Color Picker ───────────────────────────────────────────
   // All derived from brand colors to maintain palette harmony
-  static const Color habitMint = Color(0xFF7AE0C4);    // Mint Green
-  static const Color habitGreen = Color(0xFFB8EB6C);   // Lime Green
-  static const Color habitAmber = Color(0xFFF7CD63);   // Mustard Amber
-  static const Color habitPink = Color(0xFFFC8FC6);    // Bubblegum Pink
-  static const Color habitSkyBlue = Color(0xFF6C9BEB); // Sky Blue (primary derivative)
-  static const Color habitPeach = Color(0xFFEB8F6C);   // Peach Orange (accent complement)
+  static const Color habitMint = Color(0xFF7AE0C4); // Mint Green
+  static const Color habitGreen = Color(0xFFB8EB6C); // Lime Green
+  static const Color habitAmber = Color(0xFFF7CD63); // Mustard Amber
+  static const Color habitPink = Color(0xFFFC8FC6); // Bubblegum Pink
+  static const Color habitSkyBlue = Color(
+    0xFF6C9BEB,
+  ); // Sky Blue (primary derivative)
+  static const Color habitPeach = Color(
+    0xFFEB8F6C,
+  ); // Peach Orange (accent complement)
 
   /// All available habit colors as an ordered list for the color picker UI.
   static const List<Color> habitColors = [
