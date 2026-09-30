@@ -89,14 +89,16 @@ class StatisticsScreen extends ConsumerWidget {
                 child: Row(
                   children: _categories.map((category) {
                     final isSelected = selectedCategory == category['id'];
+                    final isDark = Theme.of(context).brightness == Brightness.dark;
+
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: Theme(
                         data: Theme.of(context).copyWith(
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
-                          hoverColor: AppColors.primary.withValues(alpha: 0.08),
-                          focusColor: AppColors.primary.withValues(alpha: 0.08),
+                          hoverColor: AppColors.primary.withValues(alpha: isDark ? 0.15 : 0.08),
+                          focusColor: AppColors.primary.withValues(alpha: isDark ? 0.15 : 0.08),
                           splashFactory: NoSplash.splashFactory,
                         ),
                         child: FilterChip(
@@ -113,6 +115,7 @@ class StatisticsScreen extends ConsumerWidget {
                           ),
                           selected: isSelected,
                           showCheckmark: false,
+                          focusNode: FocusNode(canRequestFocus: false),
                           onSelected: (_) {
                             ref
                                     .read(
@@ -289,7 +292,7 @@ class StatisticsScreen extends ConsumerWidget {
                                             child: Text(
                                               selectedHabit.name,
                                               style: AppTextStyles.h3,
-                                              maxLines: 1,
+                                              maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -313,8 +316,9 @@ class StatisticsScreen extends ConsumerWidget {
                                       child: Text('Error loading stats: $err'),
                                     ),
                                     data: (stats) {
-                                      if (stats == null)
+                                      if (stats == null) {
                                         return const SizedBox();
+                                      }
 
                                       return Column(
                                         crossAxisAlignment:
@@ -374,6 +378,7 @@ class StatisticsScreen extends ConsumerWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useRootNavigator: true,
       backgroundColor: Colors.transparent,
       builder: (context) {
         return Container(
@@ -381,14 +386,13 @@ class StatisticsScreen extends ConsumerWidget {
             color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           ),
-          padding: EdgeInsets.only(
-            top: 24,
-            bottom: MediaQuery.of(context).padding.bottom + 24,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 24, bottom: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Row(
@@ -502,6 +506,8 @@ class StatisticsScreen extends ConsumerWidget {
                 ),
               ),
             ],
+          ),
+            ),
           ),
         );
       },

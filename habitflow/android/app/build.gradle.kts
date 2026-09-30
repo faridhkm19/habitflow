@@ -21,7 +21,7 @@ android {
         applicationId = "com.habitflow.habitflow"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        // flutter_local_notifications requires minSdk >= 23
+        // flutter_local_notifications with exact alarms requires minSdk >= 23
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

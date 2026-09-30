@@ -10,6 +10,7 @@ import '../../../../core/utils/color_utils.dart';
 import '../providers/habit_provider.dart';
 import '../widgets/frequency_selector.dart';
 import '../widgets/icon_color_picker.dart';
+import '../widgets/reminder_time_picker.dart';
 
 class AddHabitScreen extends ConsumerStatefulWidget {
   const AddHabitScreen({super.key});
@@ -29,6 +30,8 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
   String _frequencyType = 'daily';
   List<String> _selectedDays = [];
   int _timesPerWeek = 3;
+
+  String? _reminderTime; // null = tidak ada pengingat, "HH:mm" = aktif
 
   bool _isLoading = false;
 
@@ -75,6 +78,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
           category: _selectedCategory,
           frequencyType: _frequencyType,
           frequencyValue: freqValue,
+          reminderTime: _reminderTime,
         );
 
     setState(() => _isLoading = false);
@@ -168,6 +172,17 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                 timesPerWeek: _timesPerWeek,
                 onTimesPerWeekChanged: (times) =>
                     setState(() => _timesPerWeek = times),
+              ),
+
+              const SizedBox(height: 24),
+              const Divider(),
+              const SizedBox(height: 24),
+
+              Text('Pengingat', style: AppTextStyles.h3),
+              const SizedBox(height: 12),
+              ReminderTimePicker(
+                reminderTime: _reminderTime,
+                onChanged: (time) => setState(() => _reminderTime = time),
               ),
 
               const SizedBox(height: 24),

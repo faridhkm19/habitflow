@@ -15,15 +15,24 @@ class WeeklyRadialChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final today = DateTime.now();
+    final todayDate = DateTime(today.year, today.month, today.day);
+
+    // "Minggu ini" = Senin s/d hari ini (sesuai definisi heatmap)
+    // Misal hari ini Rabu → iterasi: Sen, Sel, Rab (3 hari, bukan 7)
+    final thisWeekMonday = todayDate.subtract(
+      Duration(days: todayDate.weekday - 1),
+    );
+    final daysThisWeek = todayDate.difference(thisWeekMonday).inDays + 1;
+
     int completedDays = 0;
     int missedDays = 0;
     int scheduledDays = 0;
     int currentStreak = 0;
     bool streakBroken = false;
 
-    // Calculate stats from the last 7 days of heatmapData (today down to 6 days ago)
-    for (int i = 0; i < 7; i++) {
-      final dateRaw = today.subtract(Duration(days: i));
+    // Iterasi dari hari ini mundur ke Senin (untuk streak: hari terbaru dulu)
+    for (int i = 0; i < daysThisWeek; i++) {
+      final dateRaw = todayDate.subtract(Duration(days: i));
       final date = DateTime(dateRaw.year, dateRaw.month, dateRaw.day);
 
       final status = heatmapData[date];
@@ -37,7 +46,7 @@ class WeeklyRadialChart extends StatelessWidget {
         scheduledDays++;
         streakBroken = true;
       }
-      // If status is null, it's not scheduled. It doesn't break the streak and isn't counted in scheduledDays.
+      // null = hari tidak terjadwal: tidak masuk hitungan, tidak putus streak
     }
 
     double percentage = scheduledDays == 0
@@ -130,6 +139,7 @@ class WeeklyRadialChart extends StatelessWidget {
     String value,
   ) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           padding: const EdgeInsets.all(6),
@@ -140,22 +150,26 @@ class WeeklyRadialChart extends StatelessWidget {
           child: Icon(icon, color: iconColor, size: 16),
         ),
         const SizedBox(width: 12),
+        // Label: Expanded agar menyerap sisa ruang, bisa wrap 2 baris
         Expanded(
           child: Text(
             label,
             style: AppTextStyles.bodyMedium.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
-            maxLines: 1,
+            maxLines: 2,
+            softWrap: true,
             overflow: TextOverflow.ellipsis,
           ),
         ),
         const SizedBox(width: 8),
+        // Value: lebar minimal sesuai konten, tidak pernah dipotong
         Text(
           value,
           style: AppTextStyles.h3.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
           ),
+          softWrap: false,
         ),
       ],
     );

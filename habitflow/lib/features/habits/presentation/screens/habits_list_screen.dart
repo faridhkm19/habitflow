@@ -64,14 +64,16 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
             child: Row(
               children: _categories.map((category) {
                 final isSelected = _selectedCategory == category['id'];
+                final isDark = Theme.of(context).brightness == Brightness.dark;
+                
                 return Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: Theme(
                     data: Theme.of(context).copyWith(
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      hoverColor: AppColors.primary.withValues(alpha: 0.08),
-                      focusColor: AppColors.primary.withValues(alpha: 0.08),
+                      hoverColor: AppColors.primary.withValues(alpha: isDark ? 0.15 : 0.08),
+                      focusColor: AppColors.primary.withValues(alpha: isDark ? 0.15 : 0.08),
                       splashFactory: NoSplash.splashFactory,
                     ),
                     child: FilterChip(
@@ -88,6 +90,7 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
                       ),
                       selected: isSelected,
                       showCheckmark: false,
+                      focusNode: FocusNode(canRequestFocus: false),
                       onSelected: (_) {
                         setState(() {
                           _selectedCategory = category['id']!;

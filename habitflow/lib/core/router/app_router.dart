@@ -44,11 +44,15 @@ const _publicRoutes = {
   AppRoutes.forgotPassword,
 };
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
+
 GoRouter createAppRouter(Ref ref) {
   // RouterNotifier memungkinkan GoRouter refresh otomatis saat authState/habitState berubah
   final notifier = _RouterNotifier(ref);
 
   return GoRouter(
+    navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutes.splash,
     refreshListenable: notifier,
     redirect: (context, state) {
@@ -117,6 +121,7 @@ GoRouter createAppRouter(Ref ref) {
         builder: (context, state) => const GuidedSetupScreen(),
       ),
       ShellRoute(
+        navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) => MobileScaffold(child: child),
         routes: [
           GoRoute(
@@ -133,10 +138,12 @@ GoRouter createAppRouter(Ref ref) {
             routes: [
               GoRoute(
                 path: 'add',
+                parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) => const AddHabitScreen(),
               ),
               GoRoute(
                 path: ':id',
+                parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) {
                   final habit = state.extra as HabitEntity;
                   return HabitDetailScreen(habit: habit);
@@ -144,6 +151,7 @@ GoRouter createAppRouter(Ref ref) {
                 routes: [
                   GoRoute(
                     path: 'edit',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) {
                       final habit = state.extra as HabitEntity;
                       return EditHabitScreen(habit: habit);
@@ -167,28 +175,34 @@ GoRouter createAppRouter(Ref ref) {
             routes: [
               GoRoute(
                 path: 'edit',
+                parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) => const EditProfileScreen(),
               ),
               GoRoute(
                 path: 'security',
+                parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) => const SecurityScreen(),
                 routes: [
                   GoRoute(
                     path: 'change-email',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const ChangeEmailScreen(),
                   ),
                   GoRoute(
                     path: 'change-password',
+                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const ChangePasswordScreen(),
                   ),
                 ],
               ),
               GoRoute(
                 path: 'journal',
+                parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) => const HabitJournalScreen(),
               ),
               GoRoute(
                 path: 'achievements',
+                parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) => const AchievementsScreen(),
               ),
             ],

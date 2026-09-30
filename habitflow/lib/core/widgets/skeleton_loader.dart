@@ -216,7 +216,7 @@ class HabitsListSkeleton extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
       itemCount: 5,
       physics: const NeverScrollableScrollPhysics(),
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (context, index) => _SkeletonCard(
         child: Row(
           children: [
@@ -346,109 +346,6 @@ class JournalSkeleton extends StatelessWidget {
           _SkeletonJournalCard(),
         ],
       ],
-    );
-  }
-}
-
-/// Skeleton for [HabitDetailScreen] — icon area, two text lines, two stat
-/// cards side by side, and a calendar grid area.
-class HabitDetailSkeleton extends StatelessWidget {
-  const HabitDetailSkeleton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 100),
-      physics: const NeverScrollableScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Header — large centered icon + two text lines
-          Center(
-            child: Column(
-              children: [
-                const SkeletonCircle(diameter: 96),
-                const SizedBox(height: 16),
-                SkeletonBox(width: 180, height: 22, borderRadius: AppRadius.sm),
-                const SizedBox(height: 10),
-                SkeletonBox(width: 80, height: 14, borderRadius: AppRadius.sm),
-              ],
-            ),
-          ),
-          const SizedBox(height: 32),
-          // Two stat cards side-by-side
-          Row(
-            children: [
-              Expanded(
-                child: _SkeletonCard(
-                  child: Column(
-                    children: [
-                      SkeletonBox(
-                        width: 48,
-                        height: 28,
-                        borderRadius: AppRadius.sm,
-                      ),
-                      const SizedBox(height: 8),
-                      SkeletonBox(
-                        width: 60,
-                        height: 12,
-                        borderRadius: AppRadius.sm,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _SkeletonCard(
-                  child: Column(
-                    children: [
-                      SkeletonBox(
-                        width: 48,
-                        height: 28,
-                        borderRadius: AppRadius.sm,
-                      ),
-                      const SizedBox(height: 8),
-                      SkeletonBox(
-                        width: 60,
-                        height: 12,
-                        borderRadius: AppRadius.sm,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          // Calendar grid area
-          _SkeletonCard(
-            child: Column(
-              children: [
-                // Month header
-                SkeletonBox(width: 120, height: 16, borderRadius: AppRadius.sm),
-                const SizedBox(height: 16),
-                // 5-week grid (7×5)
-                GridView.count(
-                  crossAxisCount: 7,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                  children: List.generate(
-                    35,
-                    (_) => SkeletonBox(
-                      width: double.infinity,
-                      height: double.infinity,
-                      borderRadius: AppRadius.sm,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

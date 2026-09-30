@@ -10,6 +10,7 @@ import '../../domain/entities/habit_entity.dart';
 import '../providers/habit_provider.dart';
 import '../widgets/frequency_selector.dart';
 import '../widgets/icon_color_picker.dart';
+import '../widgets/reminder_time_picker.dart';
 
 class EditHabitScreen extends ConsumerStatefulWidget {
   final HabitEntity habit;
@@ -31,6 +32,8 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
   late String _frequencyType;
   late List<String> _selectedDays;
   late int _timesPerWeek;
+
+  late String? _reminderTime;
 
   bool _isLoading = false;
 
@@ -63,6 +66,8 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
         widget.habit.frequencyValue['times'] != null) {
       _timesPerWeek = widget.habit.frequencyValue['times'] as int;
     }
+
+    _reminderTime = widget.habit.reminderTime;
   }
 
   @override
@@ -100,6 +105,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
           category: _selectedCategory,
           frequencyType: _frequencyType,
           frequencyValue: freqValue,
+          reminderTime: _reminderTime,
         );
 
     setState(() => _isLoading = false);
@@ -194,6 +200,17 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
                 onTimesPerWeekChanged: (times) =>
                     setState(() => _timesPerWeek = times),
               ),
+              const SizedBox(height: 24),
+              const Divider(),
+              const SizedBox(height: 24),
+
+              Text('Pengingat', style: AppTextStyles.h3),
+              const SizedBox(height: 12),
+              ReminderTimePicker(
+                reminderTime: _reminderTime,
+                onChanged: (time) => setState(() => _reminderTime = time),
+              ),
+
               const SizedBox(height: 24),
               AppButton(
                 label: 'Simpan Perubahan',

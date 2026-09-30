@@ -106,8 +106,8 @@ Referensi utama yang wajib dibaca sebelum mengerjakan task apapun di bawah ini t
 - [✔] Tambahkan filter kategori di halaman Statistics
 
 ### 4.2 Smart Reminder
-- [ ] Implementasikan reminder lokal per habit menggunakan flutter_local_notifications
-- [ ] Implementasikan notifikasi pengingat kembali setelah pengguna lama tidak membuka aplikasi
+- [✔] Implementasikan reminder lokal per habit menggunakan flutter_local_notifications
+- [✔] Implementasikan notifikasi pengingat kembali setelah pengguna lama tidak membuka aplikasi
 
 > **Catatan:** Fitur ini ditunda ke tahap akhir pengembangan. Seluruh logika dan UI terkait notifikasi telah dibersihkan dari codebase untuk menghindari tumpukan kode percobaan. Akan diimplementasikan ulang secara bersih setelah seluruh fitur inti dan penyempurnaan selesai.
 

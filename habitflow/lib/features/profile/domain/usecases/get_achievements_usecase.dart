@@ -30,28 +30,32 @@ class GetAchievementsUseCase {
     );
     final int totalCheckins = totalCheckinsResult.valueOrNull ?? 0;
 
-    // 3. Hitung average consistency 7 hari terakhir
+    // 3. Hitung average consistency minggu ini (Senin s/d hari ini)
+    //    Konsisten dengan definisi "Minggu Ini" pada HeatmapChart & WeeklyRadialChart.
     double avgConsistency = 0.0;
     if (habits.isNotEmpty) {
       final today = DateTime.now();
-      final fromDate = today.subtract(const Duration(days: 7));
+      final todayDate = DateTime(today.year, today.month, today.day);
+
+      // Hitung Senin minggu ini
+      final thisWeekMonday = todayDate.subtract(
+        Duration(days: todayDate.weekday - 1),
+      );
+      final daysThisWeek = todayDate.difference(thisWeekMonday).inDays + 1;
+
+      // Ambil logs dari Senin hingga hari ini
       final logsResult = await logRepository.getLogsForDateRange(
         userId,
-        fromDate,
-        today,
+        thisWeekMonday,
+        todayDate,
       );
       final logs = logsResult.valueOrNull ?? [];
 
       int totalScheduled = 0;
       int totalCompleted = 0;
 
-      for (int i = 0; i < 7; i++) {
-        final checkDateRaw = today.subtract(Duration(days: i));
-        final checkDate = DateTime(
-          checkDateRaw.year,
-          checkDateRaw.month,
-          checkDateRaw.day,
-        );
+      for (int i = 0; i < daysThisWeek; i++) {
+        final checkDate = todayDate.subtract(Duration(days: i));
 
         for (final habit in habits) {
           // Hanya hitung habit yang sudah ada pada tanggal tersebut
@@ -68,7 +72,7 @@ class GetAchievementsUseCase {
 
           bool scheduled = false;
           if (habit.frequencyType == 'x_per_week') {
-            scheduled = true; // Sederhana: anggap scheduled tiap hari
+            scheduled = true; // Anggap terjadwal setiap hari
           } else {
             scheduled = date_utils.isScheduledForToday(habit, checkDate);
           }

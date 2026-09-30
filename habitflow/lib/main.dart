@@ -11,6 +11,7 @@ import 'core/config/supabase_config.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/services/preferences_service.dart';
+import 'core/services/notification_service.dart';
 
 Future<void> main() async {
   // Ensure Flutter engine is initialized before calling native code
@@ -27,6 +28,7 @@ Future<void> main() async {
 
   // Initialize Services
   await PreferencesService.instance.initialize();
+  await NotificationService.instance.initialize();
 
   runApp(
     // ProviderScope is the root Riverpod container — required for all providers

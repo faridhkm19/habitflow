@@ -73,10 +73,12 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      padding: EdgeInsets.fromLTRB(24, 12, 24, 24 + bottomPadding),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(24, 12, 24, 24 + bottomPadding),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ── Handle bar ─────────────────────────────────────────────────────
           Center(
@@ -246,6 +248,8 @@ class _CheckinBottomSheetState extends State<CheckinBottomSheet> {
             ],
           ),
         ],
+      ),
+        ),
       ),
     );
   }
