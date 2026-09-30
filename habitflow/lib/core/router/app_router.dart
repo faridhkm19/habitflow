@@ -121,11 +121,15 @@ GoRouter createAppRouter(Ref ref) {
         routes: [
           GoRoute(
             path: AppRoutes.home,
-            builder: (context, state) => const HomeScreen(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: HomeScreen(),
+            ),
           ),
           GoRoute(
             path: AppRoutes.habits,
-            builder: (context, state) => const HabitsListScreen(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: HabitsListScreen(),
+            ),
             routes: [
               GoRoute(
                 path: 'add',
@@ -151,11 +155,15 @@ GoRouter createAppRouter(Ref ref) {
           ),
           GoRoute(
             path: AppRoutes.statistics,
-            builder: (context, state) => const StatisticsScreen(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: StatisticsScreen(),
+            ),
           ),
           GoRoute(
             path: AppRoutes.profile,
-            builder: (context, state) => const ProfileScreen(),
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: ProfileScreen(),
+            ),
             routes: [
               GoRoute(
                 path: 'edit',

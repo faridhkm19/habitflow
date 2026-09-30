@@ -27,4 +27,26 @@ abstract final class AppSpacing {
 
   /// space.xxl — 48px — large breathing room
   static const double xxl = 48;
+
+  // ── Navigation Bar ───────────────────────────────────────────────────────────
+
+  /// Tinggi total floating navigation bar di atas system bottom inset.
+  ///
+  /// Dihitung dari: konten nav bar (ikon 24 + vertical padding 8×2 + container
+  /// padding 8×2 = 56px) + margin bawah container (16px) = 72px.
+  ///
+  /// Gunakan bersama [MediaQuery.paddingOf(context).bottom] untuk mendapat
+  /// bottom padding yang konsisten di seluruh device:
+  /// ```dart
+  /// padding: EdgeInsets.only(
+  ///   bottom: MediaQuery.paddingOf(context).bottom + AppSpacing.navBarTotalHeight + AppSpacing.md,
+  /// )
+  /// ```
+  static const double navBarTotalHeight = 56;
+
+  /// Bottom padding siap pakai untuk ListView/CustomScrollView utama.
+  ///
+  /// Sudah termasuk [navBarTotalHeight] saja.
+  /// Tambahkan [MediaQuery.paddingOf(context).bottom] untuk hasil akhir.
+  static const double listBottomPadding = navBarTotalHeight; // 56px
 }

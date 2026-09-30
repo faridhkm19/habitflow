@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/skeleton_loader.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/home_provider.dart';
@@ -182,7 +183,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             onRefresh: () => ref.read(homeProvider.notifier).refresh(),
             color: AppColors.primary,
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 90),
+              padding: EdgeInsets.fromLTRB(
+                16,
+                16,
+                16,
+                MediaQuery.paddingOf(context).bottom +
+                    AppSpacing.listBottomPadding,
+              ),
               children: [
                 // ── Daily Summary Card ──────────────────────────────────────────
                 _DailySummaryCard(

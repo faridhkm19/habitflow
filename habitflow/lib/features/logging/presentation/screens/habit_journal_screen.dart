@@ -55,7 +55,7 @@ class HabitJournalScreen extends ConsumerWidget {
                   ..sort((a, b) => b.compareTo(a));
 
                 return ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 90),
+                  padding: EdgeInsets.fromLTRB(20, 16, 20, 50 + MediaQuery.of(context).padding.bottom),
                   itemCount: dates.length,
                   itemBuilder: (context, index) {
                     final date = dates[index];

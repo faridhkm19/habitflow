@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/skeleton_loader.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/profile_provider.dart';
@@ -161,76 +162,130 @@ class ProfileScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final containerBg = isDark
+            ? AppColors.primary.withValues(alpha: 0.15)
+            : AppColors.primaryLight;
+        final quoteTextColor = isDark
+            ? AppColors.primary.withValues(alpha: 0.9)
+            : AppColors.primary;
+
         return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(24),
           ),
-          contentPadding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+          contentPadding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               // Logo area
               Container(
-                width: 64,
-                height: 64,
+                width: 72,
+                height: 72,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
-                  borderRadius: BorderRadius.circular(16),
+                  color: containerBg,
+                  shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.self_improvement_rounded,
                   color: AppColors.primary,
-                  size: 32,
+                  size: 36,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               Text(
                 'HabitFlow',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -0.5,
+                    ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                'Versi 1.0.0',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+              const SizedBox(height: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.black.withValues(alpha: 0.05),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  'Versi 1.0.0',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: isDark ? Colors.white70 : Colors.black54,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 24),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
-                  vertical: 10,
+                  vertical: 16,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  '"Build better days, one habit at a time."',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.primary,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w500,
+                  color: containerBg,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.1),
                   ),
-                  textAlign: TextAlign.center,
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.format_quote_rounded,
+                      color: AppColors.primary.withValues(alpha: 0.5),
+                      size: 24,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '"Build better days,\none habit at a time."',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: quoteTextColor,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w600,
+                            height: 1.4,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 20),
               Text(
                 'Aplikasi tracking kebiasaan yang rendah friksi, penuh konteks, dan ramah secara psikologis.',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.5,
+                    ),
                 textAlign: TextAlign.center,
               ),
             ],
           ),
+          actionsPadding: const EdgeInsets.only(bottom: 20, right: 24),
           actions: [
-            TextButton(
+            FilledButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Tutup'),
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+              ),
+              child: const Text(
+                'Tutup',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
             ),
           ],
         );
@@ -243,7 +298,7 @@ class ProfileScreen extends ConsumerWidget {
     final profileAsync = ref.watch(profileDataProvider);
     final authState = ref.watch(authStateProvider);
     final user = authState.valueOrNull;
-    final currentEmail = ref.watch(currentEmailProvider);
+    final emailOverride = ref.watch(currentEmailProvider);
     final isUploading = ref.watch(avatarUploadNotifierProvider).isLoading;
 
     // Toggles state
@@ -268,7 +323,10 @@ class ProfileScreen extends ConsumerWidget {
           final displayName = profile.displayName ?? 'Pengguna HabitFlow';
 
           return ListView(
-            padding: const EdgeInsets.only(bottom: 100),
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.paddingOf(context).bottom +
+                  AppSpacing.listBottomPadding,
+            ),
             children: [
               // ── HEADER BLOCK ──────────────────────────────────────────
               Container(
@@ -310,7 +368,7 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      currentEmail.isEmpty ? (user!.email) : currentEmail,
+                      emailOverride ?? user.email,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -720,11 +778,17 @@ class _ThemeDropdownRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final iconColor = AppColors.textPrimary;
-    final effectiveIconBg = isDark
-        ? iconColor.withValues(alpha: 0.15)
-        : const Color(0xFF2B2B2B).withValues(alpha: 0.08);
+    Color getIconColor() {
+      if (currentMode == ThemeMode.dark) return AppColors.primary;
+      if (currentMode == ThemeMode.light) return AppColors.accent1;
+      return AppColors.textSecondary;
+    }
+
+    Color getIconBg() {
+      if (currentMode == ThemeMode.dark) return AppColors.primaryLight;
+      if (currentMode == ThemeMode.light) return AppColors.accent1Light;
+      return AppColors.textSecondary.withValues(alpha: 0.15);
+    }
 
     IconData getIcon() {
       if (currentMode == ThemeMode.dark) return Icons.dark_mode_rounded;
@@ -744,8 +808,13 @@ class _ThemeDropdownRow extends StatelessWidget {
       return 'system';
     }
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = getIconColor();
+    final iconBg = getIconBg();
+    final effectiveIconBg = isDark ? iconColor.withValues(alpha: 0.15) : iconBg;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
           Container(
@@ -778,27 +847,39 @@ class _ThemeDropdownRow extends StatelessWidget {
               ],
             ),
           ),
-          DropdownButton<String>(
-            value: getValue(),
-            icon: const Icon(Icons.arrow_drop_down_rounded),
-            elevation: 16,
-            borderRadius: BorderRadius.circular(12),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.primary,
-              fontWeight: FontWeight.w600,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.primary.withValues(alpha: 0.2) : AppColors.primaryLight,
+              borderRadius: BorderRadius.circular(100),
             ),
-            underline: const SizedBox(),
-            alignment: Alignment.centerRight,
-            onChanged: (String? newValue) {
-              if (newValue != null) {
-                onChanged(newValue);
-              }
-            },
-            items: const [
-              DropdownMenuItem(value: 'light', child: Text('Terang')),
-              DropdownMenuItem(value: 'dark', child: Text('Gelap')),
-              DropdownMenuItem(value: 'system', child: Text('Default')),
-            ],
+            child: DropdownButton<String>(
+              value: getValue(),
+              icon: const Padding(
+                padding: EdgeInsets.only(left: 4),
+                child: Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.primary, size: 20),
+              ),
+              elevation: 4,
+              isDense: true,
+              borderRadius: BorderRadius.circular(12),
+              dropdownColor: Theme.of(context).colorScheme.surface,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.primary,
+                fontWeight: FontWeight.w600,
+              ),
+              underline: const SizedBox(),
+              alignment: Alignment.center,
+              onChanged: (String? newValue) {
+                if (newValue != null) {
+                  onChanged(newValue);
+                }
+              },
+              items: const [
+                DropdownMenuItem(value: 'light', child: Text('Terang')),
+                DropdownMenuItem(value: 'dark', child: Text('Gelap')),
+                DropdownMenuItem(value: 'system', child: Text('Sistem')),
+              ],
+            ),
           ),
         ],
       ),

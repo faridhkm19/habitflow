@@ -126,7 +126,7 @@ class AchievementsScreen extends ConsumerWidget {
                 ),
               ),
 
-              const SliverToBoxAdapter(child: SizedBox(height: 100)),
+              SliverToBoxAdapter(child: SizedBox(height: 50 + MediaQuery.of(context).padding.bottom)),
             ],
           );
         },

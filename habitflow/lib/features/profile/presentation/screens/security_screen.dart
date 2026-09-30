@@ -10,8 +10,9 @@ class SecurityScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final email = ref.watch(currentEmailProvider);
-    final displayEmail = email.isEmpty ? '-' : email;
+    final authEmail = ref.watch(authStateProvider).valueOrNull?.email ?? '-';
+    final emailOverride = ref.watch(currentEmailProvider);
+    final displayEmail = emailOverride ?? authEmail;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Keamanan Akun')),
@@ -146,7 +147,7 @@ class _RowDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 66),
-      child: Divider(height: 1, color: AppColors.border),
+      child: const Divider(height: 1),
     );
   }
 }

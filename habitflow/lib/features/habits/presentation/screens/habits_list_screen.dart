@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/skeleton_loader.dart';
@@ -174,7 +175,13 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
                 }
 
                 return ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                  padding: EdgeInsets.fromLTRB(
+                    16,
+                    16,
+                    16,
+                    MediaQuery.paddingOf(context).bottom +
+                        AppSpacing.listBottomPadding,
+                  ),
                   itemCount: filteredHabits.length,
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 12),
@@ -207,7 +214,11 @@ class _HabitsListScreenState extends ConsumerState<HabitsListScreen> {
       ),
       floatingActionButton: showFab
           ? Padding(
-              padding: const EdgeInsets.only(bottom: 60.0),
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.paddingOf(context).bottom +
+                    AppSpacing.navBarTotalHeight -
+                    28.0,
+              ),
               child: FloatingActionButton(
                 onPressed: () {
                   context.push(AppRoutes.addHabit);

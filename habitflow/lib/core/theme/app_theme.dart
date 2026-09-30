@@ -495,11 +495,11 @@ abstract final class AppTheme {
             width: 1,
           ),
         ),
-        labelStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
+        labelStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
         floatingLabelStyle: AppTextStyles.bodySmall.copyWith(
           color: AppColors.primary,
         ),
-        hintStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
+        hintStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white54),
         errorStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(

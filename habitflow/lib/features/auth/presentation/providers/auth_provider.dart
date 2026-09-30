@@ -76,14 +76,12 @@ final authStateProvider = StreamProvider<UserEntity?>((ref) {
   return ref.watch(authRepositoryProvider).authStateChanges;
 });
 
-/// Email pengguna yang sedang aktif, dapat di-update secara manual.
+/// Email pengguna yang sedang aktif, dapat di-set secara manual.
 ///
-/// Digunakan untuk memastikan UI langsung menampilkan email terbaru setelah
-/// `updateEmail()` berhasil, tanpa bergantung pada timing stream Supabase.
-final currentEmailProvider = StateProvider<String>((ref) {
-  // Nilai awal diambil dari stream auth. Jika stream belum ada nilainya, kosong.
-  return ref.watch(authStateProvider).valueOrNull?.email ?? '';
-});
+/// Nilai `null` berarti belum ada override — UI akan membaca langsung dari
+/// `authStateProvider`. Saat `updateEmail()` berhasil, nilai ini di-set ke
+/// email baru agar UI langsung berubah tanpa menunggu stream Supabase.
+final currentEmailProvider = StateProvider<String?>((ref) => null);
 
 // ── Auth Notifier ────────────────────────────────────────────────────────────
 

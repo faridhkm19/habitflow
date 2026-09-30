@@ -128,7 +128,7 @@ class _EditHabitScreenState extends ConsumerState<EditHabitScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 50 + MediaQuery.of(context).padding.bottom),
         child: Form(
           key: _formKey,
           child: Column(

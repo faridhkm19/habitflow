@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/icon_utils.dart';
@@ -214,11 +215,12 @@ class StatisticsScreen extends ConsumerWidget {
                             },
                             child: SingleChildScrollView(
                               physics: const AlwaysScrollableScrollPhysics(),
-                              padding: const EdgeInsets.fromLTRB(
+                              padding: EdgeInsets.fromLTRB(
                                 16,
                                 16,
                                 16,
-                                100,
+                                MediaQuery.paddingOf(context).bottom +
+                                    AppSpacing.listBottomPadding,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
