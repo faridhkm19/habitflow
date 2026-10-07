@@ -75,6 +75,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
     }
 
+    // Pastikan user yang login dengan akun yang sudah terdaftar tidak
+    // perlu lagi melewati halaman OnBoarding.
+    try {
+      await _client
+          .from('profiles')
+          .update({'is_onboarded': true})
+          .eq('id', user.id);
+    } catch (_) {
+      // Abaikan jika terjadi error agar proses login tidak terblokir
+    }
+
     return UserModel.fromSupabaseUser(user).toEntity();
   }
 

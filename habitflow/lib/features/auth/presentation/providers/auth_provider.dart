@@ -83,6 +83,17 @@ final authStateProvider = StreamProvider<UserEntity?>((ref) {
 /// email baru agar UI langsung berubah tanpa menunggu stream Supabase.
 final currentEmailProvider = StateProvider<String?>((ref) => null);
 
+/// Override in-memory untuk status onboarding.
+///
+/// Nilai:
+///  - `true`  → paksa "sudah onboarding" (set saat signIn berhasil)
+///  - `false` → paksa "belum onboarding" (set saat signUp berhasil)
+///  - `null`  → tidak ada override; baca dari DB (cold start / app restart)
+///
+/// Override ini mencegah race-condition antara DB-update `is_onboarded`
+/// dan `isOnboardedProvider` yang mungkin di-fetch sebelum UPDATE selesai.
+final onboardingOverrideProvider = StateProvider<bool?>((ref) => null);
+
 // ── Auth Notifier ────────────────────────────────────────────────────────────
 
 /// State untuk form-level auth actions (sign in, sign up, dll).
@@ -135,6 +146,9 @@ class AuthNotifier extends Notifier<AuthState> {
 
     switch (result) {
       case Ok():
+        // Set override ke true SEBELUM auth state berubah agar router
+        // tidak mengarahkan ke halaman onboarding saat signIn.
+        ref.read(onboardingOverrideProvider.notifier).state = true;
         state = const AuthState(isSuccess: true);
       case Err(:final failure):
         state = state.copyWith(isLoading: false, errorMessage: failure.message);
@@ -152,6 +166,8 @@ class AuthNotifier extends Notifier<AuthState> {
 
     switch (result) {
       case Ok():
+        // Set override ke false: user baru harus melewati onboarding.
+        ref.read(onboardingOverrideProvider.notifier).state = false;
         state = const AuthState(isSuccess: true);
       case Err(:final failure):
         state = state.copyWith(isLoading: false, errorMessage: failure.message);
@@ -166,6 +182,8 @@ class AuthNotifier extends Notifier<AuthState> {
 
     switch (result) {
       case Ok():
+        // Reset override agar cold start berikutnya baca dari DB.
+        ref.read(onboardingOverrideProvider.notifier).state = null;
         state = const AuthState();
       case Err(:final failure):
         state = state.copyWith(isLoading: false, errorMessage: failure.message);

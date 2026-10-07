@@ -78,12 +78,11 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     // 4. Ambil total check-ins dari habit_logs (hanya yang completed)
     final countResponse = await _client
         .from('habit_logs')
-        .select('id')
+        .count(CountOption.exact)
         .eq('user_id', userId)
-        .eq('is_completed', true)
-        .count(CountOption.exact);
+        .eq('is_completed', true);
 
-    final int totalCheckIns = countResponse.count;
+    final int totalCheckIns = countResponse;
 
     return ProfileModel.fromJson(
       profileResponse,

@@ -46,7 +46,14 @@ final updateThemePreferenceUseCaseProvider =
     });
 
 /// Membaca status is_onboarded dari tabel profiles untuk user yang sedang login.
+/// Jika ada override in-memory (set saat signIn/signUp), override digunakan
+/// langsung tanpa DB fetch — mencegah race condition.
 final isOnboardedProvider = FutureProvider<bool?>((ref) async {
+  // 1. Cek override in-memory terlebih dahulu (set oleh AuthNotifier)
+  final override = ref.watch(onboardingOverrideProvider);
+  if (override != null) return override;
+
+  // 2. Fallback: baca dari DB (cold start / setelah logout)
   final authAsync = ref.watch(authStateProvider);
   final user = authAsync.valueOrNull;
 
@@ -78,6 +85,7 @@ final profileDataProvider = FutureProvider<ProfileEntity?>((ref) async {
   if (result.isOk) {
     return result.valueOrNull;
   }
+  print('Error fetching profile: ${result.failureOrNull?.message}');
   return null;
 });
 

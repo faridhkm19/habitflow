@@ -17,22 +17,14 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            Image.asset(
+              'assets/images/app_logo.png',
               width: 72,
               height: 72,
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Icon(
-                Icons.bolt_rounded,
-                color: Colors.white,
-                size: 40,
-              ),
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
-              'HabitFlow',
+              'Habit Flow',
               style: AppTextStyles.h1.copyWith(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w700,

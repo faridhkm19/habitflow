@@ -164,127 +164,124 @@ class ProfileScreen extends ConsumerWidget {
       builder: (context) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         final containerBg = isDark
-            ? AppColors.primary.withValues(alpha: 0.15)
+            ? AppColors.primary.withValues(alpha: 0.12)
             : AppColors.primaryLight;
         final quoteTextColor = isDark
             ? AppColors.primary.withValues(alpha: 0.9)
-            : AppColors.primary;
+            : AppColors.primaryDark;
 
         return AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.surface,
           surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(28),
           ),
-          contentPadding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+          contentPadding: const EdgeInsets.fromLTRB(24, 32, 24, 8),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Logo area
-              Container(
-                width: 72,
-                height: 72,
-                decoration: BoxDecoration(
-                  color: containerBg,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.self_improvement_rounded,
-                  color: AppColors.primary,
-                  size: 36,
-                ),
+              // Logo aplikasi
+              Image.asset(
+                'assets/images/app_logo.png',
+                width: 80,
+                height: 80,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 14),
               Text(
-                'HabitFlow',
+                'Habit Flow',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       letterSpacing: -0.5,
+                      color: AppColors.primary,
                     ),
               ),
               const SizedBox(height: 6),
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
                   color: isDark
-                      ? Colors.white.withValues(alpha: 0.1)
+                      ? Colors.white.withValues(alpha: 0.08)
                       : Colors.black.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   'Versi 1.0.0',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: isDark ? Colors.white70 : Colors.black54,
+                        color: isDark ? Colors.white60 : Colors.black45,
                         fontWeight: FontWeight.w600,
+                        letterSpacing: 0.3,
                       ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
+              // Tagline
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
-                ),
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 decoration: BoxDecoration(
                   color: containerBg,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.1),
+                    color: AppColors.primary.withValues(alpha: 0.12),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.format_quote_rounded,
-                      color: AppColors.primary.withValues(alpha: 0.5),
-                      size: 24,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      '"Build better days,\none habit at a time."',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: quoteTextColor,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w600,
-                            height: 1.4,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                child: Text(
+                  '"Build better days, one habit at a time."',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: quoteTextColor,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w600,
+                        height: 1.5,
+                      ),
+                  textAlign: TextAlign.center,
                 ),
               ),
-              const SizedBox(height: 20),
-              Text(
-                'Aplikasi tracking kebiasaan yang rendah friksi, penuh konteks, dan ramah secara psikologis.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      height: 1.5,
-                    ),
-                textAlign: TextAlign.center,
+              const SizedBox(height: 16),
+              // Fitur-fitur utama
+              _AboutFeatureRow(
+                icon: Icons.track_changes_rounded,
+                color: AppColors.primary,
+                text: 'Lacak kebiasaan harian dengan mudah & konsisten',
               ),
+              const SizedBox(height: 10),
+              _AboutFeatureRow(
+                icon: Icons.local_fire_department_rounded,
+                color: AppColors.accent1,
+                text: 'Pantau streak & pencapaian agar tetap termotivasi',
+              ),
+              const SizedBox(height: 10),
+              _AboutFeatureRow(
+                icon: Icons.bar_chart_rounded,
+                color: AppColors.secondaryDark,
+                text: 'Statistik kemajuan mingguan & bulanan yang detail',
+              ),
+              const SizedBox(height: 10),
+              _AboutFeatureRow(
+                icon: Icons.notifications_active_rounded,
+                color: AppColors.accent2,
+                text: 'Pengingat cerdas agar tidak ada habit yang terlewat',
+              ),
+              const SizedBox(height: 8),
             ],
           ),
-          actionsPadding: const EdgeInsets.only(bottom: 20, right: 24),
+          actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
           actions: [
-            FilledButton(
-              onPressed: () => Navigator.pop(context),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () => Navigator.pop(context),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+                child: const Text(
+                  'Tutup',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                 ),
-              ),
-              child: const Text(
-                'Tutup',
-                style: TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
           ],
@@ -883,6 +880,50 @@ class _ThemeDropdownRow extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Baris fitur kecil yang dipakai di dalam dialog Tentang Aplikasi.
+class _AboutFeatureRow extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final String text;
+
+  const _AboutFeatureRow({
+    required this.icon,
+    required this.color,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(icon, color: color, size: 17),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.4,
+                  ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
